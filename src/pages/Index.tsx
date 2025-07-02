@@ -1,11 +1,8 @@
 import { useState } from "react";
-import { BookOpen, Target, Trophy, TrendingUp, PlayCircle, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { QuestionCard } from "@/components/QuestionCard";
 import { Header } from "@/components/Header";
+import { UniversitySelector } from "@/components/UniversitySelector";
+import { VestibularDashboard } from "@/components/VestibularDashboard";
+import { QuestionCard } from "@/components/QuestionCard";
 
 const mockQuestions = [
   {
@@ -42,6 +39,12 @@ const Index = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState({ correct: 0, total: 0 });
+  const [selectedConfig, setSelectedConfig] = useState({
+    university: "",
+    firstChoice: "",
+    secondChoice: ""
+  });
+  const [showQuestions, setShowQuestions] = useState(false);
 
   const handleAnswer = (selectedIndex: number) => {
     const isCorrect = selectedIndex === mockQuestions[currentQuestionIndex].correctAnswer;
@@ -65,6 +68,10 @@ const Index = () => {
     setScore({ correct: 0, total: 0 });
   };
 
+  const handleSelectionChange = (config: typeof selectedConfig) => {
+    setSelectedConfig(config);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-background">
       <Header />
@@ -75,141 +82,55 @@ const Index = () => {
           <h1 className="text-4xl md:text-6xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-4">
             Gabarita.AI
           </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
             Sua preparação para o vestibular com inteligência artificial. 
-            Pratique com questões reais e receba feedback personalizado.
+            Configure sua instituição alvo e cursos para uma experiência personalizada.
           </p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-          <Card className="shadow-soft hover:shadow-elevated transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Questões Resolvidas</CardTitle>
-              <BookOpen className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-primary">1,247</div>
-              <p className="text-xs text-muted-foreground">+12% desde ontem</p>
-            </CardContent>
-          </Card>
-
-          <Card className="shadow-soft hover:shadow-elevated transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Taxa de Acerto</CardTitle>
-              <Target className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-success">78%</div>
-              <p className="text-xs text-muted-foreground">+5% esta semana</p>
-            </CardContent>
-          </Card>
-
-          <Card className="shadow-soft hover:shadow-elevated transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Simulados Feitos</CardTitle>
-              <Trophy className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-warning">23</div>
-              <p className="text-xs text-muted-foreground">Meta: 30 este mês</p>
-            </CardContent>
-          </Card>
-
-          <Card className="shadow-soft hover:shadow-elevated transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Ranking</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-primary">#156</div>
-              <p className="text-xs text-muted-foreground">Entre 10,000 usuários</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Current Session */}
-        {score.total > 0 && (
-          <Card className="mb-8 shadow-soft">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Trophy className="h-5 w-5 text-primary" />
-                Sessão Atual
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-sm text-muted-foreground">
-                  Progresso: {score.total}/{mockQuestions.length} questões
-                </span>
-                <Badge variant={score.correct / score.total >= 0.7 ? "default" : "secondary"}>
-                  {Math.round((score.correct / score.total) * 100)}% de acerto
-                </Badge>
-              </div>
-              <Progress value={(score.total / mockQuestions.length) * 100} className="mb-4" />
-              <div className="text-sm text-muted-foreground">
-                {score.correct} acertos de {score.total} questões respondidas
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Question Section */}
+        {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2">
-            <QuestionCard
-              question={mockQuestions[currentQuestionIndex]}
-              onAnswer={handleAnswer}
-              showExplanation={showExplanation}
-              onNext={nextQuestion}
-              isLastQuestion={currentQuestionIndex === mockQuestions.length - 1}
-              onReset={resetQuiz}
-            />
+          {/* Configuration Panel */}
+          <div className="lg:col-span-1">
+            <UniversitySelector onSelectionChange={handleSelectionChange} />
           </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            <Card className="shadow-soft">
-              <CardHeader>
-                <CardTitle className="text-lg">Ações Rápidas</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button className="w-full justify-start" variant="outline">
-                  <PlayCircle className="mr-2 h-4 w-4" />
-                  Iniciar Simulado ENEM
-                </Button>
-                <Button className="w-full justify-start" variant="outline">
-                  <BookOpen className="mr-2 h-4 w-4" />
-                  Banco de Questões
-                </Button>
-                <Button className="w-full justify-start" variant="outline">
-                  <Users className="mr-2 h-4 w-4" />
-                  Ranking Geral
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="shadow-soft">
-              <CardHeader>
-                <CardTitle className="text-lg">Progresso por Matéria</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {[
-                  { subject: "Matemática", progress: 85, color: "bg-primary" },
-                  { subject: "Português", progress: 72, color: "bg-success" },
-                  { subject: "Biologia", progress: 68, color: "bg-warning" },
-                  { subject: "História", progress: 45, color: "bg-destructive" }
-                ].map((item) => (
-                  <div key={item.subject}>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>{item.subject}</span>
-                      <span>{item.progress}%</span>
+          {/* Dashboard/Questions */}
+          <div className="lg:col-span-2">
+            {!showQuestions ? (
+              <VestibularDashboard selectedConfig={selectedConfig} />
+            ) : (
+              <div className="space-y-6">
+                {/* Current Session Progress */}
+                {score.total > 0 && (
+                  <div className="bg-card p-4 rounded-lg border shadow-soft">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-muted-foreground">
+                        Progresso: {score.total}/{mockQuestions.length} questões
+                      </span>
+                      <span className="text-sm font-medium">
+                        {Math.round((score.correct / score.total) * 100)}% de acerto
+                      </span>
                     </div>
-                    <Progress value={item.progress} className="h-2" />
+                    <div className="w-full bg-muted rounded-full h-2">
+                      <div 
+                        className="bg-primary h-2 rounded-full transition-all"
+                        style={{ width: `${(score.total / mockQuestions.length) * 100}%` }}
+                      />
+                    </div>
                   </div>
-                ))}
-              </CardContent>
-            </Card>
+                )}
+
+                <QuestionCard
+                  question={mockQuestions[currentQuestionIndex]}
+                  onAnswer={handleAnswer}
+                  showExplanation={showExplanation}
+                  onNext={nextQuestion}
+                  isLastQuestion={currentQuestionIndex === mockQuestions.length - 1}
+                  onReset={resetQuiz}
+                />
+              </div>
+            )}
           </div>
         </div>
       </main>
