@@ -5,6 +5,7 @@ import { VestibularDashboard } from "@/components/VestibularDashboard";
 import { QuestionCard } from "@/components/QuestionCard";
 import { SimuladoCompleto } from "@/components/SimuladoCompleto";
 import { ResultadoSimulado } from "@/components/ResultadoSimulado";
+import { RedacaoArea } from "@/components/RedacaoArea";
 import { questionsBank, getRandomQuestions, type Question } from "@/data/questionsBank";
 
 const Index = () => {
@@ -17,7 +18,7 @@ const Index = () => {
     secondChoice: ""
   });
   const [showQuestions, setShowQuestions] = useState(false);
-  const [currentView, setCurrentView] = useState<'dashboard' | 'simulado' | 'resultado'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'simulado' | 'resultado' | 'redacao'>('dashboard');
   const [simuladoResults, setSimuladoResults] = useState<{
     answers: (number | null)[];
     timeUsed: number;
@@ -101,7 +102,20 @@ const Index = () => {
     setScore({ correct: 0, total: 0 });
   };
 
+  const startRedacao = () => {
+    setCurrentView('redacao');
+  };
+
   // Renderizar diferentes views
+  if (currentView === 'redacao') {
+    return (
+      <RedacaoArea
+        onBack={goHome}
+        selectedConfig={selectedConfig}
+      />
+    );
+  }
+
   if (currentView === 'simulado') {
     return (
       <SimuladoCompleto
@@ -157,6 +171,7 @@ const Index = () => {
               <VestibularDashboard 
                 selectedConfig={selectedConfig} 
                 onStartSimulado={startSimulado}
+                onStartRedacao={startRedacao}
               />
             ) : (
               <div className="space-y-6">

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BookOpen, Target, Trophy, TrendingUp, PlayCircle, Users, Clock, Award } from "lucide-react";
+import { BookOpen, Target, Trophy, TrendingUp, PlayCircle, Users, Clock, Award, PenTool } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,9 +12,10 @@ interface VestibularDashboardProps {
     secondChoice: string;
   };
   onStartSimulado?: () => void;
+  onStartRedacao?: () => void;
 }
 
-export const VestibularDashboard = ({ selectedConfig, onStartSimulado }: VestibularDashboardProps) => {
+export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRedacao }: VestibularDashboardProps) => {
   const hasSelection = selectedConfig.university && selectedConfig.firstChoice;
 
   if (!hasSelection) {
@@ -81,7 +82,7 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado }: Vestibu
       </div>
 
       {/* Study Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="shadow-soft">
           <CardHeader>
             <CardTitle className="text-lg">Simulados Personalizados</CardTitle>
@@ -102,6 +103,26 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado }: Vestibu
               <Clock className="mr-2 h-4 w-4" />
               Simulado Rápido (30 min)
             </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-soft">
+          <CardHeader>
+            <CardTitle className="text-lg">Área de Redação</CardTitle>
+            <CardDescription>
+              Pratique redação dissertativo-argumentativa
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <Button className="w-full justify-start" size="lg" onClick={onStartRedacao}>
+              <PenTool className="mr-2 h-5 w-5" />
+              Praticar Redação
+            </Button>
+            <div className="text-sm text-muted-foreground space-y-1">
+              <p>• Temas de vestibulares anteriores</p>
+              <p>• Avaliação automática</p>
+              <p>• Feedback por competência</p>
+            </div>
           </CardContent>
         </Card>
 
