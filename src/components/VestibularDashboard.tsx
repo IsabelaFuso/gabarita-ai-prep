@@ -11,9 +11,10 @@ interface VestibularDashboardProps {
     firstChoice: string;
     secondChoice: string;
   };
+  onStartSimulado?: () => void;
 }
 
-export const VestibularDashboard = ({ selectedConfig }: VestibularDashboardProps) => {
+export const VestibularDashboard = ({ selectedConfig, onStartSimulado }: VestibularDashboardProps) => {
   const hasSelection = selectedConfig.university && selectedConfig.firstChoice;
 
   if (!hasSelection) {
@@ -89,7 +90,7 @@ export const VestibularDashboard = ({ selectedConfig }: VestibularDashboardProps
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <Button className="w-full justify-start" size="lg">
+            <Button className="w-full justify-start" size="lg" onClick={onStartSimulado}>
               <PlayCircle className="mr-2 h-5 w-5" />
               Simulado Completo - {selectedConfig.university.toUpperCase()}
             </Button>

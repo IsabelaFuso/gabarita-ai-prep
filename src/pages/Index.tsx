@@ -3,6 +3,8 @@ import { Header } from "@/components/Header";
 import { UniversitySelector } from "@/components/UniversitySelector";
 import { VestibularDashboard } from "@/components/VestibularDashboard";
 import { QuestionCard } from "@/components/QuestionCard";
+import { SimuladoCompleto } from "@/components/SimuladoCompleto";
+import { ResultadoSimulado } from "@/components/ResultadoSimulado";
 
 const mockQuestions = [
   {
@@ -32,6 +34,118 @@ const mockQuestions = [
     alternatives: ["6", "8", "10", "12", "14"],
     correctAnswer: 0,
     explanation: "Substituindo os pontos na equação: f(0) = c = 3; f(1) = a + b + c = 6; f(2) = 4a + 2b + c = 11. Resolvendo o sistema: a = 1, b = 2, c = 3. Portanto, a + b + c = 6."
+  },
+  {
+    id: 3,
+    institution: "ENEM",
+    year: 2023,
+    subject: "Português",
+    topic: "Interpretação de Texto",
+    statement: "Leia o texto a seguir e responda: 'A literatura brasileira contemporânea tem se destacado no cenário internacional.' Qual das alternativas melhor define a característica mencionada?",
+    alternatives: [
+      "O reconhecimento mundial da qualidade literária nacional.",
+      "A tradução de obras estrangeiras para o português.",
+      "A influência da literatura europeia no Brasil.",
+      "A diminuição da produção literária nacional.",
+      "O foco exclusivo em temas regionais."
+    ],
+    correctAnswer: 0,
+    explanation: "O destaque no cenário internacional refere-se ao reconhecimento mundial da qualidade e relevância da literatura brasileira contemporânea."
+  },
+  {
+    id: 4,
+    institution: "FUVEST",
+    year: 2023,
+    subject: "Química",
+    topic: "Reações Orgânicas",
+    statement: "Na reação de combustão completa do etanol (C₂H₅OH), quais são os produtos formados?",
+    alternatives: [
+      "CO₂ e H₂O",
+      "CO e H₂O",
+      "C e H₂O",
+      "CO₂ e H₂",
+      "C₂H₄ e O₂"
+    ],
+    correctAnswer: 0,
+    explanation: "Na combustão completa do etanol, este reage com oxigênio produzindo dióxido de carbono (CO₂) e água (H₂O) como produtos."
+  },
+  {
+    id: 5,
+    institution: "ENEM",
+    year: 2023,
+    subject: "Física",
+    topic: "Cinemática",
+    statement: "Um objeto é lançado verticalmente para cima com velocidade inicial de 20 m/s. Considerando g = 10 m/s², qual é a altura máxima atingida?",
+    alternatives: ["10 m", "15 m", "20 m", "25 m", "30 m"],
+    correctAnswer: 2,
+    explanation: "Usando a equação v² = v₀² - 2gh, onde v = 0 no ponto mais alto: 0 = 400 - 20h, logo h = 20 m."
+  },
+  {
+    id: 6,
+    institution: "UNICAMP",
+    year: 2023,
+    subject: "História",
+    topic: "Brasil República",
+    statement: "A Era Vargas (1930-1945) foi marcada por importantes transformações sociais e econômicas. Qual foi uma característica marcante deste período?",
+    alternatives: [
+      "A criação das leis trabalhistas e consolidação dos direitos do trabalhador.",
+      "A total abertura econômica ao mercado internacional.",
+      "A descentralização total do poder político.",
+      "A extinção completa do setor industrial.",
+      "A implementação do sistema parlamentarista."
+    ],
+    correctAnswer: 0,
+    explanation: "O governo Vargas foi responsável pela criação da CLT (Consolidação das Leis do Trabalho) e pela implementação de importantes direitos trabalhistas no Brasil."
+  },
+  {
+    id: 7,
+    institution: "ENEM",
+    year: 2023,
+    subject: "Geografia",
+    topic: "Climatologia",
+    statement: "O fenômeno El Niño é caracterizado por:",
+    alternatives: [
+      "Aquecimento anômalo das águas do Pacífico Equatorial.",
+      "Resfriamento das águas do Atlântico Sul.",
+      "Intensificação dos ventos alísios.",
+      "Diminuição da temperatura global.",
+      "Aumento das chuvas na região Nordeste do Brasil."
+    ],
+    correctAnswer: 0,
+    explanation: "El Niño é caracterizado pelo aquecimento anômalo das águas superficiais do Oceano Pacífico Equatorial, causando alterações climáticas globais."
+  },
+  {
+    id: 8,
+    institution: "FUVEST",
+    year: 2023,
+    subject: "Matemática",
+    topic: "Geometria Analítica",
+    statement: "A distância entre os pontos A(2, 3) e B(6, 6) é:",
+    alternatives: ["3", "4", "5", "6", "7"],
+    correctAnswer: 2,
+    explanation: "Usando a fórmula da distância: d = √[(6-2)² + (6-3)²] = √[16 + 9] = √25 = 5."
+  },
+  {
+    id: 9,
+    institution: "ENEM",
+    year: 2023,
+    subject: "Biologia",
+    topic: "Genética",
+    statement: "No cruzamento entre dois indivíduos heterozigotos (Aa x Aa), qual é a probabilidade de nascimento de um descendente homozigoto recessivo?",
+    alternatives: ["0%", "25%", "50%", "75%", "100%"],
+    correctAnswer: 1,
+    explanation: "No cruzamento Aa x Aa, a probabilidade de aa (homozigoto recessivo) é 1/4 ou 25%, seguindo a proporção mendeliana 1:2:1."
+  },
+  {
+    id: 10,
+    institution: "UNICAMP",
+    year: 2023,
+    subject: "Química",
+    topic: "Estequiometria",
+    statement: "Na reação 2H₂ + O₂ → 2H₂O, quantos moles de água são produzidos a partir de 4 moles de hidrogênio?",
+    alternatives: ["2 moles", "4 moles", "6 moles", "8 moles", "10 moles"],
+    correctAnswer: 1,
+    explanation: "Pela estequiometria da reação, a proporção é 2:2, então 4 moles de H₂ produzem 4 moles de H₂O."
   }
 ];
 
@@ -45,6 +159,12 @@ const Index = () => {
     secondChoice: ""
   });
   const [showQuestions, setShowQuestions] = useState(false);
+  const [currentView, setCurrentView] = useState<'dashboard' | 'simulado' | 'resultado'>('dashboard');
+  const [simuladoResults, setSimuladoResults] = useState<{
+    answers: (number | null)[];
+    timeUsed: number;
+    score: number;
+  } | null>(null);
 
   const handleAnswer = (selectedIndex: number) => {
     const isCorrect = selectedIndex === mockQuestions[currentQuestionIndex].correctAnswer;
@@ -72,6 +192,56 @@ const Index = () => {
     setSelectedConfig(config);
   };
 
+  const startSimulado = () => {
+    setCurrentView('simulado');
+  };
+
+  const handleSimuladoFinish = (results: { answers: (number | null)[]; timeUsed: number; score: number }) => {
+    setSimuladoResults(results);
+    setCurrentView('resultado');
+  };
+
+  const handleSimuladoExit = () => {
+    setCurrentView('dashboard');
+  };
+
+  const restartSimulado = () => {
+    setSimuladoResults(null);
+    setCurrentView('simulado');
+  };
+
+  const goHome = () => {
+    setCurrentView('dashboard');
+    setSimuladoResults(null);
+  };
+
+  // Renderizar diferentes views
+  if (currentView === 'simulado') {
+    return (
+      <SimuladoCompleto
+        questions={mockQuestions}
+        timeLimit={120} // 2 horas
+        onFinish={handleSimuladoFinish}
+        onExit={handleSimuladoExit}
+        selectedConfig={selectedConfig}
+      />
+    );
+  }
+
+  if (currentView === 'resultado' && simuladoResults) {
+    return (
+      <ResultadoSimulado
+        questions={mockQuestions}
+        answers={simuladoResults.answers}
+        timeUsed={simuladoResults.timeUsed}
+        score={simuladoResults.score}
+        onRestart={restartSimulado}
+        onHome={goHome}
+        selectedConfig={selectedConfig}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-background">
       <Header />
@@ -98,7 +268,10 @@ const Index = () => {
           {/* Dashboard/Questions */}
           <div className="lg:col-span-2">
             {!showQuestions ? (
-              <VestibularDashboard selectedConfig={selectedConfig} />
+              <VestibularDashboard 
+                selectedConfig={selectedConfig} 
+                onStartSimulado={startSimulado}
+              />
             ) : (
               <div className="space-y-6">
                 {/* Current Session Progress */}
