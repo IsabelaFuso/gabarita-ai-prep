@@ -26,16 +26,31 @@ const Index = () => {
   } | null>(null);
   const [currentQuestions, setCurrentQuestions] = useState<Question[]>([]);
   const [practiceQuestions, setPracticeQuestions] = useState<Question[]>([]);
+  const [usedQuestionIds, setUsedQuestionIds] = useState<number[]>([]);
 
   // Gerar questões baseadas na configuração
-  const generateQuestions = (count: number = 20) => {
+  const generateQuestions = (count: number = 20, excludeUsed: boolean = true) => {
     const filters: any = {};
     
     if (selectedConfig.university && selectedConfig.university !== 'enem') {
       filters.institution = selectedConfig.university.toUpperCase();
     }
     
-    return getRandomQuestions(count, Object.keys(filters).length ? filters : undefined);
+    const excludeIds = excludeUsed ? usedQuestionIds : undefined;
+    const questions = getRandomQuestions(count, Object.keys(filters).length ? filters : undefined, excludeIds);
+    
+    // Adicionar os IDs das novas questões à lista de usadas
+    if (excludeUsed) {
+      const newIds = questions.map(q => q.id);
+      setUsedQuestionIds(prev => [...prev, ...newIds]);
+    }
+    
+    return questions;
+  };
+
+  // Resetar questões usadas
+  const resetUsedQuestions = () => {
+    setUsedQuestionIds([]);
   };
 
   const handleAnswer = (selectedIndex: number) => {
@@ -172,6 +187,8 @@ const Index = () => {
                 selectedConfig={selectedConfig} 
                 onStartSimulado={startSimulado}
                 onStartRedacao={startRedacao}
+                usedQuestionIds={usedQuestionIds}
+                onResetUsedQuestions={resetUsedQuestions}
               />
             ) : (
               <div className="space-y-6">

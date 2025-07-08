@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BookOpen, Target, Trophy, TrendingUp, PlayCircle, Users, Clock, Award, PenTool } from "lucide-react";
+import { BookOpen, Target, Trophy, TrendingUp, PlayCircle, Users, Clock, Award, PenTool, RefreshCw, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,9 +13,11 @@ interface VestibularDashboardProps {
   };
   onStartSimulado?: () => void;
   onStartRedacao?: () => void;
+  usedQuestionIds: number[];
+  onResetUsedQuestions: () => void;
 }
 
-export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRedacao }: VestibularDashboardProps) => {
+export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRedacao, usedQuestionIds, onResetUsedQuestions }: VestibularDashboardProps) => {
   const hasSelection = selectedConfig.university && selectedConfig.firstChoice;
 
   if (!hasSelection) {
@@ -80,6 +82,47 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
           </CardContent>
         </Card>
       </div>
+
+      {/* Questions Management */}
+      {usedQuestionIds.length > 0 && (
+        <Card className="shadow-soft border-warning/20">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 text-warning" />
+                <CardTitle className="text-lg">Banco de Questões</CardTitle>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onResetUsedQuestions}
+                className="flex items-center gap-2 hover:bg-destructive/10 hover:border-destructive"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Resetar
+              </Button>
+            </div>
+            <CardDescription>
+              Questões já utilizadas nos seus estudos
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between p-3 bg-warning/10 rounded-lg">
+              <div>
+                <p className="text-sm font-medium">
+                  {usedQuestionIds.length} questões já utilizadas
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Clique em "Resetar" para permitir repetição de questões
+                </p>
+              </div>
+              <Badge variant="outline" className="bg-warning/20 text-warning-foreground">
+                {usedQuestionIds.length}
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Study Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

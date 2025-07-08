@@ -31,8 +31,8 @@ export const getRandomQuestions = (count: number, filters?: {
   subject?: string;
   topic?: string;
   year?: number;
-}) => {
-  return getRandomQuestionsUtil(questionsBank, count, filters);
+}, excludeIds?: number[]) => {
+  return getRandomQuestionsUtil(questionsBank, count, filters, excludeIds);
 };
 
 export const getQuestionsStats = () => {

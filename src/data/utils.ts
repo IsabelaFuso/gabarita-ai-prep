@@ -12,10 +12,21 @@ export const filterQuestions = (questionsBank: Question[], filters: QuestionFilt
 };
 
 // Função para obter questões aleatórias
-export const getRandomQuestions = (questionsBank: Question[], count: number, filters?: QuestionFilters) => {
+export const getRandomQuestions = (questionsBank: Question[], count: number, filters?: QuestionFilters, excludeIds?: number[]) => {
   const filteredQuestions = filters ? filterQuestions(questionsBank, filters) : questionsBank;
-  const shuffled = [...filteredQuestions].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, count);
+  
+  // Excluir questões já utilizadas
+  const availableQuestions = excludeIds && excludeIds.length > 0
+    ? filteredQuestions.filter(q => !excludeIds.includes(q.id))
+    : filteredQuestions;
+  
+  // Se não há questões suficientes, usar todas as disponíveis
+  if (availableQuestions.length < count) {
+    console.warn(`Apenas ${availableQuestions.length} questões disponíveis, mas ${count} foram solicitadas`);
+  }
+  
+  const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, Math.min(count, shuffled.length));
 };
 
 // Função para obter estatísticas do banco de questões
