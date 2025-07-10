@@ -86,7 +86,7 @@ const Index = () => {
   }
 
   return (
-    <MainLayout>
+    <MainLayout onStartQuiz={startPractice} onStartSimulado={startSimulado}>
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Configuration Panel */}

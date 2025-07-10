@@ -4,16 +4,20 @@ import { HeroSection } from "@/components/HeroSection";
 
 interface MainLayoutProps {
   children: ReactNode;
+  onStartQuiz: () => void;
+  onStartSimulado: () => void;
 }
 
-export const MainLayout = ({ children }: MainLayoutProps) => {
+export const MainLayout = ({ children, onStartQuiz, onStartSimulado }: MainLayoutProps) => {
   return (
-    <div className="min-h-screen bg-gradient-background">
+    <div className="min-h-screen">
       <Header />
       
-      <main className="container mx-auto px-4 py-8">
-        <HeroSection />
-        {children}
+      <main>
+        <HeroSection onStartQuiz={onStartQuiz} onStartSimulado={onStartSimulado} />
+        <div className="container mx-auto px-4 py-8">
+          {children}
+        </div>
       </main>
     </div>
   );
