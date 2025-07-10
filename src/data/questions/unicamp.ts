@@ -163,5 +163,113 @@ export const unicampQuestions: Question[] = [
     alternatives: ["1920", "1922", "1924", "1926", "1928"],
     correctAnswer: 1,
     explanation: "A Semana de Arte Moderna ocorreu em fevereiro de 1922, em São Paulo."
+  },
+  // UNICAMP 2024 - Questões mais complexas
+  {
+    id: 93,
+    institution: "UNICAMP",
+    year: 2024,
+    subject: "Matemática",
+    topic: "Análise Combinatória",
+    statement: "De quantas maneiras diferentes podemos arranjar as letras da palavra UNICAMP, de modo que as vogais fiquem sempre juntas?",
+    alternatives: ["720", "1440", "2880", "5040", "14400"],
+    correctAnswer: 1,
+    explanation: "Tratando as vogais UIA como um bloco: 5! arranjos × 3! arranjos das vogais = 120 × 12 = 1440."
+  },
+  {
+    id: 94,
+    institution: "UNICAMP",
+    year: 2024,
+    subject: "Física",
+    topic: "Mecânica Quântica",
+    statement: "Na experiência da dupla fenda com elétrons, quando não observamos por qual fenda o elétron passa, observamos:",
+    alternatives: [
+      "Padrão de interferência no anteparo",
+      "Duas bandas correspondentes às fendas",
+      "Uma banda única no centro",
+      "Dispersão aleatória dos elétrons",
+      "Nenhum elétron atingindo o anteparo"
+    ],
+    correctAnswer: 0,
+    explanation: "Sem observação, os elétrons comportam-se como ondas, criando padrão de interferência, demonstrando a dualidade onda-partícula."
+  },
+  {
+    id: 95,
+    institution: "UNICAMP",
+    year: 2024,
+    subject: "Química",
+    topic: "Química Orgânica",
+    statement: "A reação de adição de HBr ao propeno (CH₃-CH=CH₂) segue a regra de Markovnikov, produzindo preferencialmente:",
+    alternatives: [
+      "2-bromopropano",
+      "1-bromopropano", 
+      "1,2-dibromopropano",
+      "2,2-dibromopropano",
+      "3-bromopropano"
+    ],
+    correctAnswer: 0,
+    explanation: "Pela regra de Markovnikov, o H liga-se ao carbono mais hidrogenado (terminal) e o Br ao menos hidrogenado (central), formando 2-bromopropano."
+  },
+  {
+    id: 96,
+    institution: "UNICAMP",
+    year: 2024,
+    subject: "Biologia",
+    topic: "Biotecnologia",
+    statement: "A técnica CRISPR-Cas9 é uma ferramenta de edição genética que permite:",
+    alternatives: [
+      "Cortar e modificar sequências específicas de DNA",
+      "Apenas visualizar o DNA",
+      "Duplicar cromossomos inteiros",
+      "Converter RNA em DNA",
+      "Produzir proteínas sintéticas"
+    ],
+    correctAnswer: 0,
+    explanation: "CRISPR-Cas9 é um sistema que permite cortar o DNA em locais específicos e inserir, deletar ou modificar sequências genéticas com precisão."
+  },
+  {
+    id: 97,
+    institution: "UNICAMP",
+    year: 2024,
+    subject: "História",
+    topic: "Ditadura Militar",
+    statement: "O AI-5 (Ato Institucional nº 5), de dezembro de 1968, representou:",
+    alternatives: [
+      "O endurecimento máximo da ditadura militar brasileira",
+      "O início da abertura democrática",
+      "A criação do bipartidarismo",
+      "A anistia política ampla",
+      "O fim da censura à imprensa"
+    ],
+    correctAnswer: 0,
+    explanation: "O AI-5 marcou o período mais repressivo da ditadura, fechando o Congresso, cassando mandatos e instituindo a censura prévia."
+  },
+  {
+    id: 98,
+    institution: "UNICAMP",
+    year: 2024,
+    subject: "Geografia",
+    topic: "Mudanças Climáticas",
+    statement: "O Protocolo de Kyoto (1997) estabeleceu metas para:",
+    alternatives: [
+      "Redução das emissões de gases do efeito estufa",
+      "Proteção da camada de ozônio",
+      "Conservação da biodiversidade",
+      "Combate à desertificação",
+      "Preservação das florestas tropicais"
+    ],
+    correctAnswer: 0,
+    explanation: "O Protocolo de Kyoto estabeleceu metas obrigatórias para países desenvolvidos reduzirem emissões de CO₂ e outros gases do efeito estufa."
+  },
+  {
+    id: 99,
+    institution: "UNICAMP",
+    year: 2024,
+    subject: "Português",
+    topic: "Figuras de Linguagem",
+    statement: "No verso 'Seus olhos eram dois sóis brilhando', identifica-se a figura de linguagem:",
+    alternatives: ["Metáfora", "Comparação", "Metonímia", "Hipérbole", "Prosopopeia"],
+    correctAnswer: 0,
+    explanation: "A metáfora estabelece uma comparação implícita sem uso de conectivos, identificando 'olhos' com 'sóis' diretamente."
   }
 ];

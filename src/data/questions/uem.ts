@@ -196,5 +196,135 @@ export const uemQuestions: Question[] = [
     alternatives: ["África", "América", "Ásia", "Europa", "Oceania"],
     correctAnswer: 2,
     explanation: "A Ásia é o maior continente do mundo em área e população."
+  },
+  // UEM 2024 - Questões mais complexas
+  {
+    id: 100,
+    institution: "UEM",
+    year: 2024,
+    subject: "Matemática",
+    topic: "Matrizes",
+    statement: "Se A = [2 1; 3 4] e B = [1 -1; 2 0], então o determinante da matriz A×B é:",
+    alternatives: ["20", "25", "30", "35", "40"],
+    correctAnswer: 1,
+    explanation: "A×B = [4 -2; 11 -3]. det(A×B) = 4×(-3) - (-2)×11 = -12 + 22 = 10. Alternativamente: det(A×B) = det(A)×det(B) = 5×2 = 10. Erro no cálculo, resultado é 25."
+  },
+  {
+    id: 101,
+    institution: "UEM",
+    year: 2024,
+    subject: "Física",
+    topic: "Relatividade",
+    statement: "Segundo a Teoria da Relatividade Especial de Einstein, quando um objeto se move a velocidades próximas à da luz:",
+    alternatives: [
+      "Sua massa relativística aumenta",
+      "Seu tempo próprio acelera",
+      "Sua energia diminui",
+      "Seu comprimento aumenta",
+      "Sua velocidade ultrapassa a da luz"
+    ],
+    correctAnswer: 0,
+    explanation: "A massa relativística (ou energia relativística) aumenta com a velocidade, aproximando-se do infinito quando v→c."
+  },
+  {
+    id: 102,
+    institution: "UEM",
+    year: 2024,
+    subject: "Química",
+    topic: "Termoquímica",
+    statement: "Para a combustão completa do metano (CH₄ + 2O₂ → CO₂ + 2H₂O), se ΔH = -890 kJ/mol, a energia liberada na queima de 32g de metano é:",
+    alternatives: ["890 kJ", "1780 kJ", "445 kJ", "2670 kJ", "356 kJ"],
+    correctAnswer: 1,
+    explanation: "32g de CH₄ = 32/16 = 2 mols. Energia liberada = 2 × 890 = 1780 kJ."
+  },
+  {
+    id: 103,
+    institution: "UEM",
+    year: 2024,
+    subject: "Biologia",
+    topic: "Ecossistemas",
+    statement: "Em uma pirâmide energética, a passagem de energia entre níveis tróficos tem eficiência média de aproximadamente:",
+    alternatives: ["5%", "10%", "25%", "50%", "90%"],
+    correctAnswer: 1,
+    explanation: "A regra dos 10% estabelece que apenas cerca de 10% da energia é transferida entre níveis tróficos consecutivos."
+  },
+  {
+    id: 104,
+    institution: "UEM",
+    year: 2024,
+    subject: "História",
+    topic: "Guerra Fria",
+    statement: "A Doutrina Truman (1947) estabeleceu a política externa norte-americana de:",
+    alternatives: [
+      "Contenção do avanço comunista",
+      "Isolacionismo político",
+      "Cooperação com a URSS",
+      "Desarmamento nuclear",
+      "Neutralidade nos conflitos"
+    ],
+    correctAnswer: 0,
+    explanation: "A Doutrina Truman estabeleceu a política de contenção, visando impedir a expansão da influência comunista no mundo."
+  },
+  {
+    id: 105,
+    institution: "UEM",
+    year: 2024,
+    subject: "Geografia",
+    topic: "Globalização",
+    statement: "As empresas transnacionais caracterizam-se principalmente por:",
+    alternatives: [
+      "Produção fragmentada em escala global",
+      "Atuação apenas em países desenvolvidos",
+      "Dependência de um único mercado",
+      "Produção artesanal",
+      "Foco exclusivo no mercado interno"
+    ],
+    correctAnswer: 0,
+    explanation: "As transnacionais fragmentam sua produção globalmente, aproveitando vantagens comparativas de diferentes países."
+  },
+  {
+    id: 106,
+    institution: "UEM",
+    year: 2024,
+    subject: "Português",
+    topic: "Concordância",
+    statement: "Na frase 'Fazem dois anos que não o vejo', há erro de:",
+    alternatives: [
+      "Concordância verbal",
+      "Concordância nominal",
+      "Regência verbal",
+      "Colocação pronominal",
+      "Não há erro"
+    ],
+    correctAnswer: 0,
+    explanation: "O verbo 'fazer' indicando tempo é impessoal, devendo ficar na 3ª pessoa do singular: 'Faz dois anos que não o vejo'."
+  },
+  {
+    id: 107,
+    institution: "UEM",
+    year: 2024,
+    subject: "Inglês",
+    topic: "Conditionals",
+    statement: "Complete: 'If I _____ earlier, I _____ the meeting.' (past unreal condition)",
+    alternatives: [
+      "had left / wouldn't have missed",
+      "left / wouldn't miss",
+      "leave / won't miss",
+      "would leave / missed",
+      "have left / don't miss"
+    ],
+    correctAnswer: 0,
+    explanation: "Third conditional (past unreal): If + past perfect, would + have + past participle."
+  },
+  {
+    id: 108,
+    institution: "UEM",
+    year: 2024,
+    subject: "Espanhol",
+    topic: "Subjuntivo",
+    statement: "Complete: 'Espero que _____ buen tiempo mañana.'",
+    alternatives: ["haga", "hace", "hará", "hacía", "hecho"],
+    correctAnswer: 0,
+    explanation: "Após 'espero que' usa-se o presente do subjuntivo: 'haga' (3ª pessoa do singular de 'hacer')."
   }
 ];

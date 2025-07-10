@@ -241,5 +241,113 @@ export const fuvestQuestions: Question[] = [
     alternatives: ["De leste a oeste", "De norte a sul", "Da linha do Equador aos polos", "Do meridiano de Greenwich", "Em graus Celsius"],
     correctAnswer: 2,
     explanation: "A latitude é a distância angular da linha do Equador até os polos (0° a 90°)."
+  },
+  // FUVEST 2024 - Questões mais complexas
+  {
+    id: 86,
+    institution: "FUVEST",
+    year: 2024,
+    subject: "Matemática",
+    topic: "Geometria Analítica",
+    statement: "A equação da circunferência que passa pelos pontos A(1,2), B(3,4) e tem centro na reta x + y = 5 é:",
+    alternatives: [
+      "(x-2)² + (y-3)² = 2",
+      "(x-3)² + (y-2)² = 5", 
+      "(x-1)² + (y-4)² = 8",
+      "(x-2)² + (y-3)² = 5",
+      "(x-3)² + (y-2)² = 2"
+    ],
+    correctAnswer: 0,
+    explanation: "O centro C(a,b) está na reta x+y=5, então b=5-a. Como CA=CB, temos (a-1)²+(b-2)²=(a-3)²+(b-4)². Resolvendo: a=2, b=3, raio=√2."
+  },
+  {
+    id: 87,
+    institution: "FUVEST",
+    year: 2024,
+    subject: "Física",
+    topic: "Óptica",
+    statement: "Uma lente convergente de distância focal 20 cm forma uma imagem real de um objeto. Se a distância do objeto à lente é 30 cm, a distância da imagem à lente é:",
+    alternatives: ["12 cm", "50 cm", "60 cm", "75 cm", "100 cm"],
+    correctAnswer: 2,
+    explanation: "Pela equação de Gauss: 1/f = 1/p + 1/p' → 1/20 = 1/30 + 1/p' → 1/p' = 1/20 - 1/30 = 1/60 → p' = 60 cm."
+  },
+  {
+    id: 88,
+    institution: "FUVEST",
+    year: 2024,
+    subject: "Química",
+    topic: "Cinética Química",
+    statement: "Para uma reação de primeira ordem com constante de velocidade k = 0,693 min⁻¹, o tempo de meia-vida é:",
+    alternatives: ["0,5 min", "1,0 min", "1,5 min", "2,0 min", "2,5 min"],
+    correctAnswer: 1,
+    explanation: "Para reação de 1ª ordem: t₁/₂ = ln(2)/k = 0,693/0,693 = 1,0 min."
+  },
+  {
+    id: 89,
+    institution: "FUVEST",
+    year: 2024,
+    subject: "Biologia",
+    topic: "Evolução",
+    statement: "O conceito de especiação alopátrica refere-se à formação de novas espécies por:",
+    alternatives: [
+      "Isolamento geográfico seguido de diferenciação genética",
+      "Hibridização entre espécies diferentes",
+      "Mutações cromossômicas em populações simpátricas",
+      "Seleção sexual intensa",
+      "Deriva genética em populações grandes"
+    ],
+    correctAnswer: 0,
+    explanation: "Especiação alopátrica ocorre quando populações ficam geograficamente isoladas e acumulam diferenças genéticas até se tornarem espécies distintas."
+  },
+  {
+    id: 90,
+    institution: "FUVEST",
+    year: 2024,
+    subject: "História",
+    topic: "Revolução Francesa",
+    statement: "A Declaração dos Direitos do Homem e do Cidadão (1789) estabeleceu princípios que influenciaram:",
+    alternatives: [
+      "O liberalismo político e os direitos individuais modernos",
+      "Apenas a organização do Estado francês",
+      "O retorno ao absolutismo monárquico",
+      "A manutenção do sistema feudal",
+      "A organização da sociedade estamental"
+    ],
+    correctAnswer: 0,
+    explanation: "A Declaração de 1789 estabeleceu princípios fundamentais dos direitos humanos e do liberalismo político, influenciando constituições modernas mundialmente."
+  },
+  {
+    id: 91,
+    institution: "FUVEST",
+    year: 2024,
+    subject: "Literatura",
+    topic: "Realismo",
+    statement: "Em 'O Cortiço' de Aluísio Azevedo, o personagem João Romão representa:",
+    alternatives: [
+      "A ascensão social através da exploração e ganância",
+      "O ideal romântico do herói brasileiro",
+      "A decadência da aristocracia rural",
+      "O intelectual crítico da sociedade",
+      "O trabalhador honesto e trabalhador"
+    ],
+    correctAnswer: 0,
+    explanation: "João Romão exemplifica o burguês capitalista que enriquece explorando os mais pobres, representando a crítica naturalista aos vícios sociais."
+  },
+  {
+    id: 92,
+    institution: "FUVEST",
+    year: 2024,
+    subject: "Geografia",
+    topic: "Recursos Hídricos",
+    statement: "O Sistema Aquífero Guarani, um dos maiores reservatórios de água doce subterrânea do mundo, estende-se pelos territórios de:",
+    alternatives: [
+      "Brasil, Argentina, Uruguai e Paraguai",
+      "Brasil, Peru, Bolívia e Paraguai",
+      "Brasil, Venezuela, Colômbia e Guiana",
+      "Brasil, Chile, Argentina e Uruguai",
+      "Brasil, Equador, Peru e Bolívia"
+    ],
+    correctAnswer: 0,
+    explanation: "O Aquífero Guarani estende-se pelos territórios do Brasil, Argentina, Uruguai e Paraguai, sendo um importante recurso hídrico compartilhado."
   }
 ];

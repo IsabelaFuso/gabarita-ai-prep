@@ -344,5 +344,152 @@ export const enemQuestions: Question[] = [
     alternatives: ["1820", "1821", "1822", "1823", "1824"],
     correctAnswer: 2,
     explanation: "A Independência do Brasil foi proclamada em 7 de setembro de 1822."
+  },
+  // ENEM 2024 - Questões mais complexas
+  {
+    id: 76,
+    institution: "ENEM",
+    year: 2024,
+    subject: "Matemática",
+    topic: "Função Exponencial",
+    statement: "Uma população de bactérias cresce segundo a função P(t) = 1000 × 2^(t/3), onde t é o tempo em horas. Para que a população atinja 8000 bactérias, será necessário um tempo de:",
+    alternatives: ["6 horas", "9 horas", "12 horas", "15 horas", "18 horas"],
+    correctAnswer: 1,
+    explanation: "8000 = 1000 × 2^(t/3) → 8 = 2^(t/3) → 2³ = 2^(t/3) → t/3 = 3 → t = 9 horas."
+  },
+  {
+    id: 77,
+    institution: "ENEM",
+    year: 2024,
+    subject: "Física",
+    topic: "Eletromagnetismo",
+    statement: "Um condutor retilíneo de 2 metros, percorrido por uma corrente de 5 A, está imerso em um campo magnético uniforme de 0,4 T, perpendicular ao condutor. A força magnética sobre o condutor é:",
+    alternatives: ["2 N", "4 N", "6 N", "8 N", "10 N"],
+    correctAnswer: 1,
+    explanation: "F = B × i × L = 0,4 × 5 × 2 = 4 N."
+  },
+  {
+    id: 78,
+    institution: "ENEM",
+    year: 2024,
+    subject: "Química",
+    topic: "Equilíbrio Químico",
+    statement: "Para a reação N₂(g) + 3H₂(g) ⇌ 2NH₃(g), se as concentrações de equilíbrio são [N₂] = 0,1 M, [H₂] = 0,3 M e [NH₃] = 0,2 M, a constante de equilíbrio Kc vale:",
+    alternatives: ["14,8", "1,48", "0,148", "148", "1480"],
+    correctAnswer: 0,
+    explanation: "Kc = [NH₃]²/([N₂] × [H₂]³) = (0,2)²/(0,1 × (0,3)³) = 0,04/(0,1 × 0,027) = 0,04/0,0027 ≈ 14,8."
+  },
+  {
+    id: 79,
+    institution: "ENEM",
+    year: 2024,
+    subject: "Biologia",
+    topic: "Genética Molecular",
+    statement: "Na síntese proteica, a sequência de DNA 3'-TAC-GGA-CTA-5' será transcrita em RNA mensageiro como:",
+    alternatives: ["5'-AUG-CCU-GAU-3'", "5'-ATG-CCT-GAT-3'", "3'-AUG-CCU-GAU-5'", "5'-UAC-GGA-CUA-3'", "3'-TAC-GGA-CTA-5'"],
+    correctAnswer: 0,
+    explanation: "Na transcrição, a fita molde de DNA 3'-TAC-GGA-CTA-5' gera o RNA 5'-AUG-CCU-GAU-3' (complementar e antiparalelo, com U no lugar de T)."
+  },
+  {
+    id: 80,
+    institution: "ENEM",
+    year: 2024,
+    subject: "Português",
+    topic: "Análise Sintática",
+    statement: "Na oração 'Espera-se que os resultados sejam divulgados amanhã', a classificação correta da oração subordinada é:",
+    alternatives: [
+      "Substantiva subjetiva",
+      "Substantiva objetiva direta", 
+      "Adjetiva restritiva",
+      "Adverbial temporal",
+      "Substantiva predicativa"
+    ],
+    correctAnswer: 0,
+    explanation: "A oração 'que os resultados sejam divulgados amanhã' é substantiva subjetiva, pois funciona como sujeito da oração principal com verbo na voz passiva sintética."
+  },
+  {
+    id: 81,
+    institution: "ENEM",
+    year: 2024,
+    subject: "História",
+    topic: "República Velha",
+    statement: "A política do 'café-com-leite' durante a República Velha (1889-1930) caracterizou-se pela alternância no poder entre oligarquias de:",
+    alternatives: [
+      "São Paulo e Minas Gerais",
+      "Rio de Janeiro e São Paulo", 
+      "Minas Gerais e Rio Grande do Sul",
+      "São Paulo e Bahia",
+      "Minas Gerais e Pernambuco"
+    ],
+    correctAnswer: 0,
+    explanation: "A política do 'café-com-leite' refere-se ao revezamento entre as oligarquias paulista (café) e mineira (leite) no controle da presidência da República."
+  },
+  {
+    id: 82,
+    institution: "ENEM",
+    year: 2024,
+    subject: "Geografia",
+    topic: "Geopolitica",
+    statement: "O conceito de 'Estado-nação' pressupõe a coincidência entre:",
+    alternatives: [
+      "Território político e identidade cultural",
+      "Economia e política",
+      "Religião e território",
+      "Língua e economia",
+      "Cultura e religião"
+    ],
+    correctAnswer: 0,
+    explanation: "O Estado-nação ideal pressupõe a coincidência entre fronteiras políticas (Estado) e identidade cultural homogênea (nação)."
+  },
+  {
+    id: 83,
+    institution: "ENEM",
+    year: 2024,
+    subject: "Sociologia",
+    topic: "Movimentos Sociais",
+    statement: "Segundo a teoria de Manuel Castells, os movimentos sociais na era da informação caracterizam-se principalmente por:",
+    alternatives: [
+      "Organização em rede e identidade coletiva",
+      "Hierarquia rígida e liderança centralizada",
+      "Foco exclusivo em questões econômicas",
+      "Dependência de partidos políticos",
+      "Ação limitada ao espaço local"
+    ],
+    correctAnswer: 0,
+    explanation: "Castells identifica que os novos movimentos sociais se organizam em rede, são descentralizados e focam na construção de identidade coletiva."
+  },
+  {
+    id: 84,
+    institution: "ENEM",
+    year: 2024,
+    subject: "Filosofia",
+    topic: "Ética",
+    statement: "Para Immanuel Kant, uma ação é moralmente correta quando:",
+    alternatives: [
+      "Pode ser universalizada sem contradição",
+      "Produz a maior felicidade para o maior número",
+      "Está de acordo com os costumes sociais",
+      "Gera consequências favoráveis",
+      "É aprovada pela maioria"
+    ],
+    correctAnswer: 0,
+    explanation: "O imperativo categórico kantiano estabelece que uma ação é moral quando sua máxima pode ser universalizada sem contradição lógica."
+  },
+  {
+    id: 85,
+    institution: "ENEM",
+    year: 2024,
+    subject: "Inglês",
+    topic: "Reading Comprehension",
+    statement: "Read the text: 'Climate change mitigation requires unprecedented global cooperation.' The word 'unprecedented' means:",
+    alternatives: [
+      "Never happened before",
+      "Highly expected",
+      "Frequently occurring",
+      "Easily achievable",
+      "Previously planned"
+    ],
+    correctAnswer: 0,
+    explanation: "'Unprecedented' significa 'sem precedentes', ou seja, algo que nunca aconteceu antes."
   }
 ];
