@@ -175,5 +175,5 @@ All colors MUST be HSL.
     from { box-shadow: 0 0 20px hsl(var(--primary) / 0.2); }
     to { box-shadow: 0 0 30px hsl(var(--primary) / 0.4); }
   }
-}
+  }
 }
