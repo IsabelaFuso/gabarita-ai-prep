@@ -5,6 +5,8 @@ import { ResultadoSimulado } from "@/components/ResultadoSimulado";
 import { RedacaoArea } from "@/components/RedacaoArea";
 import { MainLayout } from "@/components/MainLayout";
 import { PracticeQuiz } from "@/components/PracticeQuiz";
+import { DesempenhoView } from "@/components/DesempenhoView";
+import { SimuladosView } from "@/components/SimuladosView";
 import { useAppState } from "@/hooks/useAppState";
 import { useQuestionManager } from "@/hooks/useQuestionManager";
 import { useSimuladoManager } from "@/hooks/useSimuladoManager";
@@ -85,38 +87,95 @@ const Index = () => {
     );
   }
 
-  return (
-    <MainLayout onStartQuiz={startPractice} onStartSimulado={startSimulado}>
-      {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Configuration Panel */}
-        <div className="lg:col-span-1">
-          <UniversitySelector onSelectionChange={handleSelectionChange} />
-        </div>
+  const handleNavigation = (view: string) => {
+    switch (view) {
+      case 'dashboard':
+        goHome();
+        break;
+      case 'redacao':
+        startRedacao();
+        break;
+      case 'simulados':
+        setCurrentView('simulados');
+        break;
+      case 'questoes':
+        setCurrentView('questoes');
+        break;
+      case 'desempenho':
+        setCurrentView('desempenho');
+        break;
+      default:
+        goHome();
+    }
+  };
 
-        {/* Dashboard/Questions */}
-        <div className="lg:col-span-2">
-          {!showQuestions ? (
-            <VestibularDashboard 
-              selectedConfig={selectedConfig} 
-              onStartSimulado={startSimulado}
-              onStartRedacao={startRedacao}
-              usedQuestionIds={usedQuestionIds}
-              onResetUsedQuestions={resetUsedQuestions}
-            />
-          ) : (
-            <PracticeQuiz
-              currentQuestionIndex={currentQuestionIndex}
-              showExplanation={showExplanation}
-              score={score}
-              practiceQuestions={practiceQuestions}
-              onAnswer={handleAnswer}
-              onNext={nextQuestion}
-              onReset={resetQuiz}
-            />
-          )}
-        </div>
-      </div>
+  const renderCurrentView = () => {
+    switch (currentView) {
+      case 'simulados':
+        return (
+          <SimuladosView 
+            selectedConfig={selectedConfig}
+            onStartSimulado={startSimulado}
+          />
+        );
+      case 'desempenho':
+        return <DesempenhoView selectedConfig={selectedConfig} />;
+      case 'questoes':
+        return (
+          <PracticeQuiz
+            currentQuestionIndex={currentQuestionIndex}
+            showExplanation={showExplanation}
+            score={score}
+            practiceQuestions={practiceQuestions}
+            onAnswer={handleAnswer}
+            onNext={nextQuestion}
+            onReset={resetQuiz}
+          />
+        );
+      default:
+        return (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Configuration Panel */}
+            <div className="lg:col-span-1">
+              <UniversitySelector onSelectionChange={handleSelectionChange} />
+            </div>
+
+            {/* Dashboard/Questions */}
+            <div className="lg:col-span-2">
+              {!showQuestions ? (
+                <VestibularDashboard 
+                  selectedConfig={selectedConfig} 
+                  onStartSimulado={startSimulado}
+                  onStartRedacao={startRedacao}
+                  usedQuestionIds={usedQuestionIds}
+                  onResetUsedQuestions={resetUsedQuestions}
+                />
+              ) : (
+                <PracticeQuiz
+                  currentQuestionIndex={currentQuestionIndex}
+                  showExplanation={showExplanation}
+                  score={score}
+                  practiceQuestions={practiceQuestions}
+                  onAnswer={handleAnswer}
+                  onNext={nextQuestion}
+                  onReset={resetQuiz}
+                />
+              )}
+            </div>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <MainLayout 
+      onStartQuiz={startPractice} 
+      onStartSimulado={startSimulado}
+      currentView={currentView}
+      onNavigate={handleNavigation}
+      showHero={currentView === 'dashboard'}
+    >
+      {renderCurrentView()}
     </MainLayout>
   );
 };

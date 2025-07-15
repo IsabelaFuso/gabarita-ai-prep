@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export type AppView = 'dashboard' | 'simulado' | 'resultado' | 'redacao';
+export type AppView = 'dashboard' | 'simulado' | 'resultado' | 'redacao' | 'simulados' | 'questoes' | 'desempenho';
 
 export interface SelectedConfig {
   university: string;

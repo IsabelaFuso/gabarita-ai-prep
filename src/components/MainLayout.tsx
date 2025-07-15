@@ -6,15 +6,27 @@ interface MainLayoutProps {
   children: ReactNode;
   onStartQuiz: () => void;
   onStartSimulado: () => void;
+  currentView?: string;
+  onNavigate?: (view: string) => void;
+  showHero?: boolean;
 }
 
-export const MainLayout = ({ children, onStartQuiz, onStartSimulado }: MainLayoutProps) => {
+export const MainLayout = ({ 
+  children, 
+  onStartQuiz, 
+  onStartSimulado, 
+  currentView = 'dashboard',
+  onNavigate,
+  showHero = true 
+}: MainLayoutProps) => {
   return (
     <div className="min-h-screen">
-      <Header />
+      <Header currentView={currentView} onNavigate={onNavigate} />
       
       <main>
-        <HeroSection onStartQuiz={onStartQuiz} onStartSimulado={onStartSimulado} />
+        {showHero && (
+          <HeroSection onStartQuiz={onStartQuiz} onStartSimulado={onStartSimulado} />
+        )}
         <div className="container mx-auto px-4 py-8">
           {children}
         </div>
