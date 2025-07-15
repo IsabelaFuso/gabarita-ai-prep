@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Loader2, AlertTriangle, Target, BookOpen, Youtube, BrainCircuit } from "lucide-react";
+import { Loader2, AlertTriangle, Target, Youtube, BrainCircuit, Trophy } from "lucide-react";
 
 interface PerformanceSummary {
   subject_name: string;
@@ -14,10 +14,20 @@ interface PerformanceSummary {
   accuracy: number;
 }
 
+// Mock de dados de vídeo para demonstração
+const mockVideos = [
+  { id: '1', title: 'Videoaula Completa sobre Análise Combinatória', thumbnail: '/placeholder.svg', url: '#' },
+  { id: '2', title: 'Exercícios Resolvidos de Análise Combinatória', thumbnail: '/placeholder.svg', url: '#' },
+  { id: '3', title: 'Dicas e Macetes de Análise Combinatória para o ENEM', thumbnail: '/placeholder.svg', url: '#' },
+];
+
 export const TutorView = () => {
   const [summary, setSummary] = useState<PerformanceSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [videos, setVideos] = useState<any[]>([]);
+  const [isFetchingVideos, setIsFetchingVideos] = useState(false);
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
 
   const fetchPerformanceSummary = async () => {
     setLoading(true);
@@ -41,6 +51,29 @@ export const TutorView = () => {
       setError("Não foi possível carregar seu plano de estudos. Tente novamente.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchVideos = async (topic: string) => {
+    setIsFetchingVideos(true);
+    setSelectedTopic(topic);
+    setVideos([]); // Limpa vídeos anteriores
+    try {
+      // TODO: Substituir o mock pela chamada real da ferramenta google_web_search
+      // Exemplo: const searchResults = await google_web_search({ query: `videoaula sobre ${topic}` });
+      // Em seguida, processe searchResults para extrair os vídeos.
+      
+      console.log(`Buscando vídeos sobre: ${topic}`);
+      // Simula um atraso de rede
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      setVideos(mockVideos);
+
+    } catch (err) {
+      console.error("Erro ao buscar vídeos:", err);
+      // Tratar erro na UI, se necessário
+    } finally {
+      setIsFetchingVideos(false);
     }
   };
 
@@ -107,9 +140,17 @@ export const TutorView = () => {
                   </div>
                 </div>
                 <div className="space-y-2 pt-4">
-                  <Button className="w-full" disabled>
-                    <Youtube className="w-4 h-4 mr-2" />
-                    Buscar Videoaulas (Em breve)
+                   <Button 
+                    className="w-full" 
+                    onClick={() => fetchVideos(point.topic_name)}
+                    disabled={isFetchingVideos && selectedTopic === point.topic_name}
+                  >
+                    {isFetchingVideos && selectedTopic === point.topic_name ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Youtube className="w-4 h-4 mr-2" />
+                    )}
+                    Buscar Videoaulas
                   </Button>
                   <Button className="w-full" variant="outline" disabled>
                     <Target className="w-4 h-4 mr-2" />
@@ -127,6 +168,38 @@ export const TutorView = () => {
           <p className="text-muted-foreground">
             Não encontramos pontos fracos com base nas suas tentativas recentes. Continue praticando para manter o bom desempenho!
           </p>
+        </Card>
+      )}
+
+      {selectedTopic && (
+        <Card className="shadow-soft">
+          <CardHeader>
+            <CardTitle>Videoaulas sobre {selectedTopic}</CardTitle>
+            <CardDescription>Vídeos recomendados para te ajudar a dominar este assunto.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {isFetchingVideos ? (
+              <div className="flex items-center justify-center p-8">
+                <Loader2 className="w-8 h-8 animate-spin text-primary mr-3" />
+                <span className="text-muted-foreground">Buscando as melhores aulas...</span>
+              </div>
+            ) : videos.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {videos.map(video => (
+                  <a key={video.id} href={video.url} target="_blank" rel="noopener noreferrer" className="block group">
+                    <Card className="overflow-hidden h-full hover:border-primary transition-colors">
+                      <img src={video.thumbnail} alt={video.title} className="w-full h-32 object-cover" />
+                      <div className="p-3">
+                        <p className="font-medium text-sm leading-snug group-hover:text-primary transition-colors">{video.title}</p>
+                      </div>
+                    </Card>
+                  </a>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-muted-foreground p-8">Nenhum vídeo encontrado para este tópico.</p>
+            )}
+          </CardContent>
         </Card>
       )}
 
