@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -8,12 +9,12 @@ import {
   Target, 
   Clock, 
   Trophy, 
-  BookOpen, 
-  BarChart3,
-  Calendar,
-  Award,
-  RefreshCw
+  BookOpen,
+  RefreshCw,
+  Loader2,
+  AlertTriangle
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface DesempenhoViewProps {
   selectedConfig: {
@@ -23,25 +24,124 @@ interface DesempenhoViewProps {
   };
 }
 
-export const DesempenhoView = ({ selectedConfig }: DesempenhoViewProps) => {
-  const performanceData = [
-    { subject: "Matemática", score: 88, trend: 5, color: "text-primary", questions: 142 },
-    { subject: "Português", score: 79, trend: -2, color: "text-success", questions: 98 },
-    { subject: "Biologia", score: 85, trend: 8, color: "text-warning", questions: 76 },
-    { subject: "Química", score: 71, trend: 3, color: "text-destructive", questions: 54 },
-    { subject: "Física", score: 66, trend: -1, color: "text-muted-foreground", questions: 67 },
-    { subject: "História", score: 82, trend: 4, color: "text-accent-foreground", questions: 43 }
-  ];
+interface PerformanceData {
+  subject: string;
+  score: number;
+  questions: number;
+  color: string;
+}
 
-  const weeklyData = [
-    { day: "Seg", questions: 25, score: 78, time: "2h 30m" },
-    { day: "Ter", questions: 32, score: 84, time: "3h 15m" },
-    { day: "Qua", questions: 18, score: 71, time: "1h 45m" },
-    { day: "Qui", questions: 41, score: 89, time: "4h 20m" },
-    { day: "Sex", questions: 29, score: 76, time: "2h 50m" },
-    { day: "Sáb", questions: 35, score: 92, time: "3h 40m" },
-    { day: "Dom", questions: 22, score: 68, time: "2h 10m" }
-  ];
+const subjectColors: { [key: string]: string } = {
+  "Matemática": "text-primary",
+  "Português": "text-success",
+  "Biologia": "text-warning",
+  "Química": "text-destructive",
+  "Física": "text-muted-foreground",
+  "História": "text-accent-foreground",
+  "Geografia": "text-blue-500",
+  "Filosofia": "text-purple-500",
+  "Sociologia": "text-pink-500",
+  "Inglês": "text-indigo-500",
+  "Espanhol": "text-orange-500",
+  "Default": "text-gray-500",
+};
+
+export const DesempenhoView = ({ selectedConfig }: DesempenhoViewProps) => {
+  const [performanceData, setPerformanceData] = useState<PerformanceData[]>([]);
+  const [totalAttempts, setTotalAttempts] = useState(0);
+  const [overallScore, setOverallScore] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchPerformanceData = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        setError("Usuário não autenticado.");
+        setLoading(false);
+        return;
+      }
+
+      const { data: attempts, error: attemptsError } = await supabase
+        .from('user_attempts')
+        .select(`
+          is_correct,
+          question:questions (
+            subject:subjects (name)
+          )
+        `)
+        .eq('user_id', user.id);
+
+      if (attemptsError) throw attemptsError;
+
+      if (!attempts || attempts.length === 0) {
+        setPerformanceData([]);
+        setTotalAttempts(0);
+        setOverallScore(0);
+        setLoading(false);
+        return;
+      }
+
+      const statsBySubject: { [key: string]: { correct: number; total: number } } = {};
+
+      for (const attempt of attempts) {
+        if (attempt.question?.subject?.name) {
+          const subjectName = attempt.question.subject.name;
+          if (!statsBySubject[subjectName]) {
+            statsBySubject[subjectName] = { correct: 0, total: 0 };
+          }
+          statsBySubject[subjectName].total++;
+          if (attempt.is_correct) {
+            statsBySubject[subjectName].correct++;
+          }
+        }
+      }
+
+      const formattedData: PerformanceData[] = Object.entries(statsBySubject).map(([subject, stats]) => ({
+        subject,
+        score: Math.round((stats.correct / stats.total) * 100),
+        questions: stats.total,
+        color: subjectColors[subject] || subjectColors.Default,
+      }));
+
+      const totalCorrect = attempts.filter(a => a.is_correct).length;
+      setOverallScore(Math.round((totalCorrect / attempts.length) * 100));
+      setTotalAttempts(attempts.length);
+      setPerformanceData(formattedData.sort((a, b) => b.questions - a.questions));
+
+    } catch (err: any) {
+      console.error("Error fetching performance data:", err);
+      setError("Não foi possível carregar seu desempenho. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPerformanceData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-64 bg-destructive/10 p-6 rounded-lg">
+        <AlertTriangle className="w-12 h-12 text-destructive mb-4" />
+        <p className="text-lg font-semibold text-destructive mb-2">Ocorreu um erro</p>
+        <p className="text-muted-foreground mb-4">{error}</p>
+        <Button onClick={fetchPerformanceData}>Tentar Novamente</Button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -53,22 +153,8 @@ export const DesempenhoView = ({ selectedConfig }: DesempenhoViewProps) => {
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">78.5%</div>
-            <div className="flex items-center text-xs text-success">
-              <TrendingUp className="w-3 h-3 mr-1" />
-              +5.2% este mês
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-soft">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Tempo Total</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-warning">127h</div>
-            <p className="text-xs text-muted-foreground">Nas últimas 4 semanas</p>
+            <div className="text-2xl font-bold text-primary">{overallScore}%</div>
+            <p className="text-xs text-muted-foreground">Em todas as matérias</p>
           </CardContent>
         </Card>
 
@@ -78,19 +164,34 @@ export const DesempenhoView = ({ selectedConfig }: DesempenhoViewProps) => {
             <BookOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">1,247</div>
+            <div className="text-2xl font-bold text-primary">{totalAttempts}</div>
             <p className="text-xs text-muted-foreground">Total respondidas</p>
+          </CardContent>
+        </Card>
+        
+        <Card className="shadow-soft">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Melhor Matéria</CardTitle>
+            <Trophy className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-success">
+              {performanceData.length > 0 ? performanceData.reduce((prev, current) => (prev.score > current.score) ? prev : current).subject : '-'}
+            </div>
+            <p className="text-xs text-muted-foreground">Sua área de destaque</p>
           </CardContent>
         </Card>
 
         <Card className="shadow-soft">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Ranking</CardTitle>
-            <Trophy className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">A Melhorar</CardTitle>
+            <TrendingDown className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-success">Top 15%</div>
-            <p className="text-xs text-muted-foreground">Nacional - {selectedConfig.university.toUpperCase()}</p>
+            <div className="text-2xl font-bold text-destructive">
+            {performanceData.length > 0 ? performanceData.reduce((prev, current) => (prev.score < current.score) ? prev : current).subject : '-'}
+            </div>
+            <p className="text-xs text-muted-foreground">Seu ponto de foco</p>
           </CardContent>
         </Card>
       </div>
@@ -105,129 +206,34 @@ export const DesempenhoView = ({ selectedConfig }: DesempenhoViewProps) => {
                 Análise detalhada do seu progresso em cada área
               </CardDescription>
             </div>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={fetchPerformanceData}>
               <RefreshCw className="w-4 h-4 mr-2" />
               Atualizar
             </Button>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          {performanceData.map((item) => (
-            <div key={item.subject} className="space-y-2">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                  <span className="font-medium">{item.subject}</span>
-                  <Badge variant="outline">{item.questions} questões</Badge>
-                  <div className="flex items-center text-xs">
-                    {item.trend > 0 ? (
-                      <TrendingUp className="w-3 h-3 text-success mr-1" />
-                    ) : (
-                      <TrendingDown className="w-3 h-3 text-destructive mr-1" />
-                    )}
-                    <span className={item.trend > 0 ? "text-success" : "text-destructive"}>
-                      {item.trend > 0 ? "+" : ""}{item.trend}%
-                    </span>
+          {performanceData.length > 0 ? (
+            performanceData.map((item) => (
+              <div key={item.subject} className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-3">
+                    <span className="font-medium">{item.subject}</span>
+                    <Badge variant="outline">{item.questions} questões</Badge>
                   </div>
+                  <span className={`font-bold text-lg ${item.color}`}>{item.score}%</span>
                 </div>
-                <span className={`font-bold text-lg ${item.color}`}>{item.score}%</span>
+                <Progress value={item.score} className="h-3" />
               </div>
-              <Progress value={item.score} className="h-3" />
+            ))
+          ) : (
+            <div className="text-center py-8 text-muted-foreground">
+              <p>Nenhum dado de desempenho encontrado.</p>
+              <p className="text-sm">Comece a praticar para ver suas estatísticas aqui.</p>
             </div>
-          ))}
+          )}
         </CardContent>
       </Card>
-
-      {/* Weekly Activity */}
-      <Card className="shadow-soft">
-        <CardHeader>
-          <CardTitle className="text-lg">Atividade Semanal</CardTitle>
-          <CardDescription>
-            Acompanhe sua consistência nos estudos
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-7 gap-2">
-            {weeklyData.map((day) => (
-              <div key={day.day} className="text-center space-y-2">
-                <div className="text-xs font-medium text-muted-foreground">{day.day}</div>
-                <Card className="p-3 space-y-1">
-                  <div className="text-sm font-bold text-primary">{day.questions}</div>
-                  <div className="text-xs text-muted-foreground">questões</div>
-                  <div className="text-sm font-medium text-success">{day.score}%</div>
-                  <div className="text-xs text-muted-foreground">{day.time}</div>
-                </Card>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Goals and Achievements */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="shadow-soft">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center">
-              <Target className="w-5 h-5 mr-2" />
-              Metas do Mês
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Questões (Meta: 500)</span>
-                <span className="font-medium">347/500</span>
-              </div>
-              <Progress value={69.4} className="h-2" />
-            </div>
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Tempo de Estudo (Meta: 40h)</span>
-                <span className="font-medium">28h/40h</span>
-              </div>
-              <Progress value={70} className="h-2" />
-            </div>
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Média Geral (Meta: 80%)</span>
-                <span className="font-medium">78.5%/80%</span>
-              </div>
-              <Progress value={98.1} className="h-2" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-soft">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center">
-              <Award className="w-5 h-5 mr-2" />
-              Conquistas Recentes
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex items-center gap-3 p-3 bg-success/10 rounded-lg">
-              <Trophy className="w-8 h-8 text-success" />
-              <div>
-                <p className="font-medium text-sm">Sequência de 7 dias!</p>
-                <p className="text-xs text-muted-foreground">Parabéns pela consistência</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-3 bg-primary/10 rounded-lg">
-              <Target className="w-8 h-8 text-primary" />
-              <div>
-                <p className="font-medium text-sm">100 questões de Matemática</p>
-                <p className="text-xs text-muted-foreground">Marco alcançado!</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 p-3 bg-warning/10 rounded-lg">
-              <BarChart3 className="w-8 h-8 text-warning" />
-              <div>
-                <p className="font-medium text-sm">Melhoria em Química</p>
-                <p className="text-xs text-muted-foreground">+15% de acertos</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
     </div>
   );
 };
