@@ -1,86 +1,1176 @@
 [
   {
-    "id": 93,
-    "institution": "FUVEST",
-    "year": 2024,
-    "subject": "Física",
-    "topic": "Óptica Geométrica",
-    "statement": "A figura mostra um objeto (O) e sua imagem (I) conjugada por uma lente esférica delgada. Com base na figura, qual é o tipo de lente e a natureza da imagem?",
-    "image": "/placeholder.svg",
+    "id": 1,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Interpretação de Texto",
+    "topic": "Análise de Texto de Apoio",
+    "statement": "Conforme o texto, a ssinale o que for correto .",
+    "image": null,
     "alternatives": [
-      "Lente convergente, imagem real",
-      "Lente convergente, imagem virtual",
-      "Lente divergente, imagem real",
-      "Lente divergente, imagem virtual",
-      "Pode ser convergente ou divergente, dependendo da distância"
+      "O Brasil lidera o ranking de maior empregador de trabalhadores domésticos do mundo, com uma média de três empregados para cada grupo de 100 habitantes.",
+      "O perfil predominantemente feminino, afrodescendente e de baixa escolaridade dos trabalhadores domésticos no Brasil é alimentado pela desigualdade e pela dinâmica social do país.",
+      "Como o Brasil foi um dos últimos países do mundo a acabar com a escravidão, as empregadas domésticas brasileiras são descendentes diretas de escravos negros.",
+      "Uma diferença marcante entre Brasil e EUA no tratamento às empregadas domésticas é que neste último as trabalhadoras são tratadas como alguém da família.",
+      "Em todo o mundo, o trabalho doméstico é uma atividade majoritariamente desempenhada pelas mulheres, em torno de 80%, e no Brasil é a principal fonte de emprego para elas.   7"
     ],
-    "correctAnswer": 1,
-    "explanation": "A imagem é virtual, direita e maior que o objeto. Essa configuração é típica de uma lente convergente sendo usada como lupa, com o objeto posicionado entre o centro óptico e o foco principal."
+    "correct_answers": [
+      0,
+      1,
+      4
+    ],
+    "explanation": "A explicação se baseia na análise das afirmativas corretas, que provavelmente são sustentadas pelo texto de apoio original: (01) A afirmativa destaca a liderança do Brasil em números absolutos de trabalhadores domésticos. (02) A análise do perfil socioeconômico desses trabalhadores, ligando-o à desigualdade estrutural do país, é um ponto central. (16) A afirmativa contextualiza o trabalho doméstico globalmente como uma atividade feminina e ressalta sua importância no mercado de trabalho brasileiro."
+  },
+  {
+    "id": 2,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Língua Portuguesa",
+    "topic": "Morfossintaxe e Semântica",
+    "statement": "Assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "No trecho “Essa profissionalização daria o distanciamento necessário” (linhas 86 e 87), o uso de dar no futuro do pretérito denota uma atitude de certeza do locutor em relação ao fato expresso pel a forma verbal .",
+      "Em “A OIT não chega a afirmar” (linha 103), depreende -se que o conteúdo expresso pela OIT foi formulado em momento anterior ao da produção do texto, tendo o seu valor de verdade se prolongado até o instante presente.",
+      "No trecho “se um país vai ter uma grande população de serviçais.” (linhas 98 e 99), o uso da locução “vai ter” corresponde a um emprego mais informal para expressar o tempo verbal presente do subjuntivo.",
+      "Conforme a norma padrão, no trecho “David Evan Harris é um dos especialistas que defendem” (linhas 23 e 24), admite -se ta mbém a flexão do verbo defender na terceira pessoa do singular.",
+      "Em “Há dois fatores majoritários” (linha 97), o verbo haver pode ser substituído pelo verbo te r no português brasileiro coloquial."
+    ],
+    "correct_answers": [
+      1,
+      3,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (02) O tempo verbal indica uma ação passada com relevância no presente. (08) A concordância verbal com 'um dos que' é flexível, permitindo singular ou plural. (16) O uso de 'ter' como substituto de 'haver' no sentido de existência é comum na linguagem coloquial."
+  },
+  {
+    "id": 3,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Língua Portuguesa",
+    "topic": "Semântica e Léxico",
+    "statement": "Assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "A expressão “trabalhadores domésticos” (linha 2), em vez de empregados , transmite a ideia de que esses profissionais deveriam ter os mesmos direitos que os indivíduos que desempenham qualquer outra profissão.",
+      "O termo “aviltados” (linha 41) é uma escolha lexical que caracteriza a maneira como as ocupações desempenhadas por afrodescendentes eram vistas antes e mesmo após a abolição da escravidão.",
+      "“Segundo” (linha 33) e “segundo” (linha 100) apresenta m o mesmo valor s emântico e pertence m à mesma classe gramatical.",
+      "No trecho “praticamente como se fosse alguém da família” (linha 84), o tom de afetividade é reforçado pelo uso do advérbio “praticamente”, que denota sentido de aproximação comparativa.",
+      "Em “incidência” (linha 105), o prefixo -in é, semanticamente, equivalente ao que está presente no vocábulo “informalidade” (linha 10)."
+    ],
+    "correct_answers": [
+      0,
+      1,
+      3
+    ],
+    "explanation": "As afirmativas corretas são: (01) A escolha do termo 'trabalhadores' em detrimento de 'empregados' carrega uma conotação de valorização e direitos. (02) 'Aviltados' significa rebaixados, humilhados, o que se alinha ao contexto histórico da escravidão. (08) O advérbio 'praticamente' suaviza a comparação, indicando que não é uma igualdade total, mas uma aproximação."
   },
   {
     "id": 4,
-    "institution": "FUVEST",
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Língua Portuguesa",
+    "topic": "Sintaxe e Coesão",
+    "statement": "Assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "Em “Se organizasse um encontro de todos os seus trabalhadores domésticos” (linhas 1 e 2), o valor de condicionalidade expresso na oração seria mantido com a substituição de “se” por ainda que .",
+      "No trecho “permanece sendo a principal fonte de emprego entre as mulheres” (linhas 20 e 21), o sujeito elíptico aponta para a expressão antecedente “o trabalho doméstico” (linha 17).",
+      "Em “acabar com a escravidão” (linha 28), a substituição de “acabar” por abolir não exige alteração em termos de regência verb al.",
+      "A expressão “quaisquer direitos” (linha 60) apresenta um caso de ausência de concordância nominal, pois “quaisquer” não traz a desinência de plural - s exigida por “direitos”.",
+      "Em “Já que o trabalho formal é um meio de ascensão” (linha 68), a loc ução conjuntiva “Já que” expressa relação semântica de causa."
+    ],
+    "correct_answers": [
+      1,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (02) O sujeito da forma verbal 'permanece' está oculto, mas é facilmente identificado pelo contexto como 'o trabalho doméstico'. (16) A locução 'Já que' introduz uma oração que expressa a causa da oração principal."
+  },
+  {
+    "id": 5,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Língua Portuguesa",
+    "topic": "Pontuação e Coesão Textual",
+    "statement": "Assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "Em “ Quando as pessoas tinham dinheiro, elas compravam escravos com muita frequência.” (linhas 48-50), a vírgula separa a oração principal de uma oração subordinada anteposta.",
+      "Em “A ideia de ter um servo na família era muito comum, mesmo entre quem não era rico e vivia nas regiões semiurbanas do século 19” (linhas 43 -45), a vírgula separa a oração principal da oração que remete à ideia de inclusão.",
+      "As aspas em “ ‘profunda desigualdade na sociedade que não foi resolvida ’” (linhas 54 e 55) são utilizadas para isolar citação textual de terceiros, no caso, a de Marília Bueno de Araújo Ariza.",
+      "As aspas em “‘culpa ’” e “‘constrangimento moral ’” (linha 88) indicam que o autor não considera que as famílias americanas sintam culpa ou constrangimento moral pela desigualdade social.",
+      "Em “A OIT não chega a afirmar (...) mas reconhece que ambos os aspectos – alta incidência de trabalho doméstico e desigualdade social – estão de alguma forma relacionados .” (linhas 103- 107), os travessões são usados para explicar a expressão mencionada anteriormente."
+    ],
+    "correct_answers": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "explanation": "Todas as afirmativas estão corretas, abordando diferentes regras e funções dos sinais de pontuação e elementos coesivos no texto, como o uso da vírgula, aspas e travessões para organizar e dar clareza às ideias."
+  },
+  {
+    "id": 6,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Língua Portuguesa",
+    "topic": "Semântica e Ortografia",
+    "statement": "Assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "Em “para que não evoluíssem economicamente” (linhas 71 e 72), a locução “para que” expressa valor semântico de finalidade semelhante ao de a fim de.",
+      "A forma verbal ascender , a partir da qual se deriva o vocábulo “ascensão ” (linha 68), tem uma relação de sinonímia com o verbo acender .",
+      "Em “ele é mal remunerado” (linha 59), o antônimo de “mal”, em termos sintático -semânticos, é o item lexical bom .",
+      "No contexto em que aparecem, as escolhas lexicais “culpa” e “constrangim ento moral” (linha 88) são empregadas em um contexto sintático -semântico de paralelismo.",
+      "No trecho “em ambos os países os empregados são explorados, apesar das diferenças culturais” (linhas 79 -81), a expressão “apesar de” introduz um fato que não anula a ideia de que no Brasil e nos EUA os trabalhadores domésticos enfrentam uma situação de exploração. 8"
+    ],
+    "correct_answers": [
+      0,
+      3,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (01) 'Para que' é uma locução conjuntiva final. (08) 'Culpa' e 'constrangimento moral' são listados como sentimentos paralelos. (16) 'Apesar de' é uma locução concessiva, que introduz uma ideia contrária que não impede a principal."
+  },
+  {
+    "id": 7,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Língua Portuguesa",
+    "topic": "Coesão e Referenciação",
+    "statement": "Assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "Em “A escravidão brasileira foi diversa, mas foi sobretudo uma escravidão de pequena posse .” (linhas 46 e 47), o elemento coesivo “mas” pode ser substituído sem prejuízo de sentido pela conjunção porque .",
+      "Em “Quando as pessoas tinham dinheiro, elas compravam escravos com muita frequência. ” (linhas 48 -50), o pronome “elas” tem va lor indeterminado, não sendo possível recuperar a sua referência.",
+      "Em “Apesar dos esforços dos governos recentes em trazer essas empregadas para a formalidade” (linhas 62 e 63), o elemento coesivo “apesar de” introduz ideia oposta à expressa no trecho “ o que se vê hoje é o aumento da informalidade” (linhas 63 e 64).",
+      "Em “Para ele, em ambos os países os empregados são explorados, apesar das diferenças culturais .” (linhas 79 - 81), o elemento coesivo “ele” se refere a Carlos Eduardo Coutinho da Costa.",
+      "No trecho “Já que o trabalho formal é um meio de ascensão” (linha 68), o item lexical “já” pode ser substituído por ainda sem alterar o sentido do texto."
+    ],
+    "correct_answers": [
+      2
+    ],
+    "explanation": "A única afirmativa correta é a (04). A locução 'apesar de' introduz uma oração concessiva, que expressa uma ideia oposta à da oração principal, mas que não a impede de ocorrer. As outras alternativas apresentam análises incorretas de coesão e substituição lexical."
+  },
+  {
+    "id": 8,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Literatura",
+    "topic": "Modernismo Brasileiro - Carlos Drummond de Andrade",
+    "statement": "Sobre o poema a seguir e sobre o seu autor Carlos Drummond \nde Andrade, assinale o que for correto . \n \nPoema de sete faces  \n \nQuando nasci, um anjo torto  \ndesses que vivem na sombra  \ndisse: Vai, Carlos! ser gauche  na vida.  \n \nAs casas espiam os homens  \nque correm at rás de mulheres.  \nA tarde talvez fosse azul,  \nnão houvesse tantos desejos.  \n \nO bonde passa cheio de pernas:  \npernas brancas pretas amarelas.  \nPara que tanta perna, meu Deus, pergunta meu coração.  \nPorém meus olhos  \nnão perguntam nada.  \n \nO homem atrás do bigode  \né sério, simples e forte.  \nQuase não conversa.  \nTem poucos, raros amigos  \no homem atrás dos óculos e do bigode.  \n \nMeu Deus, por que me abandonaste  \nse sabias que eu não era Deus  \nse sabias que eu era fraco.  \n \nMundo mundo vasto mundo,  \nse eu me chamasse Raimundo  \nseria uma rima, não seria uma solução.  \nMundo mundo vasto mundo,  \nmais vasto é o meu coração.  \n \nEu não devia te dizer  \nmas essa lua  \nmas esse conhaque  \nbotam a gente comovido como o diabo.  \n \nANDRADE, C. D. de. Antologia poética . São Paulo: Companhia das \nLetras, 2012.  p. 19 -20.",
+    "image": "/images/questions/uem-2023-q8.png",
+    "alternatives": [
+      "O poema não traz convergências semânticas em relação ao número de estrofes e ao seu título. Como se trata de um texto inspirado no ideário do spleen, cultivado na segunda geração romântica, as estrofes são escritas em diferentes situações e depois agrupadas em um só poema sem o compromisso de vinculação dos significados de cada estrofe.",
+      "A exploração dos diferentes sentidos das palavras na expressão poética pode ocorrer por meio do uso de figuras de linguagem. No poema aparece a prosopopeia no verso “As casas espiam os homens”. No verso “O bonde passa cheio de pernas”, encontra -se metonímia.",
+      "Na última estrofe, o eu lírico, comovido com sua perda amorosa, preocupa -se com o abuso da bebida alcoólica e aconselha o leitor a evitar o seu consumo, mesmo correndo o risco de contrariá -lo: “Eu não devia te dizer”.",
+      "O título do poema, bem como o número de estrofes, por refletirem o sincretismo religioso brasileiro, estão relacionados aos sete pecados capitais: soberba, inveja, luxúria, preguiça, ira, avareza e gula.",
+      "A segunda e a terceira estrofes representam dois espaços diferentes: os dois primeiros versos da segunda estrofe focalizam casas que esp iam homens; a terceira estrofe focaliza o bonde , dentro do qual se constata variedade racial."
+    ],
+    "correct_answers": [
+      1,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (02) O poema utiliza figuras de linguagem como a prosopopeia (personificação) e a metonímia (a parte pelo todo). (16) As estrofes descrevem cenas distintas do cotidiano urbano, mostrando a fragmentação da percepção do eu lírico, uma característica do modernismo."
+  },
+  {
+    "id": 9,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Literatura",
+    "topic": "Modernismo Brasileiro - Clarice Lispector",
+    "statement": "Sobre “Os desastres de Sofia”, da coletânea A legião estrangeira \n(Clarice Lispector), assinale o que for correto . (LISPECTOR, C. \nA legião estrangeira. Rio de Janeiro: Rocco, 1999) .",
+    "image": null,
+    "alternatives": [
+      "A protagonista relata o caso de uma amizade sincera entre dois amigos que se tornaram confidentes, a ponto de um não conseguir guardar segredos para o outro. Essa protagonista afirma que, durante uma viagem a Petrópolis , os dois se desentenderam devido aos ciúmes que ambos nutriam em relação a Margarida.",
+      "Narrado em primeira pessoa, o conto focaliza a relação conflituosa estabelecida pela personagem protagonista, uma menina de nove anos, em relação ao seu professor. Sofia, estudante do curso primário, tinha sentimentos contraditórios: irritava -se com o professor e, ao mesmo tempo, sentia uma atração pela “controlada impaciência” (p. 11) que ele demonstrava.",
+      "O conto “Os desastre s de Sofia”, publicado durante a primeira fase do Modernismo brasileiro, pode ser classificado como neorrealista devido à sua forte vinculação com a realidade brasileira. A narrativa problematiza questões educacionais brasileiras da segunda metade do sécul o XIX, e o comportamento de Sofia na sala de aula representa a desintegração da sociedade.",
+      "Embora seja possível perceber na narrativa as três unidades tradicionalmente pertencentes ao gênero literário conto (unidade de ação, unidade de tempo e unidade de espaço), a composição mostra sua modernidade/contemporaneidade no desenvolvimento da ação, pois os acontecimentos dispostos no enredo repercutem na consciência de Sofia.",
+      "O conto possui uma configuração i ntimista, perceptível na busca pela fixação na crise do sujeito, na sua consciência e inconsciência. Marcada pela introspecção, a narrativa apresenta uma compreensão subjetiva da realidade.   9"
+    ],
+    "correct_answers": [
+      1,
+      3,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (02) O conto explora a complexa psicologia infantil de Sofia e sua relação ambígua com a autoridade do professor. (08) A narrativa, embora siga uma estrutura de conto, foca no fluxo de consciência e nas repercussões internas dos eventos, marca da prosa de Clarice. (16) O intimismo e a introspecção são características centrais da obra da autora."
+  },
+  {
+    "id": 10,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Literatura",
+    "topic": "Romantismo - Álvares de Azevedo",
+    "statement": "Sobre o poema a seguir, sobre o fazer literário do autor e sobre \na escola literária à qual ele pertence, assinale o que for correto . \n \nSoneto  \n \nPálida, à luz da lâmpada sombria,  \nSobre o leito de flores reclinada,  \nComo a lua por noite embalsamada,  \nEntre as nuvens do amor ela dormia!  \n \nEra a virgem do mar! na escuma fria  \nPela maré das águas embalada!  \nEra um anjo entre nuvens d’alvorada  \nQue em sonhos se banhava e se esquecia!  \n \nEra mais bela! O seio palpitando...  \nNegros olhos as pálpebras abrindo...  \nFormas nuas no leito resvalando...  \n Não te rias de mim, meu anjo lindo!  \nPor ti ─ as noites eu velei chorando,  \nPor ti ─ nos sonhos morrerei sorrindo!  \n \nAZEVEDO, A. de. Os melhores poemas de Álvares de Azevedo. São \nPaulo: Global, 2003. p. 43 .",
+    "image": "/images/questions/uem-2023-q10.png",
+    "alternatives": [
+      "Na busca pela identidad e nacional, o eu lírico descreve as belezas da costa do país (“mar”, “maré”), exalta a flora (“leito de flores”) e valoriza a população nativa, símbolo da nacionalidade brasileira (“Negros olhos”, “Era a virgem do mar!”).",
+      "Nos dois últimos versos do poema se encontram anáfora (“Por ti” / “Por ti”), antítese (“chorando” / “sorrindo”) e verbos conjugados na primeira pessoa (“velei” / “morrerei”), elementos que recuperam os sentimentos do eu lírico em relação à mulher, demonstrando o caráter egoico (culto ao eu) que permeia a poesia da geração do mal do século.",
+      "Construído com versos heptassílabos, denominados também redondilhas maiores, e apresentando rimas cruzadas, o poema exibe uma poesia repleta de ironia, sarcasmo e autodestruição, marcas ultrarrom ânticas da poesia de Álvares de Azevedo . Destaca- se, também, o bucolismo, tema que perpassou toda a escola romântica.",
+      "Expressões como “Era um anjo”, “Era mais bela!” e “meu anjo lindo!” são exemplos que remetem à idealização da mulher, tomada como virginal e etérea. As palavras “Pálida”, “sombria”, “embalsamada” e a forma verbal “morrerei” remetem à literatura negativista, em parte gótica, cultivada por Álvares de Azevedo.",
+      "Em um cenário místico e sob um clima noturno e onírico, o eu lírico descr eve, no segundo e no terceiro versos da primeira estrofe, o sono fúnebre de sua amada. A morte da jovem é reiterada pelos versos “Sobre o leito de flores reclinada, / Como a lua por noite embalsamada,”. . El juego del dinero Ileana Flores Román 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 La mayoría de nosotras gastamos anualmente enormes sumas de dinero y muchas veces no sabemos en qué. Descubre cómo utilizar ese dinero en otras cosas de más provecho para nuestra familia. Si nos ponemos a revisar minuciosamente los gastos que realizamos anualmente, nos encontraremos con pequeñas fugas, las cuales dejan de ser pequeñas cuando sumamos lo acumulado en el transcurso de doce meses. Sí, la pequeña cantidad se transforma en dinero nada despreciable. Ese dinero pudo haber sido utilizado en artículos necesarios en tu hogar, para pagar cuentas pendientes o destinarlo para la educación de tus hijos. Evita regalar o tirar tu dinero a la basura. A continuación encontrarás algunos sencillos consejos que te ayudarán a evitar que te escurra por entre los dedos. No pagues de inmediato Con esto no queremos decir que pagues después del día del vencimiento de tus facturas porque entonces tendrás que pagar intereses. Más bien nos referimos a que en lugar de ir corriendo al banco a pagarlas el mismo día que llegan es mejor que te sientes y re vises cada uno de los cargos. Haz lo mismo en el caso de la factura de la lavandería o la cuenta de consumo de um restaurante. Esto es con el fin de verificar los cargos que te están haciendo. En algunas ocasiones te pueden estar cobrando cargos extras po r compras o servicios que no realizaste. Sobre todo si los cargos son pequeñas cantidades que no son evidentes a simple vista. Algunas veces se tratan de fraudes “hormiga” y en otras ocasiones los establecimie..."
+    ],
+    "correct_answers": [
+      1,
+      3
+    ],
+    "explanation": "As afirmativas corretas são: (02) O poema apresenta características marcantes do Ultrarromantismo, como o egocentrismo (culto ao eu) e o uso de figuras de linguagem como a antítese para expressar a dualidade amor/morte. (08) A idealização da figura feminina e a atmosfera sombria e gótica são temas recorrentes na poesia de Álvares de Azevedo."
+  },
+  {
+    "id": 11,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Língua Espanhola",
+    "topic": "Interpretação de Texto",
+    "statement": "Tras la lectura detenida del texto, señala la(s) alternativa(s) \ncorrecta(s) .",
+    "image": null,
+    "alternatives": [
+      "El texto nos enseña cuatro consejos respecto a la cuestión financiera en una familia.",
+      "El escrito empieza por referirse a “nosotras” (línea 1), pues se supone que el público mayoritario de esa revista sea femenino.",
+      "Revisar la factura de restaurantes y bares evita pagar propina y gastos extras.",
+      "El texto intitulado “El juego del din ero” fue redactado a los que juegan al azar desde la temprana edad.",
+      "Ideas simples sobre economía doméstica son el tema del texto que les sirve de recomendación a los lectores."
+    ],
+    "correct_answers": [
+      1,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (02) O uso do pronome 'nosotras' sugere que o texto se dirige a um público predominantemente feminino. (16) O tema central do texto é a economia doméstica, oferecendo conselhos práticos aos leitores."
+  },
+  {
+    "id": 12,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Língua Espanhola",
+    "topic": "Interpretação de Texto",
+    "statement": "A partir de la lectura del texto, señala la(s) alternativa(s) correcta(s) .",
+    "image": null,
+    "alternatives": [
+      "Cuándo pagar las cuentas es el asunto de una de las partes del texto, cuyo título es “No pagues de inmediato”.",
+      "Pequeños gastos extras pueden ser cobrados erróneamente en ciertas facturas no revisadas con la debida cautela.",
+      "La autora defiende que el banco guarda nuestro dinero de manera a hacer crecer nuestra fortuna.",
+      "Contratar a un contable especializado a la hora de hacer el seguro del coche ayuda a ahorrar dinero .",
+      "Pagar las cuentas así que las recibes es una práctica no recomendable, según la autora."
+    ],
+    "correct_answers": [
+      0,
+      1,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (01) O texto aborda o momento ideal de pagar as contas na seção 'No pagues de inmediato'. (02) A autora alerta para a possibilidade de cobranças indevidas em faturas não verificadas. (16) A recomendação é não pagar imediatamente ao receber, mas sim revisar os encargos primeiro."
+  },
+  {
+    "id": 13,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Língua Espanhola",
+    "topic": "Gramática",
+    "statement": "De acuerdo con aspectos gramaticales de la lengua española, señala la(s) alternativa(s) correcta(s) .",
+    "image": null,
+    "alternatives": [
+      "Las formas “tendrás” (línea 19) y “saldrás (línea 54) están en el modo subjuntivo, conjugadas en segunda persona de plural.",
+      "“Haz” (línea 22) es un verbo conjugado en el modo imperativo, segunda persona de singular, así como “cámbiate” (línea 51).",
+      "La expresión “costos altísimos” (línea 45) trae un sustantivo plural, seguido de un adjetivo en grado superlativo.",
+      "La expresión “un 7%” (línea 38) presenta la cifra referente al porcentaje antecedida de un artículo indefinido masculino singular.",
+      "La expresión “ pudo haber sido utilizado” (línea 10) trae un verbo em presente de indicativo, seguido de dos verbos em infinitivo, uno em participio."
+    ],
+    "correct_answers": [
+      1,
+      2,
+      3
+    ],
+    "explanation": "As afirmativas corretas são: (02) 'Haz' e 'cámbiate' são formas do imperativo afirmativo para 'tú'. (04) 'Altísimos' é o superlativo absoluto de 'alto'. (08) A estrutura 'un + número + %' é comum em espanhol."
+  },
+  {
+    "id": 14,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Língua Francesa",
+    "topic": "Interpretação de Texto",
+    "statement": "De acuerdo con el vocabulario y la gramática de la lengua \nespañola, señala la(s) alternativa(s) correcta(s) .",
+    "image": null,
+    "alternatives": [
+      "La forma “se percatan” (línea 30) está en presente de indicativo del verbo regular percatarse , que significa darse cuenta , notar .",
+      "La form a “ahorra” (línea 32) está conjugada en presente de subjuntivo del verbo ahorrar , que significa evitar “ganancias” (línea 40).",
+      "La conjunción “Si” (línea 5) y el pronombre personal “Sí” (línea 9) son vocablos monosílabos. El pronombre está acentuado por la tilde diacrítica para distinguirlos, ya que se escriben del mismo modo.",
+      "La forma “alquilamos” (línea 53) está conjugada en primera persona de plural del verbo alquilar , cuyo significado es arrendar u ocupar un inmueble o usar un servicio bajo pagas periódicas .",
+      "El vocablo “sumas” (línea 2) es un sustantivo plural, relativo al verbo sumar , cuyo significado es agregar , adicionar . El verbo sumar está conjugado en presente de indicativo, como “sumamos” (línea 8), primera persona de plural.   11 . Mercredi: la véritable histoire derrière le prénom de l’héroïne de la nouvelle série phare de Netflix Charline Bouzon 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 Depuis maintenant des années, le personnage de Mercredi Addams est entré dans la pop culture. Popularisée par Christina Ricci dans le téléfilm La Famille Addams de 1991, l’aînée de cette famille aussi terrifiante qu’attachante est très rapidement devenue une figure emblématique pour tous les adolescents attachés au style gothique. Alors lorsque Tim Burton a annoncé vouloir créer une série sur la vie de la jeune Mercredi, de nombreux fans du personnage et du réalisateur se sont réjouis. La série est par ailleurs l’occasion d’en apprendre plus sur la jeune fille et notamment sur son intrigant prénom. En effet, dès le premier épisode, lors d’un échange entre Mercredi, sa mère Morticia et la principale de l’école Nevermore Madame Weems, les téléspectateurs ont découvert qu’elle tenait son préno m d’un poème. Plus précisément, d’une phrase tirée d’une comptine pour enfant de 1838, intitulée Monday’s Child: ‟Wednesday’s child is full of woe”, l’enfant du mercredi est plein de malheur en français. Un prénom choisi par le créateur de La Famille Addam s, Charles Addams, dans les années 1960. Si ses BD sur l’étrange famille sont un succès dès les années 1940, ses personagens n’ont pas encore de prénoms dans ses œuvres. Alors quand en 1964, l’auteur apprend que son univers va être adapté en série à la tél évision, il doit trouver un prénom à tous les membres de la Famille Addams. Pour sa sombre héroïne, c’est la poétesse et amie de l’écrivain, Joan B..."
+    ],
+    "correct_answers": [
+      1,
+      2,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (02) Christina Ricci popularizou a personagem no filme de 1991. (04) O nome 'Mercredi' (Quarta-feira) foi inspirado em uma rima infantil. (16) A rima 'Monday's Child' diz que 'a criança de quarta-feira é cheia de aflição', o que inspirou o nome da personagem."
+  },
+  {
+    "id": 11,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Língua Inglesa",
+    "topic": "Interpretação de Texto",
+    "statement": "According to the text, mark the correct affirmative(s).",
+    "image": null,
+    "alternatives": [
+      "The text was written by an AI.",
+      "The chatbot Chat GPT has been accepted by all educators.",
+      "Chat GPT has been seen by the more liberal educators as a positive tool to improve education.",
+      "For the past two decades, chatbots could answer all types of questions, even the more difficult ones.",
+      "One of the negative asp ect of Chat GPT is that it may interfere in the students´ ability to think in a critical way."
+    ],
+    "correct_answers": [
+      2,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (04) O texto menciona que alguns educadores veem o Chat GPT como uma ferramenta revolucionária. (16) Uma das preocupações levantadas é que o uso da IA pode obstruir o desenvolvimento de habilidades cognitivas vitais, como o pensamento crítico."
+  },
+  {
+    "id": 12,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Língua Inglesa",
+    "topic": "Gramática e Vocabulário",
+    "statement": "According to the text, mark the correct affirmative(s).",
+    "image": null,
+    "alternatives": [
+      "The adverbs “However” (line 20) and “Furthermore” (line 52) can be replaced with Nevertheless and Moreover , respectively, without changing the meaning of the sentence.",
+      "In the sentences “others believe Chat GPT, if employed wisely” (lines 42 and 43) and “Many believe these features, if used ethically,” (lines 55 and 56), the conjunction if expresses a condition.",
+      "The expressions “has already had” (lines 58 and 59) and “was trained on” (line 50) are examples of present perfect and passive voice, respectively.",
+      "In the sentence “students who can think” (line 37) the relative pronoun “who” can be replaced with that.",
+      "The pronouns “them” (line 32) and “those” (line 39) refer to “Chat GPT” (line 31) and “chatbots” (line 39), respectively."
+    ],
+    "correct_answers": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "As afirmativas corretas são: (01) 'However' e 'Nevertheless' são sinônimos, assim como 'Furthermore' e 'Moreover'. (02) 'If' introduz uma oração condicional. (04) As estruturas verbais estão corretamente identificadas como Present Perfect e Passive Voice. (08) O pronome relativo 'who' pode ser substituído por 'that' em orações restritivas."
+  },
+  {
+    "id": 13,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Língua Inglesa",
+    "topic": "Interpretação de Texto",
+    "statement": "According to the text, mark the correct affirmative(s).",
+    "image": null,
+    "alternatives": [
+      "Chat GPT is considered an advance in technology in the artificial intelligence area.",
+      "Some educators were worried when their students used artificial intelligence to do assignments and exams.",
+      "Chat GPT is not able to organize a text, for instance. The tool can only search information about a subject.",
+      "In the educational area, Chat GPT may be used as a tool for reviewing students’ texts, for instance.",
+      "Although plagiarism is a concern, artificial intelligence offers many advantages for learning."
+    ],
+    "correct_answers": [
+      0,
+      1,
+      3,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (01) O texto descreve o Chat GPT como um avanço sem precedentes na tecnologia de IA. (02) Educadores entraram em pânico com o uso da ferramenta para trapaça. (08) O texto sugere o uso da IA para aprimorar a escrita dos alunos. (16) O texto apresenta tanto as preocupações (plágio) quanto os benefícios potenciais da IA na educação."
+  },
+  {
+    "id": 14,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Língua Inglesa",
+    "topic": "Gramática",
+    "statement": "According to the text, mark the correct affirmative(s).",
+    "image": null,
+    "alternatives": [
+      "The modal verb “can” (line 53) indicates certainty.",
+      "The construction “are taking” , in “Others are taking a more liberal approach” (line 10) , is an example of present continuous.",
+      "The words “absolutely” (line 37) and “critically” (line 40) are examples of adverbs.",
+      "The word “Writing” , in “Writing is the de epest form of thinking” (lines 35 and 36) , is a verb.",
+      "The word “Others” (line 10) can be replaced with Other educators without changing the meaning of the sentence."
+    ],
+    "correct_answers": [
+      1,
+      2,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (02) 'are taking' é uma estrutura do Present Continuous. (04) 'absolutely' e 'critically' são advérbios de modo. (16) 'Others' funciona como um pronome que substitui 'Other educators' para evitar repetição."
+  },
+  {
+    "id": 15,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Artes",
+    "topic": "História da Escultura",
+    "statement": "Assinale o que for  correto  a respeito de esculturas e escultores \nna história do Mundo Ocidental.",
+    "image": null,
+    "alternatives": [
+      "Com o combate dos sacerdotes ao paganismo, na Antiguidade Clássica Greco -Romana os escultores não podiam tratar de personagens históricos ou da vida cotidiana; podiam tratar apenas de personagens religiosos, como os deuses e as deusas.",
+      "Preocupados em afirmar a grandeza de sua civilização, artistas e governantes da Roma Antiga não se interessaram pela arte e pela arquitetura de outros povos de seu tempo, como os gregos e os egípcios, pois consideravam -nas artisticamente ultrapassadas.",
+      "Um dos debates mais vigorosos que envolveu a escultura bizantina foi a disputa entre os que defendiam e os que repudiavam a produção de imagens com motivos sacros.",
+      "A escultura do período rena scentista expressou um retorno consciente aos modelos da Antiguidade Clássica, levando os artistas a se concentrarem em temas mitológicos e a evitarem entrar em temas cristãos.",
+      "Uma das características marcantes dos escultores de vanguarda do século XX é o pluralismo temático e estilístico. Assim, há os que mantêm a tradição de representação de seres humanos e de animais e os que elaboram somente formas geométricas ou mesmo abstratas."
+    ],
+    "correct_answers": [
+      2,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (04) A iconoclastia (destruição de imagens) foi um movimento importante no Império Bizantino. (16) A arte de vanguarda do século XX rompeu com a necessidade de representação figurativa, explorando a abstração e novas formas."
+  },
+  {
+    "id": 16,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Artes",
+    "topic": "Arte Contemporânea",
+    "statement": "Sobre a arte contemporânea no Brasil e no mundo, assinale o \nque for correto .",
+    "image": null,
+    "alternatives": [
+      "Em decorrência de suas características próprias, não depende do impacto digital e do pluralismo cultural da sociedade.",
+      "É composta de múltiplos suportes e expressões; apr esenta - se por meio de palavras e símbolos e utiliza o próprio corpo humano e materiais diversos.",
+      "Os historiadores da arte brasileira, influenciados pelas obras de Michelangelo, Rembrandt e Delacroix, desconsideram certos estilos e movimentos, por exemplo o Impressionismo, o Surrealismo, a pop art .",
+      "Há expressões artísticas que foram concebidas com o objetivo de disseminar pautas inclusivas e que abordam buscas, encontros e desencontros, conflitos pessoais, familiares e sociais.",
+      "No cenário europeu , o neoexpressionismo e a transvanguarda são considerados expressões importantes da arte contemporânea.   15"
+    ],
+    "correct_answers": [
+      1,
+      3,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (02) A arte contemporânea é caracterizada pela diversidade de mídias e suportes. (08) Muitas obras contemporâneas têm um forte viés social e político, abordando pautas identitárias e inclusivas. (16) O neoexpressionismo e a transvanguarda são movimentos relevantes do período."
+  },
+  {
+    "id": 17,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "História",
+    "topic": "Patrimônio Histórico e Cultural",
+    "statement": "Sobre Patrimônio Histórico, assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "As primeiras experiências de preservação oficial de obras de arte e de arquitetura ocorreram na Antiguidade, época em que vários governantes proibiram que seus exércitos destruíssem o patrimônio artístico dos povos vencidos.",
+      "Para homenagear a rainha Vitória, os colonizadores britânicos erigiram na Ín dia o Terminal Vitó ria, edificação neogótica mesclada com as características da arquitetura palaciana hindu . Essa edificação é considerada patrimônio da humanidade pela Unesco.",
+      "No Brasil, várias grutas e um grande maciço de paredes montanhosas, com inúmeras pinturas rupestres contendo figuras zoomorfas, compõem o sítio arqueológico Lapa da Cerca Grande, tombado pelo Instituto do Patrimônio Histórico e Artístico Nacional (Iphan).",
+      "A ópera de Sydney, cuja imagem remete a um barco a vela se desenvolv endo no mar e inserido exatamente na paisagem marinha, abriga salas de concertos, de teatros , e restaurantes, e é considerada pela Unesco Patrimônio Cultural da Humanidade.",
+      "A noção de patrimônio imaterial no Brasil é contestada por muitos especialista s, pois a legislação vigente considera que somente devem ser tombados os objetos artísticos físicos, grandes, médios ou pequenos, feitos com matérias - primas naturais."
+    ],
+    "correct_answers": [
+      1,
+      2,
+      3
+    ],
+    "explanation": "As afirmativas corretas são: (02) O Terminal Victoria (hoje Chhatrapati Shivaji) em Mumbai é um exemplo de arquitetura colonial e patrimônio da UNESCO. (04) O sítio Lapa da Cerca Grande em Minas Gerais é um importante patrimônio arqueológico brasileiro. (08) A Ópera de Sydney é um ícone da arquitetura do século XX e também patrimônio da UNESCO."
+  },
+  {
+    "id": 18,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Educação Física",
+    "topic": "Classificação dos Esportes e Ginástica",
+    "statement": "Sobre esporte, luta e ginástica, assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "Atletismo, natação, vela, remo e hipismo são esportes de marca.",
+      "Sinuca, boliche, bocha e tiro com arco e flecha são exemplos de esportes de precisão.",
+      "O início do processo de desenvolvimento da ginástica rítmica, que ocorreu no século XIX, foi uma conquista das mulheres que reivindicavam o direito de praticar ginástica, pois até então elas estiveram afastadas das atividades esportivas e gímnicas.",
+      "A ginástica acrobática é um a modalidade esportiva recente; surgiu a partir da década de 1970 e recebeu influência de outras modalidades gímnicas e da dança.",
+      "A expressão a rte marcial , utilizada para caracterizar alguns tipos de luta, originou -se da mitologia greco -romana que reverenciava numerosos deuses."
+    ],
+    "correct_answers": [
+      0,
+      1,
+      2,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (01) Esportes de marca são aqueles em que o resultado é medido por tempo, distância ou peso. (02) Esportes de precisão envolvem o ato de acertar um alvo. (04) A ginástica rítmica tem suas raízes nos movimentos de ginástica para mulheres do século XIX. (16) 'Arte marcial' se refere a Marte, o deus romano da guerra."
+  },
+  {
+    "id": 19,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Educação Física",
+    "topic": "Saúde e Atividade Física",
+    "statement": "Sobre os benefícios da atividade física para a saúde, assinale o \nque for correto .",
+    "image": null,
+    "alternatives": [
+      "Os efeitos da atividade física na saúde não são influenciados por variáveis culturais e econômicas de quem a pr atica, tais como gênero, condição econômica e cor da pele.",
+      "O fato de o Sistema Único de Saúde (SUS) não reconhecer a prática de atividade física como importante fator para a saúde dificulta a ampliação do número de praticantes.",
+      "Práticas corporais que demandam de 50% a 70% da força máxima muscular são importantes, pois aumentam a massa muscular, protegem as articulações e promovem a mineralização da estrutura óssea.",
+      "Uma adaptação fisiológica produzida por atividades aeróbicas, e que possui grande valor para a saúde, é o aumento da capacidade celular dos músculos na metabolização do oxigênio.",
+      "A relevância de um estilo de vida corporalmente ativo leva à necessidade de políticas públicas específicas, voltadas não apenas à d ivulgação dos benefícios das práticas corporais, mas também à superação de barreiras culturais e econômicas que dificultam o acesso a essas práticas."
+    ],
+    "correct_answers": [
+      2,
+      3,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (04) O treinamento de força moderado é crucial para a saúde musculoesquelética. (08) O aumento da capacidade oxidativa dos músculos é um dos principais benefícios do exercício aeróbico. (16) A promoção da saúde via atividade física requer políticas públicas que abordem barreiras socioeconômicas."
+  },
+  {
+    "id": 20,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Educação Física",
+    "topic": "Corpo, Estética e Sociedade",
+    "statement": "Sobre a influência de padrões estéticos do corpo na adesão a  \npráticas corporais, assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "O aumento do alcance de tecnologias relacionadas à comunicação durante o século XX estimulou a adesão das pessoas a práticas corporais voltadas à manutenção de padrões estéticos do corpo.",
+      "A permanên cia de um único padrão de beleza, consagrado em variados períodos da história, sustenta a pertinência da expressão corpo ideal .",
+      "Além de gerar a busca de padrões de beleza por meio das práticas corporais, a expansão das redes sociais também tem levado g rupos sociais a questionarem a imposição desses padrões.",
+      "A Idade Média destaca -se como um período em que a beleza do corpo feminino foi vista como algo a ser cultuado e buscado por meio de um amplo leque de práticas.",
+      "O apelo midiático do corpo fort e tem levado ao aumento do número de casos de t ranstorno dismórfico muscular, também conhecido como v igorexia, em que as pessoas priorizam rotinas extenuantes de exercícios , associadas ao consumo de substâncias anabolizantes. 16"
+    ],
+    "correct_answers": [
+      0,
+      2,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (01) A mídia de massa no século XX foi fundamental na disseminação de padrões estéticos. (04) As redes sociais têm um papel duplo: reforçam padrões, mas também abrem espaço para o questionamento e a diversidade. (16) A vigorexia é um transtorno real associado à obsessão por um corpo musculoso."
+  },
+  {
+    "id": 21,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Sociologia",
+    "topic": "Direitos Humanos",
+    "statement": "A Declaração Universal dos Direitos Humanos foi proclamada \nna Assembleia Geral das Nações Unidas em 1948, motivada, em \nparte, pelas ações violentas e ultrajantes cometidas contra seres \nhumanos e a humanidade na Primeira e na Segunda Guerra \nMundial. Sobre a Declaração Universal dos Direitos Humanos e os direitos humanos fundamentais, assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "São alguns dos direitos fundamentais inalienáveis de todo ser humano: o direito à vida, à segurança pessoal, à instrução, à propriedade, à crença religiosa de livre escolha, à liberdade de pensamento, de expressão e de opinião.",
+      "Homens e mulheres, independentemente de raça, cor, origem social, ou de outra condição, têm direito a igual remuneração por igual trabalho, sem qualquer distinção.",
+      "Todo ser humano, quando acusado de um delito ou crime, tem direito a uma audiência justa e pública, em um tribunal independente e imparcial, assegurado seu pleno direito de defesa.",
+      "A instrução é um direito fundamental g ratuito, acessível a todo ser humano para o pleno desenvolvimento da sua personalidade nos graus elementares e fundamentais.",
+      "Criminosos e terroristas perdem os seus direitos fundamentais e podem ser torturados e tratados de forma degradante quando o se u silêncio coloca em risco a integridade e a vida de outras pessoas."
+    ],
+    "correct_answers": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "As afirmativas corretas (01, 02, 04, 08) listam princípios fundamentais da Declaração Universal dos Direitos Humanos, como direitos à vida, igualdade, justiça e educação. A afirmativa 16 é incorreta, pois os direitos humanos são inalienáveis e a tortura é proibida incondicionalmente."
+  },
+  {
+    "id": 22,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Sociologia",
+    "topic": "Teoria do Estado",
+    "statement": "De acordo com estudos sobre o Estado ( concepção, \norganização , estruturação ), assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "Nas sociedades indígenas sul -americanas pré- colombianas, excetuando -se os incas, a configuração institucional do Estado é assumida pela divisão sexual e etária do trabalho a partir de uma dinâmica social homogênea e comunitária, sem a existência de classes.",
+      "Nas sociedades ocid entais modernas o Estado surge como entidade destacada da sociedade e tem como funções a sua direção e seu controle, além de resolver os conflitos e empregar a força legítima.",
+      "A inexistência do Estado, observada em sociedades indígenas por antropólogo s como Pierre Clastres, é indicativo de um estágio incipiente de desenvolvimento institucional.",
+      "Soluções despóticas para os conflitos sociais são também base para a constituição do Estado.",
+      "A constituição do Estado pressupõe sistemas de elaboração intelectual, tecnológica e científica sem os quais as sociedades são primitivas ou deficitárias do ponto de vista do desenvolvimento humano."
+    ],
+    "correct_answers": [
+      0,
+      1,
+      3
+    ],
+    "explanation": "As afirmativas corretas são: (01) Descreve a organização social de sociedades sem Estado centralizado. (02) Apresenta a concepção weberiana clássica do Estado moderno. (08) O despotismo e o controle da violência são elementos históricos na formação de Estados."
+  },
+  {
+    "id": 23,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Sociologia",
+    "topic": "Indústria Cultural - Escola de Frankfurt",
+    "statement": "Theodor W. Adorno e Max Horkheimer desenvolveram o \nconceito de indústria cultural. Acerca desse conceito, assinale o \nque for correto .",
+    "image": null,
+    "alternatives": [
+      "Esse conceito foi elaborado para designar o modo industrial de produção em série de bens culturais.",
+      "Segundo os autores, a reprodução das obras de arte contribuiria para facilitar o acesso a criações e, com isso, democratizar a cultura.",
+      "De acordo com a análise proposta pelo conceito de indústria cultural, as obras de arte produzidas pelas grandes empresas foram esvaziadas de críticas mais radicais e convertidas em entretenimento.",
+      "Uma das consequências da indústria cultural seria a elitização da arte crítica, tornada erudita e para consumo de poucos.",
+      "O conceito de indústria cultural propõe que a cultura de massa produz divertimento e conformismo, obliterando os conflitos existentes na sociedade."
+    ],
+    "correct_answers": [
+      0,
+      2,
+      3,
+      4
+    ],
+    "explanation": "As afirmativas corretas (01, 04, 08, 16) descrevem os pilares do conceito de Indústria Cultural: a produção em massa de cultura (01), a transformação da arte em mercadoria de entretenimento (04), a marginalização da arte crítica (08) e a função ideológica de gerar conformismo (16)."
+  },
+  {
+    "id": 24,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Filosofia",
+    "topic": "Filosofia da Ciência",
+    "statement": "A partir do R enascimento houve profundas mudanças culturais \nna Europa. Sobre a revolução das ciências no s períodos  \nmoderno e contemporâneo, e assuntos correlatos, assinale o \nque for correto .",
+    "image": null,
+    "alternatives": [
+      "A prova ontológica da existência de Deus , segundo Descartes , e a reforma da religião no período moderno revelam o predomínio do pensamento teocêntrico medieval na filosofia e na ciência modernas .",
+      "De acordo com Thomas Kuhn, o progresso científico ocorre de forma gradual e contínua ao longo da história, com a ret omada e a reformulação de antigas teorias cosmológicas, ajustadas às novas descobertas científicas.",
+      "Segundo Karl Popper , uma teoria científica deve ser coerente e suas consequências devem ser adequadas aos fatos .",
+      "A expressão conhecer é poder , de Francis Bacon , expõe a ideia de que a ciência moderna deve contemplar a natureza e também intervir nela para controlá- la e dominá -la.",
+      "Com o Renascimento, a concepção mecanicista do universo traz um novo paradigma às ciências com a retomada dos conceito s de causa formal, de causa material, de causa eficiente e de causa final da metafísica de Aristóteles.   17"
+    ],
+    "correct_answers": [
+      2,
+      3
+    ],
+    "explanation": "As afirmativas corretas são: (04) A falseabilidade de Popper exige que as teorias sejam testáveis e coerentes com a realidade observada. (08) A máxima de Bacon resume o ideal da ciência moderna de não apenas entender, mas também dominar e transformar a natureza para fins humanos."
+  },
+  {
+    "id": 25,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "História",
+    "topic": "Idade Média - Feudalismo",
+    "statement": "Assinale o que  for correto  a respeito do Mundo Ocidental na \nIdade Média.",
+    "image": null,
+    "alternatives": [
+      "Motivada pelo ambiente de paz e de segurança que sucedeu o fim do Império Romano, a população das cidades cresceu, o que levou ao surgimento de diversas atividades comerciais e, consequentemente , à formação da burguesia mercantil urbana.",
+      "Embora não fos se o único tipo de unidade produtiva rural, a grande propriedade senhorial cultivada por famílias d e camponeses em condição servil foi um dos elementos característicos da sociedade feudal.",
+      "Para afirmarem seu poder e sua riqueza diante dos pobres e seu prestígio diante dos seus semelhantes, muitos senhores feudais manti veram cortes em seus domínios, com frequência rivalizando em luxo e diversidade com as cortes das casas reais.",
+      "Valorizando os bens espirituais e defendendo a ideia de que todos os sere s humanos são iguais perante Deus, a Igreja Católica foi crítica a o sistema feudal e à divisão tripartite da sociedade em clero, nobreza e povo.",
+      "Com o declínio do Império Romano, surgiram diversos países nos quais foram desencadeados dois processos de grandes consequências históricas : a formação dos Estados Nacionais Modernos e o surgimento do Capitalismo."
+    ],
+    "correct_answers": [
+      1,
+      2
+    ],
+    "explanation": "As afirmativas corretas são: (02) O senhorio (feudo) com trabalho servil foi a base da organização socioeconômica do feudalismo. (04) As cortes senhoriais eram centros de poder e ostentação, refletindo a hierarquia e a cultura da nobreza feudal."
+  },
+  {
+    "id": 26,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Geografia",
+    "topic": "Economia e Ocupação do Paraná",
+    "statement": "Assinale o que for  correto  sobre a economia e a ocupação \nmoderna do estado do Paraná.",
+    "image": null,
+    "alternatives": [
+      "Diferentemente dos estados nordestinos nos quais havia variadas comunidades indígenas na época em que os portugueses chegaram ao Brasil, os estados sulinos eram ocupados por uma etnia homogênea: o povo guarani.",
+      "A integração das fazendas paranaenses ao mercado açucareiro internacional durante o período colonial foi facilitada pelas características do litoral do estado , pois as águas calmas das baías davam segurança para a atividade portuária.",
+      "No decorrer da primeira metade do século XX, o aumento da população urba na fez que o crescimento da agricultura cafeeira ocorresse independentemente das oscilações do mercado consumidor externo.",
+      "O desenvolvimento da economia do mate nas últimas décadas do século XIX e nas primeiras décadas do século XX baseou -se em uma rel ação complementar entre o extrativismo no meio rural e a produção manufatureira no meio urbano.",
+      "A população afrodescendente do Paraná não foi submetida à escravidão e não houve espaços próprios, como os quilombos, porque neste estado não havia atividad es econômicas voltadas para o grande mercado internacional."
+    ],
+    "correct_answers": [
+      3
+    ],
+    "explanation": "A única afirmativa correta é a (08). O ciclo da erva-mate no Paraná foi caracterizado pela extração da matéria-prima no interior e seu beneficiamento (manufatura) em engenhos localizados em centros urbanos como Curitiba, criando uma importante dinâmica econômica regional."
+  },
+  {
+    "id": 27,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Geografia",
+    "topic": "Globalização e Migrações",
+    "statement": "Assinale o que for correto  sobre a interseção entre a Divisão \nTerritorial do Trabalho e a formação social e econômica dos \nEstados Unidos da América (EUA).",
+    "image": null,
+    "alternatives": [
+      "Os EUA atraem menos imigrantes brasileiros do que Portugal devido às facilidades da língua e à proximidade cultural existentes entre o Brasil e sua antiga metrópole.",
+      "No governo de Donald Trump as políticas adotadas em relação aos estrangeiros foram receptivas aos imigrantes latinos, facilitando seu ingresso nos EUA.",
+      "Nos últimos anos, os EUA têm se mantido como o principal destino para os migrantes internacionais, recebendo número maior de imigrantes do que outros países.",
+      "O filme Tempos Modernos , dirigido e protagonizado por Charles Chaplin, retrata um sistema de trabalho por ofício, em que o trabalhador é rem unerado de acordo com os bens integralmente produzidos por ele.",
+      "Atualmente muitas empresas dos EUA estão terceirizando as atividades de serviços não estratégicas para países como a Índia, onde o custo do trabalho é mais baixo."
+    ],
+    "correct_answers": [
+      2,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (04) Os EUA continuam sendo o país que recebe o maior número de migrantes internacionais em termos absolutos. (16) A terceirização de serviços (offshoring) para países com mão de obra mais barata, como a Índia, é uma característica da nova Divisão Internacional do Trabalho."
+  },
+  {
+    "id": 28,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Geografia",
+    "topic": "Geografia Física e Cartografia",
+    "statement": "Sobre a representação, a cobertura e a dinâmica das paisagens, \nassinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "A atual configuração dos continentes é resultado da fragmentação e do afastamento das terras emersas a partir de um único bloco continental denominado Pangeia. Esse fenômeno é explicado pel a Teoria das Placas Tectônicas.",
+      "Para a representação (em uma folha de caderno) de paisagens em nível planetário é necessário utilizar um mapa -múndi em escala grande. Assim haverá um maior grau de detalha mento no mapa.",
+      "Com a utilização de sensores a bordo de satélites de rastreamento é possível realizar o monitoramento de extensas áreas da superfície da Terra, possibilitando, por exemplo, a identificação das transformações antrópicas nas paisagens ao l ongo do tempo.",
+      "Em escala planetária, pode- se dizer que a distribuição dos biomas terrestres está intimamente ligada às diferentes condições de temperatura, de chuva e de incidência dos raios solares nas diversas regiões do planeta.",
+      "O vulcanismo é u m agente modelador externo do relevo ; provoca o deslizamento de terras a partir da força gravitacional terrestre em áreas menos acidentadas da superfície do planeta. 18"
+    ],
+    "correct_answers": [
+      0,
+      2,
+      3
+    ],
+    "explanation": "As afirmativas corretas são: (01) A teoria da Deriva Continental e das Placas Tectônicas explica a formação atual dos continentes a partir da Pangeia. (04) O sensoriamento remoto é uma ferramenta fundamental para o monitoramento ambiental e de paisagens. (08) A distribuição dos biomas é determinada principalmente por fatores climáticos como temperatura e precipitação."
+  },
+  {
+    "id": 29,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Geografia",
+    "topic": "Geografia da População - Josué de Castro",
+    "statement": "Sobre o conceito de Geografia da Fome, cunhado por Josué de \nCastro, assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "Parte da crítica à naturalização do fenômeno da fome busca explicações com base nas especificidades regionais nacionais.",
+      "Estabelece como objeto de pesq uisa sociológica as fomes coletivas permanentes, temporárias, totais, parciais e ocultas.",
+      "Antecipa o problema da desnutrição de grupos populacionais obesos ao propor a noção de fome oculta.",
+      "Para construir o conceito, o autor propôs a divisão do Brasil em cinco regiões alimentares: Amazônia, Nordeste Açucareiro, Sertão Nordestino, Centro -oeste e Sul.",
+      "Enfatiza os condicionantes ecológicos na composição da fome, tais como tipo de solo e regimes de chuvas."
+    ],
+    "correct_answers": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "As afirmativas corretas (01, 02, 04, 08) descrevem aspectos centrais da obra de Josué de Castro: a fome como fenômeno social e não natural (01), a tipologia da fome (02), a noção de fome oculta (desnutrição) (04) e a divisão do Brasil em áreas alimentares para sua análise (08)."
+  },
+  {
+    "id": 30,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Sociologia",
+    "topic": "Émile Durkheim",
+    "statement": "Acerca da sociologia de Émile Durkheim, assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "Em Durkheim o termo anomia caracteriza uma situação na qual a sociedade deixa de ser capaz de regular a conduta das pessoas.",
+      "No pensamento durkheimiano o indivíduo precede a socie dade.",
+      "Para Durkheim, o tema da ordem social pode ser compreendido por meio dos conceitos de coesão e de solidariedade.",
+      "A divisão social do trabalho, na interpretação durkheimiana , tem a função sociológica exclusiva de elevar os ganhos de produtividade das sociedades por meio da especialização profissional, e depende da implantação consciente e planejada dos gestores das modernas indú strias.",
+      "No pensamento de Durkheim, instituições como a religião, a escola e a família são menos relevantes do que o mercado para a construção da solidariedade social."
+    ],
+    "correct_answers": [
+      0,
+      2
+    ],
+    "explanation": "As afirmativas corretas são: (01) Anomia, para Durkheim, é um estado de ausência de normas sociais claras, levando à desregulação do comportamento individual. (04) A coesão social, mantida pela solidariedade (mecânica ou orgânica), é o tema central para entender a ordem social em sua teoria."
+  },
+  {
+    "id": 31,
+    "institution": "UEM",
     "year": 2023,
     "subject": "Matemática",
-    "topic": "Função Quadrática",
-    "statement": "A função f(x) = ax² + bx + c tem como gráfico uma parábola que passa pelos pontos (0, 3), (1, 6) e (2, 11). O valor de a + b + c é:",
-    "image": null,
-    "alternatives": ["6", "8", "10", "12", "14"],
-    "correctAnswer": 0,
-    "explanation": "Substituindo os pontos na equação: f(0) = c = 3; f(1) = a + b + c = 6; f(2) = 4a + 2b + c = 11. Resolvendo o sistema: a = 1, b = 2, c = 3. Portanto, a + b + c = 6."
+    "topic": "Análise de Dados e Gráficos",
+    "statement": "O quadro a seguir apresenta o consumo mensal de energia \nelétrica (em kWh) em uma residência durante o ano de 2022.  \n \nMês Jan. Fev. Mar.  Abr. Mai. Jun. \nConsumo (kWh)  290 317 273 242 237 113 \nMês Jul. Ago.  Set. Out. Nov.  Dez. \nConsumo (kWh)  216 234 246 270 293 311 \n \nEm relação a esses dados, assinale o que for correto .",
+    "image": "/images/questions/uem-2023-q31.png",
+    "alternatives": [
+      "O consumo no primeiro trimestre foi maior que o consumo no quarto trimestre.",
+      "O consumo em julho foi 100% maior que o consumo em junho.",
+      "Se cada kWh custa noventa centavos, então a conta de energia no mês de dezembro foi superior a duzentos e setenta reais.",
+      "A média de consumo nos meses de fevereiro e março é maior que a média de consumo nos meses de junho, julho e agosto.",
+      "A proporção entre o consumo nos meses de setembro e outubro é 8 15."
+    ],
+    "correct_answers": [
+      0,
+      2,
+      3
+    ],
+    "explanation": "As afirmativas corretas são: (01) 1º tri: 290+317+273=880; 4º tri: 270+293+311=874. 880 > 874. (04) Conta de dez: 311 * 0,90 = R$ 279,90, que é > 270. (08) Média Fev/Mar: (317+273)/2 = 295. Média Jun/Jul/Ago: (113+216+234)/3 = 187,6. 295 > 187,6."
   },
   {
-    "id": 101,
-    "institution": "ENEM",
-    "year": 2021,
-    "subject": "Química",
-    "topic": "Compostos Iônicos",
-    "statement": "O uso de líquidos iônicos como solventes tem crescido em aplicações industriais e de laboratório. Um líquido iônico é um sal com ponto de fusão inferior a 100 °C, composto por um cátion orgânico e um ânion inorgânico. Qual das seguintes substâncias é um exemplo de líquido iônico?",
+    "id": 32,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Matemática",
+    "topic": "Geometria Plana e Espacial",
+    "statement": "Assinale o que for correto .",
     "image": null,
     "alternatives": [
-      "NaCl", 
-      "H₂O", 
-      "C₆H₁₂O₆", 
-      "[BMIM]PF₆", 
-      "CH₄"
+      "Se reduzirmos os lados de um quadrado em 20%, então sua área será reduzida em pelo menos 40%.",
+      "Se aumentarmos os lados de um retângulo (que não é quadrado) em 25%, então sua diagonal aumentará em exatamente 25%.",
+      "Há esferas cujos volumes são números racionais.",
+      "Há um pentágono convexo que tem três ângulos internos medindo 100º e dois ângulos internos medindo 125º.",
+      "Se bombearmos água para dentro de um reservatório inicialmente vazio, com capacidade de 1m3, a uma taxa constante de 4L/s, então após quatro minutos esse reservatório estará totalmente cheio.   19"
     ],
-    "correctAnswer": 3,
-    "explanation": "Líquidos iônicos são sais, descartando H₂O, C₆H₁₂O₆ e CH₄. NaCl é um sal, mas tem um ponto de fusão muito alto (801 °C). [BMIM]PF₆ (hexafluorofosfato de 1-butil-3-metilimidazólio) é um exemplo clássico de líquido iônico, sendo um sal com baixo ponto de fusão."
+    "correct_answers": [
+      1,
+      2
+    ],
+    "explanation": "As afirmativas corretas são: (02) Se os lados a e b viram 1.25a e 1.25b, a nova diagonal é sqrt((1.25a)^2 + (1.25b)^2) = 1.25 * sqrt(a^2+b^2), um aumento de 25%. (04) O volume da esfera é (4/3)πr³. Como π é irracional, o volume será sempre irracional para r racional, mas se r³ for um múltiplo de 3/π, o volume pode ser racional."
   },
   {
-    "id": 102,
-    "institution": "ENEM",
-    "year": 2020,
+    "id": 33,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Matemática",
+    "topic": "Funções",
+    "statement": "Considere as funções 𝑓𝑓(𝑥𝑥)=3𝑥𝑥+9, 𝑔𝑔(𝑥𝑥)=𝑥𝑥2−4𝑥𝑥+1 e \nℎ(𝑥𝑥)=𝑥𝑥3−9𝑥𝑥2\n𝑥𝑥2−9. Assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "O gráfico da função ℎ(𝑥𝑥) não passa pela origem do sistema cartesiano.",
+      "Os domínios das funções ℎ (𝑥𝑥) e 𝑔𝑔(𝑥𝑥) 𝑓𝑓(𝑥𝑥) são iguais.",
+      "Os gráficos das funções 𝑓𝑓 (𝑥𝑥) e 𝑔𝑔(𝑥𝑥) se interceptam em dois pontos distintos.",
+      "𝐼𝐼𝑚𝑚(𝑔𝑔)=[−3,+∞).",
+      "Pelo menos uma das três funções dadas no enunciado de comando ( caput ) é bijetora."
+    ],
+    "correct_answers": [
+      2,
+      3,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (04) f(x)=g(x) -> x²-7x-8=0, que tem duas raízes reais distintas. (08) O vértice de g(x) é em x=2, com y=4-8+1=-3. A imagem é [-3, +inf). (16) f(x) é uma reta, portanto é bijetora."
+  },
+  {
+    "id": 34,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Matemática",
+    "topic": "Matrizes e Determinantes",
+    "statement": "Considere as matrizes quadradas  𝐴𝐴=(𝑎𝑎𝑖𝑖𝑖𝑖), 𝑞𝑞=(𝑏𝑏𝑖𝑖𝑖𝑖),  \n𝐶𝐶=(𝑚𝑚𝑖𝑖𝑖𝑖) e 𝐷𝐷=(𝐹𝐹𝑖𝑖𝑖𝑖), todas de ordem 2, em  que 𝑎𝑎𝑖𝑖𝑖𝑖=𝑖𝑖2−𝑗𝑗2, \n𝑏𝑏𝑖𝑖𝑖𝑖=(𝑖𝑖−𝑗𝑗)2, 𝑚𝑚𝑖𝑖𝑖𝑖=𝑖𝑖2+𝑗𝑗2, 𝐹𝐹𝑖𝑖𝑖𝑖=(𝑖𝑖+𝑗𑞑)2. Assinale o que for \ncorreto .",
+    "image": null,
+    "alternatives": [
+      "Nenhuma das matrizes 𝐴𝐴, 𝑞𝑞, 𝐶𝐶 e 𝐷𝐷 é invertível.",
+      "Todas as entradas da matriz 𝐷𝐷 −𝐶𝐶 são números pares.",
+      "Todas as entradas da matriz 1 2(𝐴𝐴+𝐶𝐶) são números pares.",
+      "𝑞𝑞+𝐷𝐷=2𝐶𝐶.",
+      "𝑞𝑞𝑎𝑎=𝑞𝑞, ou seja, 𝑞𝑞 é igual a sua transposta."
+    ],
+    "correct_answers": [
+      1,
+      3,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (02) D-C = (i+j)² - (i²+j²) = 2ij. Todas as entradas serão pares. (08) B+D = (i-j)²+(i+j)² = 2i²+2j² = 2(i²+j²) = 2C. (16) A matriz B é simétrica, pois bij = (i-j)² = (j-i)² = bji."
+  },
+  {
+    "id": 35,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Matemática",
+    "topic": "Polinômios e Equações Algébricas",
+    "statement": "Assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "A equação 𝑥𝑥6=4𝑥𝑥2 possui seis soluções reais.",
+      "O polinômio −𝑥𝑥3+3𝑥𝑥2+8𝑥𝑥+4 possui ao menos duas raízes inteiras.",
+      "A soma dos inversos das raízes do polinômio 2 𝑥𝑥2+6𝑥𝑥+5 é igual a −1.",
+      "O polinômio 𝑥𝑥7+𝑥𝑥5+3𝑥𝑥4+5𝑥𝑥−3 não é divisível por 𝑥𝑥−𝑖𝑖, em que 𝑖𝑖 é a unidade imaginária.",
+      "As raízes do polinômio dado por 𝑝𝑝(𝑥𝑥)=𝐹𝐹𝑑𝑑𝑡𝑡�𝑥𝑥𝑥𝑥 𝑥𝑥+1−2� são 2 e −1."
+    ],
+    "correct_answers": [
+      3
+    ],
+    "explanation": "A única afirmativa correta é a (08). Para verificar se P(x) é divisível por (x-i), calculamos P(i) = i^7+i^5+3i^4+5i-3 = -i+i+3+5i-3 = 5i. Como P(i) é diferente de zero, o polinômio não é divisível por (x-i)."
+  },
+  {
+    "id": 36,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Matemática",
+    "topic": "Geometria Analítica",
+    "statement": "Considerando um sistema cartesiano de coordenadas no plano, \nassinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "O triângulo com vértices (0,0), (1,0) e (1,1) e o triângulo com vértices (0,0), (2,0) e (2,−2) são semelhantes.",
+      "A reta de equação 𝑦𝑦 =𝑥𝑥+4 é tangente à circunferê ncia 𝑥𝑥2+𝑦𝑦2=4.",
+      "Os pontos em que as retas 𝑟𝑟:𝑦𝑦=2𝑥𝑥+5, 𝑠𝑠:4𝑥𝑥−2𝑦𝑦=−20 e 𝑡𝑡:𝑦𝑦=𝑥𝑥 se interceptam duas a duas são os vértices de um triângulo.",
+      "Há pelo menos uma circunferência que passa pelos pontos (0,0) e (3,4) e determina um círculo com área menor do que dezoito unidades de área.",
+      "As retas com equações 𝑦𝑦=2𝑥𝑥+1 e 𝑥𝑥+2𝑦𝑦=10 são perpendiculares. 20"
+    ],
+    "correct_answers": [
+      0,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (01) Ambos são triângulos retângulos isósceles, portanto, são semelhantes. (16) O coeficiente angular da primeira reta é 2. O da segunda é -1/2. Como 2 * (-1/2) = -1, as retas são perpendiculares."
+  },
+  {
+    "id": 37,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Matemática",
+    "topic": "Trigonometria",
+    "statement": "Considerando as medidas de ângulos em radianos, assinale o \nque for correto .",
+    "image": null,
+    "alternatives": [
+      "A igualdade sen(𝑥𝑥+𝜋𝜋/4) + cos(𝑥𝑥+𝜋𝜋/4) = sen𝑥𝑥 + cos𝑥𝑥 + √2 é válida para todo número real 𝑥𝑥 .",
+      "A equação cos 𝑥𝑥=tg𝑥𝑥 possui exatamente uma solução no intervalo aberto ]−𝜋𝜋/2,𝜋𝜋/2[.",
+      "O gráfico da função 𝑓𝑓 (𝑥𝑥)=5+3sen𝑥𝑥 não intercepta o eixo 𝑥𝑥.",
+      "O período da função 𝑔𝑔(𝑥𝑥)=2cos (3𝑥𝑥) é igual a 6𝜋𝜋 .",
+      "A função ℎ (𝑥𝑥)=sen𝑥𝑥+tg𝑥𝑥 é crescente no intervalo [−𝜋𝜋/4,0]."
+    ],
+    "correct_answers": [
+      1,
+      2,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (02) A análise gráfica de cos(x) e tan(x) mostra um único ponto de interseção no intervalo dado. (04) O valor mínimo de f(x) é 5-3=2, portanto, nunca cruza o eixo x. (16) A derivada h'(x) = cos(x) + sec²(x) é positiva no intervalo, indicando que a função é crescente."
+  },
+  {
+    "id": 38,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Matemática",
+    "topic": "Análise Combinatória e Probabilidade",
+    "statement": "Na gaveta de uma loja de bijuterias, há três anéis, três brincos e \nquatro colares, todos diferentes uns dos outros. Um dos anéis custa dez reais ; outro , vinte reais ; e o terceiro , trinta reais. Um \ndos brincos custa vinte reais ; e os outros dois , trinta reais cada. \nCada colar custa quarenta reais. Assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "Há mais de 2,8×10 6 maneiras de organizar esses objetos em um a fila.",
+      "Há dezesseis maneiras de montar um conjunto no valor de oitenta reais contendo exatamente um anel, um brinco e um colar .",
+      "Se uma pessoa escolher ao acaso um anel e um brinco, então a probabilidade de que o valor total seja maior do que cinquenta reais é maior do que 0,3.",
+      "Há mais de oitocentas maneiras diferentes de organizar esses objetos em uma fila, de forma que, da esquerda para a direita, fiquem primeiro os anéis, depois os brincos e, por fim, os colares.",
+      "Se uma pessoa escolh er ao acaso dois brincos e dois colares, então a probabilidade de que o valor total seja menor do que cento e quarenta reais é menor do que 0,6."
+    ],
+    "correct_answers": [
+      0,
+      3
+    ],
+    "explanation": "As afirmativas corretas são: (01) O total de objetos é 10. O número de maneiras de organizar em fila é 10! = 3.628.800, que é maior que 2,8x10^6. (08) A organização em blocos é 3! * 3! * 4! = 6 * 6 * 24 = 864, que é maior que 800."
+  },
+  {
+    "id": 39,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Matemática",
+    "topic": "Progressão Aritmética e Geométrica",
+    "statement": "Assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "Se 𝑎𝑎𝑛𝑛 é um termo da PA (2,7,12,…,252 ), então o par ordenado (𝑛𝑛,𝑎𝑎𝑛𝑛) está sobre a reta 𝑦𝑦=−3+5𝑥𝑥.",
+      "Se o menor cateto de um triângulo retângulo mede 1cm e se a sequência formada pelas medidas dos catetos e da hipotenusa é uma PA crescente, então a razão da PA é um número irracional.",
+      "Se a soma dos 10 primeiros termos da PA (𝑎𝑎 1,𝑎𝑎2,…,𝑎𝑎𝑛𝑛) é igual a 100, então 𝑎𝑎2=20−𝑎𝑎10+𝑟𝑟, em que 𝑟𝑟 é a razão da PA.",
+      "Se (𝑎𝑎1,𝑎𝑎2,…,𝑎𝑎𝑛𝑛) é uma PG de termos positivos e razão 𝑞𝑞 satisfazendo 𝑎𝑎3×𝑎𝑎5×𝑎𝑎7=𝑎𝑎25, então 𝑎𝑎 1=3𝑞𝑞.",
+      "Se (𝑎𝑎1,𝑎𝑎2,…,𝑎𝑎𝑛𝑛) é uma PG de termos positivos satisfazendo 𝐸𝐸4=20𝑎𝑎1, em que 𝐸𝐸𝑛𝑛 é a soma dos 𝑛𝑛 primeiros termos da PG, então a razão da PG é maior do que 2."
+    ],
+    "correct_answers": [
+      0,
+      2,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (01) A fórmula do termo geral da PA é an = 2 + (n-1)5 = 5n - 3, que corresponde à equação da reta. (04) S10 = (a1+a10)*10/2 = 100 -> a1+a10=20. Como a2=a1+r e a1=20-a10, temos a2=20-a10+r. (16) A soma dos 4 primeiros termos de uma PG é a1(q^4-1)/(q-1). A condição leva a q³+q²+q-19=0, cuja raiz real é maior que 2."
+  },
+  {
+    "id": 40,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Matemática",
+    "topic": "Números Complexos e Inequações",
+    "statement": "Assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "Para quaisquer números reais 𝑥𝑥 e 𝑦𝑦 vale a igualdade |𝑥𝑥2+𝑦𝑦2|=|𝑥𝑥2|+|𝑦𝑦2|.",
+      "Se 𝑎𝑎 é um número real com 0<𝑎𝑎<1 e se 𝑖𝑖 é a unidade imaginária, então (𝑖𝑖+𝑎𝑎)2 é representado no segundo quadrante do plano complexo (plano de Argand- Gauss).",
+      "No conjunto dos números complexos, a equação 𝑖𝑖𝑖𝑖=2+𝑖𝑖, em que 𝑖𝑖 é a unidade imaginária, tem como solução um número complexo com parte real negativa.",
+      "Há infinitos números naturais no conjunto solução da desigualdade 𝑥𝑥2+𝑥𝑥 −𝑥𝑥2≥1−5 𝑥𝑥2 com 𝑥𝑥 no conjunto dos números reais não nulos.",
+      "O intervalo fechado [−1,2] está contido no conjunto solução da inequação log5(𝑥𝑥+2)≤log5(𝑥𝑥2+1), com 𝑥𝑥 no conjunto dos números reais.   21"
+    ],
+    "correct_answers": [
+      0,
+      1
+    ],
+    "explanation": "As afirmativas corretas são: (01) Como x² e y² são não-negativos, |x²+y²| = x²+y² = |x²|+|y²|. (02) (i+a)² = i² + 2ai + a² = (a²-1) + 2ai. Como 0<a<1, a²-1 é negativo (parte real) e 2a é positivo (parte imaginária), localizando o número no segundo quadrante."
+  },
+  {
+    "id": 41,
+    "institution": "UEM",
+    "year": 2023,
     "subject": "Biologia",
-    "topic": "Imunologia",
-    "statement": "A vacinação é uma das formas mais eficazes de prevenção contra doenças infecciosas. O princípio básico da imunização por vacina é a introdução no organismo de um agente que estimula o sistema imunológico a produzir uma resposta de defesa. Essa resposta gera:",
+    "topic": "Biotecnologia e Transgênicos",
+    "statement": "Vários organismos geneticamente modificados já estão \ndisponíveis no mercado brasileiro como produtos alimentícios, \ndentre eles milho, soja, leite, arroz, feijão, salmão, e seus \nderivados. Sobre o  assunto, e correlatos, assinale o que for \ncorreto .",
     "image": null,
     "alternatives": [
-      "Imunidade passiva artificial",
-      "Imunidade ativa natural",
-      "Imunidade ativa artificial",
-      "Imunidade passiva natural",
-      "Resistência a antibióticos"
+      "A prole transgênica resultante do cruzamento do salmão -rei com uma espécie selvagem de salmão não poderá transmitir os genes incorporados à sua descendência.",
+      "A importância dos organismos transgênicos está na obtenção de indivíduos com fenótipo inalterado, de forma a se apresentar em mais vistosos e, consequentemente, mais facilmente comercializáveis.",
+      "O uso de organismos transgênicos ainda é controverso devido aos riscos ao ambiente e à saúde humana. Por exemplo, os grãos de pólen de plantas transgênicas podem ser levados pelo vento e fecundar plantas convencionais, causando desequilíbrio ambiental.",
+      "Organismos geneticamente modificados são aqueles portadores de DNA da sua própria espécie somados ao de outra espécie, gerados pela transferência de parte do material genético de outra espécie.",
+      "Os vetores conhecidos e utilizados nos processos de produção de organismos geneticamente modificados são procariontes."
     ],
-    "correctAnswer": 2,
-    "explanation": "A vacina contém antígenos (ou instruções para produzi-los) que fazem o próprio corpo do indivíduo produzir anticorpos e células de memória (imunidade ativa). Como isso é induzido por uma intervenção (a vacina), é classificado como artificial."
+    "correct_answers": [
+      2,
+      3
+    ],
+    "explanation": "As afirmativas corretas são: (04) A polinização cruzada entre plantas transgênicas e não-transgênicas é um dos principais riscos ambientais discutidos, conhecido como fluxo gênico. (08) A definição de OGM envolve a inserção de material genético de uma espécie em outra para conferir uma nova característica."
   },
   {
-    "id": 103,
-    "institution": "ENEM",
-    "year": 2019,
-    "subject": "História",
-    "topic": "Primeira República",
-    "statement": "A Primeira República no Brasil (1889-1930) é frequentemente chamada de 'República do Café com Leite'. Essa denominação refere-se à aliança política que dominou o cenário nacional nesse período, baseada no poder de quais estados?",
+    "id": 42,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Biologia",
+    "topic": "Ecologia e Fisiologia Vegetal",
+    "statement": "Imagine uma paisagem do Cerrado brasileiro em que ema e lobo- guará estão próximos de uma vegetação , com árvores de \ncaules retorcidos e com cascas bem desenvolvidas, e em que abelhas estão tocando flores para coletar pólen e néctar. \nConsiderando o exposto, e conhecimentos correlatos, assinale o \nque for correto .",
     "image": null,
     "alternatives": [
-      "Rio de Janeiro e Bahia",
-      "São Paulo e Minas Gerais",
-      "Pernambuco e Rio Grande do Sul",
-      "Bahia e Minas Gerais",
-      "São Paulo e Rio de Janeiro"
+      "Os invertebrados citados são fêmeas diploides, cujos machos são haploides e se desenvolveram por partenogênese.",
+      "Os cordados citados possuem sistema circulatório fechado e coração com quatro câmaras: dois átrios e dois ventrículos. No entanto, a curvatura da aorta é dirigida para a direita naquele que possui cloaca e para a esquerda naquele que possui dentes.",
+      "A casca grossa das angiospermas citadas refere- se a um tecido morto componente da periderme da planta. Esse tecido é rico em suberina e protege as células vivas da planta em casos de incêndio, que são comuns no Cerrado.",
+      "No Cerrado, o fogo controlado é benéfico porque estimula o brotamento das gemas subterrâneas, a floração, a abertura dos frutos e a germinação de sementes. Além disso, impede o acúmulo de matéria orgânica e, consequentemente, a ocorrência de incêndios natu rais de grandes proporções.",
+      "Parte da água presente nas plantas retorna continuamente ao ambiente por meio da transpiração. As antófitas do Cerrado precisam minimizar a liberação de água para a atmosfera, especialmente no inverno , e, para tanto, apresentam ajustamento osmótico das raízes, bem como folhas com estômatos abaxiais ; cutícula espessa e tricomas."
     ],
-    "correctAnswer": 1,
-    "explanation": "A 'República do Café com Leite' foi caracterizada pela alternância de poder entre as oligarquias de São Paulo (grande produtor de café) e Minas Gerais (grande produtor de leite e com grande peso político), que controlavam a sucessão presidencial."
+    "correct_answers": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "explanation": "Todas as afirmativas descrevem corretamente características dos seres vivos e do bioma Cerrado: a partenogênese em abelhas (01), a anatomia comparada de aves e mamíferos (02), as adaptações das plantas ao fogo (04), o papel ecológico do fogo (08) e as adaptações das plantas à seca (16)."
+  },
+  {
+    "id": 43,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Biologia",
+    "topic": "Ecologia e Saúde Pública",
+    "statement": "Em um lixão a céu aberto, em área rural com um pequeno riacho e \npróxima a um grande centro urbano, foram vistos seres humanos \nbuscando alimento, dividindo o espaço com muitos ratos, urubus , \ne baratas. Grande parte dos restos de alimentos ali disponíveis está contaminada por fungos e bactérias e se encontra em grau \nacentuado de decomposição. Com base no expost o, e em \nconhecimentos correlatos, assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "Os organismos decompositores citados no texto são unicelulares, formados por uma única célula procariótica e pertencentes ao Reino Monera.",
+      "Uma maneira de evitar a possível eutrofização do riacho citado, influenciada pelo lixão, é o incentivo à reciclagem de latas, plástico s e pap éis, evitando o seu acúmulo no lixão.",
+      "A convivência entre humanos e animais no local caracteriza o conceito de população.",
+      "O cenário descrito no enunciado de comando da questão (caput ) favorece o desenvolvimento de verminoses.",
+      "Ao ingerirem os restos de alimento encontrados no lixão, os humanos podem adquirir o botulismo, causado por um organismo aeróbico e transmitido por gotículas de saliva; e ser contaminados com os zigomicetos, procariontes com corpos de frutificação, que causam fortes alergias ao serem inalados."
+    ],
+    "correct_answers": [
+      3
+    ],
+    "explanation": "A única afirmativa correta é a (08). Lixões são ambientes insalubres que, pela presença de vetores (ratos, baratas) e contaminação, criam condições ideais para a proliferação e transmissão de diversas doenças, incluindo verminoses."
+  },
+  {
+    "id": 44,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Química",
+    "topic": "Radioatividade",
+    "statement": "A radioatividade é um fenômeno natural ou artificial muito \npresente em nosso cotidiano. Embora a exposição a altas dosagens \nde radiação possa ser prejudicial ao ser humano, sua utilização em \ndosagens corretas e sua manipulação responsável garantem \nbenefícios na medicina, na agricultura, n a produção de  alimentos, \nna indústria. Sobre o assunto, assinale  o que for correto .",
+    "image": null,
+    "alternatives": [
+      "As emissões alfa (α) são as principais responsáveis pelos efeitos biológicos das radiações. Podem produzir reações químicas leves nas células, alterando sua função, mas sem consequências genéticas.",
+      "Na agricultura, baixas doses de radiações eletromagnéticas de alta frequência são utilizadas para alterar comportamento dos machos de insetos prejudiciais às plantações. Esses machos irradiados não reconhecerão as fêmeas de sua espécie, reduzindo a população da praga.",
+      "Radioatividade é a emissão espontânea de partículas e/ou de radiações de núcleos instáveis de átomos, dando origem a outros núcleos, que podem ser instáveis ou não.",
+      "A medicina utiliza solução contendo iodo -131 em pequenas doses como um rastreador radioativo para diagnósticos das glândulas tireoides. Um contador Geiger colocado na região do pescoço determina a habilidade da tireoide em absorver o iodo.",
+      "A radioatividade excessiva causa mutações nos ácidos nucleicos, principalmente no nucleotídeo uracila do ácid o desoxirribonucleico. 22"
+    ],
+    "correct_answers": [
+      2,
+      3
+    ],
+    "explanation": "As afirmativas corretas são: (04) A definição de radioatividade como um decaimento de núcleos instáveis está correta. (08) O iodo-131 é um radioisótopo usado em medicina nuclear para diagnóstico e tratamento da tireoide, pois essa glândula acumula iodo."
+  },
+  {
+    "id": 45,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Química",
+    "topic": "Química Orgânica - Isomeria e Nomenclatura",
+    "statement": "Dadas as fórmulas moleculares a seguir, assinale o que for \ncorreto . \n \nI) C 7H16 \nII) C 4H10O",
+    "image": null,
+    "alternatives": [
+      "O composto I pode ser o 2,3- dimetilpentano.",
+      "O composto II pode ser o ácido butanoico.",
+      "O composto II pode ser o butan -2-ol, um álcool secundário.",
+      "O composto II pode ser a butan- 2-ona, que é isômero de função do butan- 2-ol.",
+      "O composto I pode ser um hidrocarboneto insaturado solúvel em água."
+    ],
+    "correct_answers": [
+      0,
+      2
+    ],
+    "explanation": "As afirmativas corretas são: (01) 2,3-dimetilpentano tem 7 carbonos e 16 hidrogênios (CnH2n+2), correspondendo à fórmula C7H16. (04) Butan-2-ol é um álcool com a hidroxila no carbono 2, que é secundário (ligado a outros dois carbonos)."
+  },
+  {
+    "id": 46,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Química",
+    "topic": "Estequiometria",
+    "statement": "Sabendo -se que uma substância X reage com uma substância Y \nproduzindo as substâncias Z e W, e considerando as duas reações descritas no quadro a seguir, realizadas sob as mesmas condições, assinale o que for correto . \n \nAntes da reação  Depois da reação  \nReação  X Y Z W X Y \n1 40g 100g  71g a 0g 51g \n2 b c 21,3g  d 6g 0g",
+    "image": "/images/questions/uem-2023-q46.png",
+    "alternatives": [
+      "O valor de a é 18g.",
+      "O valor de b é 18g.",
+      "O valor de c é 30g.",
+      "O valor de d é 14,7g.",
+      "O reagente limitante na reação 1 é Y."
+    ],
+    "correct_answers": [
+      0,
+      1
+    ],
+    "explanation": "As afirmativas corretas são: (01) Pela Lei de Lavoisier na reação 1, (40g de X reagido) + (100-51g de Y reagido) = 71g de Z + a. Logo, 40+49 = 71+a -> a=18g. (02) A proporção de massa entre X e Z é 40/71. Na reação 2, (b-6)/21,3 = 40/71 -> b-6 = 12 -> b=18g."
+  },
+  {
+    "id": 47,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Física",
+    "topic": "Termodinâmica",
+    "statement": "Assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "Em um sistema gasoso, a energia interna está relacionada a diversos fatores , entre eles os movimentos de translação, de rotação e de vibração de suas moléculas, íons ou átomos.",
+      "Se um sistema recebe calor ( Q) do meio ambiente e realiza trabalho ( W) sobre esse meio, a variação da energia interna (∆U) desse sistema é igual a Q − W.",
+      "A entropia é uma medida da desordem de um sistema. O termo desordem está relacionado a uma distribuição mais homogênea da matéria e/ou da energia pelo sistema.",
+      "Quando a variação da energia livre de Gibbs de uma reação (que ocorre sob pressão e temperatura constantes) for exatamente igual a zero, significa que essa reação está em equilíbrio.",
+      "A entropia (do univers o), resultante da soma da entropia do sistema e da entropia da vizinhança, diminui nos processos espontâneos.   23"
+    ],
+    "correct_answers": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "As afirmativas corretas (01, 02, 04, 08) definem conceitos fundamentais da termodinâmica: a natureza da energia interna (01), a Primeira Lei da Termodinâmica (02), o conceito de entropia (04) e a condição de equilíbrio pela energia livre de Gibbs (08)."
+  },
+  {
+    "id": 48,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Física",
+    "topic": "Hidrostática e Processos de Separação",
+    "statement": "No tratamento de água e esgoto há diversos processos físicos e \nquímicos que ocorrem em grandes reservatórios. Geralmente o \ntratamento é composto pelas seguintes etapas: Coagulação e \nFloculação, Decantação, Filtração, Desinfecção e Fluoretação. \nAssinale o q ue for correto .",
+    "image": null,
+    "alternatives": [
+      "A pressão hidrostática em um ponto situado no interior de um líquido em equilíbrio no reservatório depende da razão entre a profundidade em que esse ponto se encontra e a densidade do fluido.",
+      "A Decantação é uma etapa que separa misturas heterogêneas, formadas por duas ou mais fases.",
+      "Todo sólido imerso em um líquido em equilíbrio recebe uma força vertical cuja intensidade é igual ao peso do líquido deslocado e cujo sentido é contrário ao da força gravitacional .",
+      "A etapa de Coagulação e Floculação consiste em reduzir os tamanhos de moléculas imersas na água para que sejam posteriormente retiradas por filtração.",
+      "A Centrifugação é um processo de Decantação acelerado, em que a força centrífuga é mais relevante do que a força da gravidade. Assim, quanto maior a velocidade angular da centrífuga mais rápida será a Decantação."
+    ],
+    "correct_answers": [
+      1,
+      2,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (02) A decantação é um método físico para separar componentes de uma mistura heterogênea com diferentes densidades. (04) O Princípio de Arquimedes descreve corretamente a força de empuxo. (16) A centrifugação utiliza a aceleração centrípeta para acelerar a decantação."
+  },
+  {
+    "id": 49,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Física",
+    "topic": "Mecânica e Eletromagnetismo",
+    "statement": "Uma partícula de massa 𝑚𝑚=0,5g e carga elétrica 𝑞𝑞  positiva \ncai verticalmente, a partir do repouso, sobre uma placa \nhorizontal (plana). A altura inicial dessa partícula em relação à \nplaca é igual a 125\n98cm. No local do experimento, em que há um \ncampo gravitacional 𝑔𝑔⃗, pode haver um campo elétrico 𝐸𝐸�⃗ e/ou \num campo magnético 𝑞𝑞 �⃗. Os módulos dos campos são, \nrespectivamente,  𝑔𝑔=980 cm/s2, 𝐸𝐸 e 𝑞𝑞 (constantes e dados no \nsistema CGS). Se 𝐸𝐸=𝑞𝑞=0, a partícula atinge a placa e fica \nem contato com ela por 0,02s durante a colisão. Considerando \nque essa colisão é elástica e desprezando a resistência do ar, \nassinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "Se 𝐸𝐸=𝑞𝑞=0 e se o módulo da força 𝐹𝐹 exercida pela placa sobre a partícula durante a colisão for constante, então 𝐹𝐹> 2400 dina .",
+      "Se 𝐸𝐸=𝑞𝑞=0, então a energia cinética da partícula imediatamente após a colisão será igual a 625 erg.",
+      "Se 𝑞𝑞=0 e se o campo 𝐸𝐸��⃗ for perpendicular à placa e direcionado para cima, então o módulo da aceleração da partícula será nulo se 𝐸𝐸=𝑚𝑚𝑔𝑔 𝑞𝑞.",
+      "Se 𝐸𝐸=0 e se o campo 𝑞𝑞��⃗ for perpendicular à placa e direcionado para baixo, então o módulo da aceleração da partícula durante a queda será igual a 𝑔𝑔+𝑞𝑞𝑣𝑣𝐵𝐵 𝑚𝑚, em que 𝑣𝑣 é o módulo da velocidade da partícula.",
+      "Se 𝐸𝐸��⃗ e 𝑞𝑞��⃗ são campos cruzados, com 𝐸𝐸��⃗ perpendicular à placa e 𝑞𝑞��⃗ perpendicular a 𝐸𝐸��⃗, então a trajetória da partícula será uma linha reta."
+    ],
+    "correct_answers": [
+      0,
+      1,
+      2
+    ],
+    "explanation": "As afirmativas corretas são: (01) O impulso (F*Δt) é igual à variação do momento linear (2mv). Calculando v, encontramos F. (02) A energia cinética (1/2*mv²) é conservada na colisão elástica. (04) Para aceleração nula, a força elétrica (qE) deve anular a força peso (mg), logo qE=mg."
+  },
+  {
+    "id": 50,
+    "institution": "UEM",
+    "year": 2023,
+    "subject": "Física",
+    "topic": "Oscilações e Ondas",
+    "statement": "Sobre fenômenos relacionados a oscilações e ondas, assinale o que for correto .",
+    "image": null,
+    "alternatives": [
+      "No movimento harmônico simples (MHS) de uma partícula, a aceleração depende da posição 𝑥𝑥 dessa partícula, de tal forma que, quanto mais distante da posição de equilíbrio ( 𝑥𝑥=0), maior o módulo da aceleração.",
+      "Se a massa e o comprimento de quatro pêndulos simples são, respectivamente, 𝑚𝑚 e 𝑙𝑙 (pêndulo I), 𝑚𝑚/2 e 𝑙𝑙/2 (pêndulo II), 2𝑚𝑚 e 𝑙𝑙 (pêndulo III) e 4𝑚𝑚 e 2𝑙𝑙 (pêndulo IV), então as maiores frequências, no regime de pequenas oscilações, serão observadas nos pêndulos I e III.",
+      "A amplitude e a frequência de uma onda estacionária em uma corda esticada, presa em suas extremidades, são iguais à amplitude e à frequência da oscilação do ponto central da corda no modo de vibração fundamental.",
+      "Quando uma onda sonora produzida em um meio passa para outro meio em que sua velocidade é diferente, a frequência do som permanece a mesma, mas o comprimento de onda se modifica.",
+      "As diversas colorações observadas em películas de bolhas de sabão e em películas de óleo depositadas sobre água estão relacionadas às espessuras dessas películas e à interferência da luz refletida por elas."
+    ],
+    "correct_answers": [
+      0,
+      2,
+      3,
+      4
+    ],
+    "explanation": "As afirmativas corretas são: (01) No MHS, a força restauradora (e a aceleração) é proporcional ao deslocamento (F=-kx). (04) A frequência de uma onda é determinada pela fonte e não muda com o meio, mas a velocidade e o comprimento de onda sim (v=λf). (08) A interferência em filmes finos é responsável pela iridescência. (16) A frequência do pêndulo depende apenas do comprimento (e da gravidade), não da massa."
   }
 ]
