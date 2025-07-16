@@ -1,0 +1,86 @@
+[
+  {
+    "id": 93,
+    "institution": "FUVEST",
+    "year": 2024,
+    "subject": "Física",
+    "topic": "Óptica Geométrica",
+    "statement": "A figura mostra um objeto (O) e sua imagem (I) conjugada por uma lente esférica delgada. Com base na figura, qual é o tipo de lente e a natureza da imagem?",
+    "image": "/placeholder.svg",
+    "alternatives": [
+      "Lente convergente, imagem real",
+      "Lente convergente, imagem virtual",
+      "Lente divergente, imagem real",
+      "Lente divergente, imagem virtual",
+      "Pode ser convergente ou divergente, dependendo da distância"
+    ],
+    "correctAnswer": 1,
+    "explanation": "A imagem é virtual, direita e maior que o objeto. Essa configuração é típica de uma lente convergente sendo usada como lupa, com o objeto posicionado entre o centro óptico e o foco principal."
+  },
+  {
+    "id": 4,
+    "institution": "FUVEST",
+    "year": 2023,
+    "subject": "Matemática",
+    "topic": "Função Quadrática",
+    "statement": "A função f(x) = ax² + bx + c tem como gráfico uma parábola que passa pelos pontos (0, 3), (1, 6) e (2, 11). O valor de a + b + c é:",
+    "image": null,
+    "alternatives": ["6", "8", "10", "12", "14"],
+    "correctAnswer": 0,
+    "explanation": "Substituindo os pontos na equação: f(0) = c = 3; f(1) = a + b + c = 6; f(2) = 4a + 2b + c = 11. Resolvendo o sistema: a = 1, b = 2, c = 3. Portanto, a + b + c = 6."
+  },
+  {
+    "id": 101,
+    "institution": "ENEM",
+    "year": 2021,
+    "subject": "Química",
+    "topic": "Compostos Iônicos",
+    "statement": "O uso de líquidos iônicos como solventes tem crescido em aplicações industriais e de laboratório. Um líquido iônico é um sal com ponto de fusão inferior a 100 °C, composto por um cátion orgânico e um ânion inorgânico. Qual das seguintes substâncias é um exemplo de líquido iônico?",
+    "image": null,
+    "alternatives": [
+      "NaCl", 
+      "H₂O", 
+      "C₆H₁₂O₆", 
+      "[BMIM]PF₆", 
+      "CH₄"
+    ],
+    "correctAnswer": 3,
+    "explanation": "Líquidos iônicos são sais, descartando H₂O, C₆H₁₂O₆ e CH₄. NaCl é um sal, mas tem um ponto de fusão muito alto (801 °C). [BMIM]PF₆ (hexafluorofosfato de 1-butil-3-metilimidazólio) é um exemplo clássico de líquido iônico, sendo um sal com baixo ponto de fusão."
+  },
+  {
+    "id": 102,
+    "institution": "ENEM",
+    "year": 2020,
+    "subject": "Biologia",
+    "topic": "Imunologia",
+    "statement": "A vacinação é uma das formas mais eficazes de prevenção contra doenças infecciosas. O princípio básico da imunização por vacina é a introdução no organismo de um agente que estimula o sistema imunológico a produzir uma resposta de defesa. Essa resposta gera:",
+    "image": null,
+    "alternatives": [
+      "Imunidade passiva artificial",
+      "Imunidade ativa natural",
+      "Imunidade ativa artificial",
+      "Imunidade passiva natural",
+      "Resistência a antibióticos"
+    ],
+    "correctAnswer": 2,
+    "explanation": "A vacina contém antígenos (ou instruções para produzi-los) que fazem o próprio corpo do indivíduo produzir anticorpos e células de memória (imunidade ativa). Como isso é induzido por uma intervenção (a vacina), é classificado como artificial."
+  },
+  {
+    "id": 103,
+    "institution": "ENEM",
+    "year": 2019,
+    "subject": "História",
+    "topic": "Primeira República",
+    "statement": "A Primeira República no Brasil (1889-1930) é frequentemente chamada de 'República do Café com Leite'. Essa denominação refere-se à aliança política que dominou o cenário nacional nesse período, baseada no poder de quais estados?",
+    "image": null,
+    "alternatives": [
+      "Rio de Janeiro e Bahia",
+      "São Paulo e Minas Gerais",
+      "Pernambuco e Rio Grande do Sul",
+      "Bahia e Minas Gerais",
+      "São Paulo e Rio de Janeiro"
+    ],
+    "correctAnswer": 1,
+    "explanation": "A 'República do Café com Leite' foi caracterizada pela alternância de poder entre as oligarquias de São Paulo (grande produtor de café) e Minas Gerais (grande produtor de leite e com grande peso político), que controlavam a sucessão presidencial."
+  }
+]

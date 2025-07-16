@@ -14,13 +14,6 @@ interface PerformanceSummary {
   accuracy: number;
 }
 
-// Mock de dados de vídeo para demonstração
-const mockVideos = [
-  { id: '1', title: 'Videoaula Completa sobre Análise Combinatória', thumbnail: '/placeholder.svg', url: '#' },
-  { id: '2', title: 'Exercícios Resolvidos de Análise Combinatória', thumbnail: '/placeholder.svg', url: '#' },
-  { id: '3', title: 'Dicas e Macetes de Análise Combinatória para o ENEM', thumbnail: '/placeholder.svg', url: '#' },
-];
-
 export const TutorView = () => {
   const [summary, setSummary] = useState<PerformanceSummary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -59,19 +52,43 @@ export const TutorView = () => {
     setSelectedTopic(topic);
     setVideos([]); // Limpa vídeos anteriores
     try {
-      // TODO: Substituir o mock pela chamada real da ferramenta google_web_search
-      // Exemplo: const searchResults = await google_web_search({ query: `videoaula sobre ${topic}` });
-      // Em seguida, processe searchResults para extrair os vídeos.
-      
-      console.log(`Buscando vídeos sobre: ${topic}`);
-      // Simula um atraso de rede
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      setVideos(mockVideos);
+      // @ts-ignore - A função google_web_search é injetada no runtime.
+      const searchResults = await google_web_search({ 
+        query: `videoaula youtube sobre ${topic}` 
+      });
+
+      const getYouTubeId = (url: string): string | null => {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+      };
+
+      if (searchResults && searchResults.results) {
+        const fetchedVideos = searchResults.results
+          .filter(result => result.link && result.link.includes('youtube.com'))
+          .map((result) => {
+            const videoId = getYouTubeId(result.link);
+            const thumbnailUrl = videoId 
+              ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` 
+              : '/placeholder.svg';
+
+            return {
+              id: result.link,
+              title: result.title || 'Vídeo sem título',
+              url: result.link,
+              thumbnail: thumbnailUrl,
+            };
+          })
+          .slice(0, 6);
+
+        setVideos(fetchedVideos);
+      } else {
+        setVideos([]);
+      }
 
     } catch (err) {
       console.error("Erro ao buscar vídeos:", err);
-      // Tratar erro na UI, se necessário
+      setError("Não foi possível buscar vídeos. Tente novamente mais tarde.");
     } finally {
       setIsFetchingVideos(false);
     }

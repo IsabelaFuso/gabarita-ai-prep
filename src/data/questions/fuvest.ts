@@ -349,5 +349,23 @@ export const fuvestQuestions: Question[] = [
     ],
     correctAnswer: 0,
     explanation: "O Aquífero Guarani estende-se pelos territórios do Brasil, Argentina, Uruguai e Paraguai, sendo um importante recurso hídrico compartilhado."
+  },
+  {
+    id: 93,
+    institution: "FUVEST",
+    year: 2024,
+    subject: "Física",
+    topic: "Óptica Geométrica",
+    statement: "A figura mostra um objeto (O) e sua imagem (I) conjugada por uma lente esférica delgada. Com base na figura, qual é o tipo de lente e a natureza da imagem?",
+    image: "/placeholder.svg",
+    alternatives: [
+      "Lente convergente, imagem real",
+      "Lente convergente, imagem virtual",
+      "Lente divergente, imagem real",
+      "Lente divergente, imagem virtual",
+      "Pode ser convergente ou divergente, dependendo da distância"
+    ],
+    correctAnswer: 1,
+    explanation: "A imagem é virtual, direita e maior que o objeto. Essa configuração é típica de uma lente convergente sendo usada como lupa, com o objeto posicionado entre o centro óptico e o foco principal."
   }
 ];

@@ -5,6 +5,7 @@ export interface Question {
   subject: string;
   topic: string;
   statement: string;
+  image?: string; // URL or path for the question image
   alternatives: string[];
   correctAnswer: number;
   explanation: string;

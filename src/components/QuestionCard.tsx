@@ -92,6 +92,15 @@ export const QuestionCard = ({
           </div>
         </div>
         <CardTitle className="text-xl leading-relaxed">{question.statement}</CardTitle>
+        {question.image && (
+          <div className="mt-4">
+            <img 
+              src={question.image} 
+              alt={`Imagem da questão ${question.id}`} 
+              className="max-w-full mx-auto rounded-lg border"
+            />
+          </div>
+        )}
       </CardHeader>
 
       <CardContent className="space-y-4">
