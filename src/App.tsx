@@ -19,8 +19,8 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<ProtectedRoute />}>
-              <Route index element={<Index />} />
+            <Route path="/" element={<Index />} />
+            <Route element={<ProtectedRoute />}>
               <Route path="/tutor" element={<TutorPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />
