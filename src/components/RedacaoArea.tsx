@@ -1,11 +1,19 @@
 import { useState } from "react";
-import { Clock, FileText, Send, RotateCcw, CheckCircle, AlertCircle, BookOpen } from "lucide-react";
+import { Clock, FileText, Send, RotateCcw, CheckCircle, AlertCircle, BookOpen, BrainCircuit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { TutorView } from "./TutorView";
+
+// (O resto do código permanece o mesmo até a definição do componente)
 
 interface RedacaoTema {
   id: number;
@@ -67,11 +75,12 @@ interface RedacaoAreaProps {
 export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
   const [temaAtual, setTemaAtual] = useState<RedacaoTema>(temasRedacao[0]);
   const [textoRedacao, setTextoRedacao] = useState("");
-  const [tempoRestante, setTempoRestante] = useState(90 * 60); // 90 minutos em segundos
+  const [tempoRestante, setTempoRestante] = useState(90 * 60);
   const [iniciadoTempo, setIniciadoTempo] = useState(false);
   const [redacaoEnviada, setRedacaoEnviada] = useState(false);
   const [avaliacao, setAvaliacao] = useState<CriterioAvaliacao[] | null>(null);
   const [notaFinal, setNotaFinal] = useState<number | null>(null);
+  const [isTutorOpen, setIsTutorOpen] = useState(false);
 
   const formatarTempo = (segundos: number) => {
     const minutos = Math.floor(segundos / 60);
@@ -99,45 +108,13 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
       return;
     }
 
-    // Simulação de avaliação automática
     const criterios: CriterioAvaliacao[] = [
-      {
-        nome: "Competência 1",
-        descricao: "Demonstrar domínio da modalidade escrita formal da língua portuguesa",
-        peso: 200,
-        nota: Math.floor(Math.random() * 5) * 40 + 120,
-        feedback: "Apresenta bom domínio da norma culta, com alguns deslizes."
-      },
-      {
-        nome: "Competência 2", 
-        descricao: "Compreender a proposta de redação e aplicar conceitos das várias áreas de conhecimento",
-        peso: 200,
-        nota: Math.floor(Math.random() * 5) * 40 + 120,
-        feedback: "Demonstra compreensão do tema e articula conhecimentos."
-      },
-      {
-        nome: "Competência 3",
-        descricao: "Selecionar, relacionar, organizar e interpretar informações para defender um ponto de vista",
-        peso: 200,
-        nota: Math.floor(Math.random() * 5) * 40 + 120,
-        feedback: "Apresenta informações de forma organizada com argumentação consistente."
-      },
-      {
-        nome: "Competência 4",
-        descricao: "Demonstrar conhecimento dos mecanismos linguísticos para a construção da argumentação",
-        peso: 200,
-        nota: Math.floor(Math.random() * 5) * 40 + 120,
-        feedback: "Utiliza conectivos e operadores argumentativos adequadamente."
-      },
-      {
-        nome: "Competência 5",
-        descricao: "Elaborar proposta de intervenção para o problema abordado, respeitando os direitos humanos",
-        peso: 200,
-        nota: Math.floor(Math.random() * 5) * 40 + 120,
-        feedback: "Proposta de intervenção clara e bem fundamentada."
-      }
+        { nome: "Competência 1", descricao: "Demonstrar domínio da modalidade escrita formal da língua portuguesa", peso: 200, nota: Math.floor(Math.random() * 5) * 40 + 120, feedback: "Apresenta bom domínio da norma culta, com alguns deslizes." },
+        { nome: "Competência 2", descricao: "Compreender a proposta de redação e aplicar conceitos das várias áreas de conhecimento", peso: 200, nota: Math.floor(Math.random() * 5) * 40 + 120, feedback: "Demonstra compreensão do tema e articula conhecimentos." },
+        { nome: "Competência 3", descricao: "Selecionar, relacionar, organizar e interpretar informações para defender um ponto de vista", peso: 200, nota: Math.floor(Math.random() * 5) * 40 + 120, feedback: "Apresenta informações de forma organizada com argumentação consistente." },
+        { nome: "Competência 4", descricao: "Demonstrar conhecimento dos mecanismos linguísticos para a construção da argumentação", peso: 200, nota: Math.floor(Math.random() * 5) * 40 + 120, feedback: "Utiliza conectivos e operadores argumentativos adequadamente." },
+        { nome: "Competência 5", descricao: "Elaborar proposta de intervenção para o problema abordado, respeitando os direitos humanos", peso: 200, nota: Math.floor(Math.random() * 5) * 40 + 120, feedback: "Proposta de intervenção clara e bem fundamentada." }
     ];
-
     const notaTotal = criterios.reduce((sum, c) => sum + c.nota, 0);
     
     setAvaliacao(criterios);
@@ -152,17 +129,24 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
     setRedacaoEnviada(false);
     setAvaliacao(null);
     setNotaFinal(null);
+    setIsTutorOpen(false);
   };
 
   const contadorPalavras = textoRedacao.trim().split(/\s+/).filter(word => word.length > 0).length;
-  const progressoPalavras = Math.min((contadorPalavras / 30) * 100, 100); // Meta: 30 linhas ≈ 400-500 palavras
+  const progressoPalavras = Math.min((contadorPalavras / 30) * 100, 100);
+
+  const tutorContext = `
+    Tema da Redação: ${temaAtual.titulo}
+    Instrução: ${temaAtual.instrucao}
+    ---
+    Ajude o aluno a estruturar a redação, gerar ideias para argumentos e propostas de intervenção, sem escrever o texto por ele.
+  `;
 
   if (redacaoEnviada && avaliacao && notaFinal) {
     return (
-      <div className="min-h-screen bg-gradient-background">
+        <div className="min-h-screen bg-gradient-background">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto">
-            {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <Button variant="outline" onClick={onBack}>
                 ← Voltar ao Dashboard
@@ -173,8 +157,6 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
               </div>
               <div></div>
             </div>
-
-            {/* Nota Final */}
             <Card className="mb-8 shadow-elevated">
               <CardHeader className="text-center">
                 <div className="w-20 h-20 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
@@ -188,8 +170,6 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
                 </CardDescription>
               </CardHeader>
             </Card>
-
-            {/* Avaliação por Competência */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {avaliacao.map((criterio, index) => (
                 <Card key={index} className="shadow-soft">
@@ -209,8 +189,6 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
                 </Card>
               ))}
             </div>
-
-            {/* Ações */}
             <div className="flex justify-center gap-4">
               <Button onClick={reiniciarRedacao} className="flex items-center gap-2">
                 <RotateCcw className="w-4 h-4" />
@@ -230,7 +208,6 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
     <div className="min-h-screen bg-gradient-background">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
-          {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <Button variant="outline" onClick={onBack}>
               ← Voltar ao Dashboard
@@ -253,9 +230,7 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Tema e Instruções */}
             <div className="lg:col-span-1 space-y-6">
-              {/* Seletor de Tema */}
               <Card className="shadow-soft">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -282,7 +257,6 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
                 </CardContent>
               </Card>
 
-              {/* Instruções */}
               <Card className="shadow-soft">
                 <CardHeader>
                   <CardTitle>Instruções</CardTitle>
@@ -312,9 +286,8 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
               </Card>
             </div>
 
-            {/* Editor de Texto */}
             <div className="lg:col-span-2">
-              <Card className="shadow-elevated h-full">
+              <Card className="shadow-elevated h-full flex flex-col">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center gap-2">
@@ -344,12 +317,12 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
                   )}
                 </CardHeader>
 
-                <CardContent className="flex-1">
+                <CardContent className="flex-1 flex flex-col">
                   <Textarea
-                    placeholder="Comece sua redação aqui... Lembre-se de seguir a estrutura: introdução, desenvolvimento e conclusão com proposta de intervenção."
+                    placeholder="Comece sua redação aqui..."
                     value={textoRedacao}
                     onChange={(e) => setTextoRedacao(e.target.value)}
-                    className="min-h-[500px] resize-none text-base leading-6"
+                    className="flex-1 resize-none text-base leading-6"
                     disabled={redacaoEnviada}
                   />
                   
@@ -377,6 +350,18 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
                     </div>
                   </div>
                 </CardContent>
+                
+                <Collapsible open={isTutorOpen} onOpenChange={setIsTutorOpen} className="m-6">
+                    <CollapsibleTrigger asChild>
+                        <Button variant="outline" className="w-full flex items-center gap-2">
+                            <BrainCircuit className="w-4 h-4" />
+                            {isTutorOpen ? "Fechar Tutor" : "Pedir ajuda à IA"}
+                        </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-4">
+                        <TutorView initialContext={tutorContext} />
+                    </CollapsibleContent>
+                </Collapsible>
               </Card>
             </div>
           </div>
