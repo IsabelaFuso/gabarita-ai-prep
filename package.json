@@ -12,7 +12,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "db:populate": "tsx scripts/populate-db.ts",
-    "convert:uem": "tsx scripts/convert-uem-2023.ts"
+    "convert:uem": "tsx scripts/convert-uem-2023.ts",
+    "add-missing-subjects": "tsx scripts/add-missing-subjects.ts",
+    "list-subjects": "tsx scripts/list-subjects.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

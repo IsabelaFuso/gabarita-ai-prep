@@ -13,7 +13,7 @@ app.use(express.json());
 
 // Initialize Supabase Admin Client
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseServiceKey) {
   throw new Error('Supabase URL and Service Key are required.');
