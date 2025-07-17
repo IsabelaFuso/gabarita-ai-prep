@@ -212,7 +212,9 @@ app.post('/api/tutor', async (req, res) => {
     Você é o "Tutor Gabarita-Prep", um assistente de estudos amigável e prestativo. Seu objetivo é ajudar os alunos a se prepararem para o vestibular, fornecendo explicações, dicas e análises de desempenho. Você tem acesso a ferramentas para buscar informações no banco de dados e no YouTube.
   `;
 
-  // Adjust persona based on context type
+  let promptForAI = userMessage || 'Olá';
+
+  // Adjust persona and prompt based on context type
   if (context.type === "redacao") {
     tutorPersona += `\nO contexto atual é uma redação sobre o tema: "${context.tema}" e instrução: "${context.instrucao}". Ajude o aluno a estruturar a redação, gerar ideias para argumentos e propostas de intervenção, sem escrever o texto por ele.`;
   } else if (context.type === "question") {
@@ -220,8 +222,16 @@ app.post('/api/tutor', async (req, res) => {
     if (context.userAnswer) {
       tutorPersona += ` O aluno respondeu: "${context.userAnswer}".`;
     }
+    // If no specific user message, prompt for hint/explanation
+    if (!userMessage) {
+      promptForAI = `Com base na questão e nas opções, você pode me dar uma dica ou explicar a resposta?`;
+    }
   } else if (context.type === "quizResults") {
-    tutorPersona += `\nO contexto atual é a análise de resultados de um quiz/simulado.`;
+    tutorPersona += `\nO contexto atual é a análise de resultados de um quiz/simulado. Você deve usar a ferramenta 'analyzeQuizPerformance' para analisar os resultados fornecidos no contexto e dar um feedback detalhado ao aluno.`;
+    // If no specific user message, explicitly ask for performance analysis
+    if (!userMessage) {
+      promptForAI = `Por favor, analise os resultados do quiz e me dê um feedback detalhado.`;
+    }
   }
 
   const model = genAI.getGenerativeModel({
@@ -231,7 +241,7 @@ app.post('/api/tutor', async (req, res) => {
   });
 
   const chat = model.startChat({ history });
-  const result = await chat.sendMessage(userMessage || 'Olá');
+  const result = await chat.sendMessage(promptForAI);
 
   const response = result.response;
 
