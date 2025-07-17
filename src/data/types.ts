@@ -1,7 +1,7 @@
 export interface Question {
-  id: number;
-  institution: string;
-  year: number;
+  id: string;
+  institution?: string;
+  year?: number;
   subject: string;
   topic: string;
   statement: string;

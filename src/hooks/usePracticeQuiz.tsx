@@ -2,39 +2,27 @@ import { useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { type Question } from "@/data/types";
 
-const fetchRandomQuestions = async (count: number): Promise<Question[]> => {
-  const { data, error } = await supabase
-    .from('questions')
-    .select(`
-      id,
-      institution:institutions(name),
-      year,
-      subject:subjects(name),
-      topic:topics(name),
-      statement,
-      alternatives,
-      correct_answer,
-      explanation
-    `)
-    .limit(count * 5);
+const fetchPersonalizedQuestions = async (userId: string, count: number): Promise<Question[]> => {
+  const { data, error } = await supabase.rpc('get_personalized_questions', {
+    p_user_id: userId,
+    p_count: count,
+  });
 
   if (error) {
-    console.error("Error fetching questions:", error);
+    console.error("Error fetching personalized questions:", error);
     throw error;
   }
 
-  const shuffled = data.sort(() => 0.5 - Math.random());
-  
-  const formattedQuestions: Question[] = shuffled.slice(0, count).map((q: any) => ({
-    id: q.id,
-    institution: q.institution.name,
-    year: q.year,
-    subject: q.subject.name,
-    topic: q.topic.name,
+  const formattedQuestions: Question[] = data.map((q: any) => ({
+    id: q.question_id,
     statement: q.statement,
-    alternatives: JSON.parse(q.alternatives), // Alternatives are stored as JSON string
-    correctAnswer: JSON.parse(q.alternatives).findIndex((alt: string) => alt === q.correct_answer),
+    alternatives: q.alternatives,
+    correctAnswer: q.alternatives.findIndex((alt: string) => alt === q.correct_answer),
     explanation: q.explanation,
+    subject: q.subject_name,
+    topic: q.topic_name,
+    institution: q.institution_name,
+    year: q.year,
   }));
 
   return formattedQuestions;
@@ -53,7 +41,13 @@ export const usePracticeQuiz = () => {
     setLoading(true);
     setError(null);
     try {
-      const newQuestions = await fetchRandomQuestions(10);
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        setError("Usuário não autenticado. Faça login para praticar.");
+        setLoading(false);
+        return;
+      }
+      const newQuestions = await fetchPersonalizedQuestions(user.id, 10);
       setPracticeQuestions(newQuestions);
       setShowQuestions(true);
       setCurrentQuestionIndex(0);

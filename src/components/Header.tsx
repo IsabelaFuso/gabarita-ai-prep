@@ -1,4 +1,4 @@
-import { Brain, User, Settings, Bell, Menu, Home, BookOpen, PenTool, Trophy, BarChart3, HelpCircle } from "lucide-react";
+import { Brain, User, Settings, Bell, Menu, Home, BookOpen, PenTool, Trophy, BarChart3, HelpCircle, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -18,6 +18,8 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   currentView?: string;
@@ -25,6 +27,14 @@ interface HeaderProps {
 }
 
 export const Header = ({ currentView = 'dashboard', onNavigate }: HeaderProps) => {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await signOut();
+    navigate('/auth');
+  };
+
   const navigationItems = [
     { 
       title: "Início", 
@@ -217,10 +227,12 @@ export const Header = ({ currentView = 'dashboard', onNavigate }: HeaderProps) =
                   <div className="w-9 h-9 bg-gradient-primary rounded-full flex items-center justify-center">
                     <User className="w-5 h-5 text-white" />
                   </div>
-                  <div className="text-left hidden md:block">
-                    <p className="text-sm font-medium">João Silva</p>
-                    <p className="text-xs text-muted-foreground">Plano Gratuito</p>
-                  </div>
+                  {user && (
+                    <div className="text-left hidden md:block">
+                      <p className="text-sm font-medium truncate max-w-[150px]">{user.email}</p>
+                      <p className="text-xs text-muted-foreground">Plano Gratuito</p>
+                    </div>
+                  )}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 glass-strong">
@@ -245,7 +257,8 @@ export const Header = ({ currentView = 'dashboard', onNavigate }: HeaderProps) =
                   </Button>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive hover:bg-destructive/10">
+                <DropdownMenuItem onClick={handleLogout} className="text-destructive hover:bg-destructive/10 cursor-pointer">
+                  <LogOut className="mr-2 h-4 w-4" />
                   Sair
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -256,3 +269,5 @@ export const Header = ({ currentView = 'dashboard', onNavigate }: HeaderProps) =
     </header>
   );
 };
+
+export default Header;
