@@ -9,18 +9,18 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 
 interface TutorViewProps {
-  initialContext: string;
+  context: Record<string, any>;
 }
 
-export const TutorView = ({ initialContext }: TutorViewProps) => {
-  const { history, loading, error, sendMessage, startChat } = useTutor(initialContext);
+export const TutorView = ({ context }: TutorViewProps) => {
+  const { history, loading, error, sendMessage, startChat } = useTutor(context);
   const [input, setInput] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Automatically start the chat when the component mounts
     startChat();
-  }, [initialContext]);
+  }, [context]);
 
   useEffect(() => {
     // Scroll to the bottom whenever the history changes

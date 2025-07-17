@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import TutorPage from "./pages/TutorPage";
-import AuthPage from "./pages/AuthPage";
 import { AuthProvider } from "./hooks/useAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -20,9 +19,8 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-            <Route path="/auth" element={<AuthPage />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path="/" element={<Index />} />
+            <Route path="/" element={<ProtectedRoute />}>
+              <Route index element={<Index />} />
               <Route path="/tutor" element={<TutorPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />

@@ -1,8 +1,15 @@
-import { CheckCircle, XCircle, Clock, Target, Trophy, RotateCcw, Home } from "lucide-react";
+import { CheckCircle, XCircle, Clock, Target, Trophy, RotateCcw, Home, BrainCircuit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useState } from 'react';
+import { TutorView } from '@/components/TutorView';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 interface Question {
   id: number;
@@ -39,6 +46,8 @@ export const ResultadoSimulado = ({
   onHome,
   selectedConfig
 }: ResultadoSimuladoProps) => {
+  const [isTutorOpen, setIsTutorOpen] = useState(false);
+
   const totalQuestions = questions.length;
   const answeredQuestions = answers.filter(a => a !== null).length;
   const correctAnswers = score;
@@ -84,6 +93,28 @@ export const ResultadoSimulado = ({
     }
     return acc;
   }, {} as Record<string, { total: number; correct: number; answered: number }>);
+
+  const quizResultsForAI = questions.map((q, index) => ({
+    questionText: q.statement,
+    userAnswer: answers[index] !== null ? q.alternatives[answers[index]!] : 'Não respondida',
+    correctAnswer: q.alternatives[q.correctAnswer],
+    isCorrect: answers[index] === q.correctAnswer,
+  }));
+
+  const tutorContext = {
+    type: "quizResults",
+    quizResults: quizResultsForAI,
+    summary: {
+      totalQuestions,
+      correctAnswers,
+      wrongAnswers,
+      unansweredQuestions,
+      accuracyPercentage,
+      completionPercentage,
+      timeUsed,
+    },
+    subjectAnalysis,
+  };
 
   return (
     <div className="min-h-screen bg-gradient-background">
@@ -229,6 +260,19 @@ export const ResultadoSimulado = ({
             </CardContent>
           </Card>
         </div>
+
+        {/* AI Analysis Section */}
+        <Collapsible open={isTutorOpen} onOpenChange={setIsTutorOpen} className="mt-8">
+          <CollapsibleTrigger asChild>
+            <Button variant="outline" className="w-full flex items-center gap-2">
+              <BrainCircuit className="w-4 h-4" />
+              {isTutorOpen ? "Fechar Análise da IA" : "Análise da IA"}
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="mt-4">
+            <TutorView context={tutorContext} />
+          </CollapsibleContent>
+        </Collapsible>
 
         {/* Ações */}
         <div className="flex justify-center gap-4 mt-8">

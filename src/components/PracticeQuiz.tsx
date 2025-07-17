@@ -1,5 +1,14 @@
 import { QuestionCard } from "@/components/QuestionCard";
 import { type Question } from "@/data/questionsBank";
+import { useState } from 'react';
+import { TutorView } from '@/components/TutorView';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { Button } from '@/components/ui/button';
+import { BrainCircuit } from 'lucide-react';
 
 interface PracticeQuizProps {
   currentQuestionIndex: number;
@@ -20,6 +29,18 @@ export const PracticeQuiz = ({
   onNext,
   onReset
 }: PracticeQuizProps) => {
+  const [isTutorOpen, setIsTutorOpen] = useState(false);
+
+  const currentQuestion = practiceQuestions[currentQuestionIndex];
+
+  const tutorContext = {
+    type: "question",
+    questionText: currentQuestion?.question || '',
+    options: currentQuestion?.options.map(opt => opt.text) || [],
+    correctAnswer: currentQuestion?.options.find(opt => opt.isCorrect)?.text || '',
+    // userAnswer: showExplanation ? currentQuestion?.options[currentQuestion?.userAnswerIndex]?.text : undefined,
+  };
+
   return (
     <div className="space-y-6">
       {/* Current Session Progress */}
@@ -44,13 +65,27 @@ export const PracticeQuiz = ({
 
       {practiceQuestions.length > 0 && (
         <QuestionCard
-          question={practiceQuestions[currentQuestionIndex]}
+          question={currentQuestion}
           onAnswer={onAnswer}
           showExplanation={showExplanation}
           onNext={onNext}
           isLastQuestion={currentQuestionIndex === practiceQuestions.length - 1}
           onReset={onReset}
         />
+      )}
+
+      {currentQuestion && (
+        <Collapsible open={isTutorOpen} onOpenChange={setIsTutorOpen} className="mt-6">
+          <CollapsibleTrigger asChild>
+            <Button variant="outline" className="w-full flex items-center gap-2">
+              <BrainCircuit className="w-4 h-4" />
+              {isTutorOpen ? "Fechar Tutor" : "Pedir ajuda à IA"}
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="mt-4">
+            <TutorView context={tutorContext} />
+          </CollapsibleContent>
+        </Collapsible>
       )}
     </div>
   );

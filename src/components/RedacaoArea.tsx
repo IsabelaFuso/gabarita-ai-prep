@@ -135,12 +135,11 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
   const contadorPalavras = textoRedacao.trim().split(/\s+/).filter(word => word.length > 0).length;
   const progressoPalavras = Math.min((contadorPalavras / 30) * 100, 100);
 
-  const tutorContext = `
-    Tema da Redação: ${temaAtual.titulo}
-    Instrução: ${temaAtual.instrucao}
-    ---
-    Ajude o aluno a estruturar a redação, gerar ideias para argumentos e propostas de intervenção, sem escrever o texto por ele.
-  `;
+  const tutorContext = {
+    type: "redacao",
+    tema: temaAtual.titulo,
+    instrucao: temaAtual.instrucao,
+  };
 
   if (redacaoEnviada && avaliacao && notaFinal) {
     return (

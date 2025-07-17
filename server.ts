@@ -62,8 +62,84 @@ const searchYouTube: FunctionDeclaration = {
     },
 };
 
+// 3. Explain Question Tool
+const explainQuestion: FunctionDeclaration = {
+  name: "explainQuestion",
+  description: "Fornece uma explicação detalhada para uma questão de múltipla escolha, incluindo a justificativa da resposta correta e por que as outras opções estão incorretas.",
+  parameters: {
+    type: "OBJECT",
+    properties: {
+      questionText: {
+        type: "STRING",
+        description: "O texto completo da questão.",
+      },
+      options: {
+        type: "ARRAY",
+        items: { type: "STRING" },
+        description: "As opções de resposta da questão.",
+      },
+      correctAnswer: {
+        type: "STRING",
+        description: "A resposta correta da questão.",
+      },
+      userAnswer: {
+        type: "STRING",
+        description: "A resposta que o usuário forneceu (se houver).",
+      },
+    },
+    required: ["questionText", "options", "correctAnswer"],
+  },
+};
+
+// 4. Provide Hint Tool
+const provideHint: FunctionDeclaration = {
+  name: "provideHint",
+  description: "Oferece uma dica para ajudar o aluno a resolver uma questão, sem revelar a resposta diretamente.",
+  parameters: {
+    type: "OBJECT",
+    properties: {
+      questionText: {
+        type: "STRING",
+        description: "O texto completo da questão para a qual a dica é solicitada.",
+      },
+      options: {
+        type: "ARRAY",
+        items: { type: "STRING" },
+        description: "As opções de resposta da questão.",
+      },
+    },
+    required: ["questionText", "options"],
+  },
+};
+
+// 5. Analyze Quiz Performance Tool
+const analyzeQuizPerformance: FunctionDeclaration = {
+  name: "analyzeQuizPerformance",
+  description: "Analisa o desempenho do usuário em um quiz ou simulado, identificando pontos fortes, fracos e sugerindo tópicos para revisão.",
+  parameters: {
+    type: "OBJECT",
+    properties: {
+      quizResults: {
+        type: "ARRAY",
+        items: {
+          type: "OBJECT",
+          properties: {
+            questionText: { type: "STRING" },
+            userAnswer: { type: "STRING" },
+            correctAnswer: { type: "STRING" },
+            isCorrect: { type: "BOOLEAN" },
+          },
+          required: ["questionText", "userAnswer", "correctAnswer", "isCorrect"],
+        },
+        description: "Um array de objetos, cada um contendo o texto da questão, a resposta do usuário, a resposta correta e se a resposta do usuário estava correta.",
+      },
+    },
+    required: ["quizResults"],
+  },
+};
+
 const tools: Tool[] = [{
-    functionDeclarations: [getUserPerformanceSummary, searchYouTube],
+    functionDeclarations: [getUserPerformanceSummary, searchYouTube, explainQuestion, provideHint, analyzeQuizPerformance],
 }];
 
 // --- TOOL IMPLEMENTATION ---
@@ -87,23 +163,66 @@ const searchYouTubeVideos = async (query: string) => {
     ];
 };
 
+const explainQuestionLogic = async (questionText: string, options: string[], correctAnswer: string, userAnswer?: string) => {
+  // This would ideally use a more sophisticated AI call to explain.
+  // For now, a simple mock explanation.
+  let explanation = `A resposta correta para a questão "${questionText}" é "${correctAnswer}".`;
+  if (userAnswer && userAnswer !== correctAnswer) {
+    explanation += ` Você respondeu "${userAnswer}", que está incorreta.`;
+  }
+  explanation += ` As opções eram: ${options.join(", ")}.`;
+  explanation += ` A justificativa é que ${correctAnswer} é a única opção que se alinha com o conceito principal da questão.`;
+  return { explanation };
+};
+
+const provideHintLogic = async (questionText: string, options: string[]) => {
+  // This would ideally use a more sophisticated AI call to provide a hint.
+  // For now, a simple mock hint.
+  return { hint: `Pense cuidadosamente sobre o tópico principal da questão "${questionText}" e como cada opção se relaciona a ele.` };
+};
+
+const analyzeQuizPerformanceLogic = async (quizResults: any[]) => {
+  // This would ideally use a more sophisticated AI call to analyze performance.
+  // For now, a simple mock analysis.
+  const correctCount = quizResults.filter(r => r.isCorrect).length;
+  const totalQuestions = quizResults.length;
+  const percentage = (correctCount / totalQuestions) * 100;
+
+  let feedback = `Você acertou ${correctCount} de ${totalQuestions} questões (${percentage.toFixed(2)}%).`;
+  if (percentage < 60) {
+    feedback += " Parece que você precisa revisar alguns tópicos. Foco nas questões que você errou.";
+  } else if (percentage < 80) {
+    feedback += " Bom trabalho! Continue praticando para melhorar ainda mais.";
+  } else {
+    feedback += " Excelente desempenho! Você demonstrou um ótimo domínio do conteúdo.";
+  }
+  return { analysis: feedback };
+};
 
 // --- API ENDPOINT ---
 
 app.post('/api/tutor', async (req, res) => {
-  const { history, initialContext, userId } = req.body;
+  const { history, context, userMessage, userId } = req.body;
 
-  if (!history || !userId) {
-    return res.status(400).json({ error: 'Histórico e userId são obrigatórios.' });
+  if (!history || !userId || !context) {
+    return res.status(400).json({ error: 'Histórico, userId e contexto são obrigatórios.' });
   }
 
-  const tutorPersona = `
-    Você é o "Tutor Gabarita-Prep"... (Sua persona completa aqui)
-    Você tem acesso a duas ferramentas:
-    1. 'getUserPerformanceSummary(userId)': Use esta função para ver o desempenho do aluno e fazer recomendações personalizadas.
-    2. 'searchYouTube(query)': Use esta função para encontrar e recomendar vídeos do YouTube sobre um tópico.
-    Seja proativo. Se um aluno está com dificuldade, verifique seu desempenho e sugira um vídeo.
+  let tutorPersona = `
+    Você é o "Tutor Gabarita-Prep", um assistente de estudos amigável e prestativo. Seu objetivo é ajudar os alunos a se prepararem para o vestibular, fornecendo explicações, dicas e análises de desempenho. Você tem acesso a ferramentas para buscar informações no banco de dados e no YouTube.
   `;
+
+  // Adjust persona based on context type
+  if (context.type === "redacao") {
+    tutorPersona += `\nO contexto atual é uma redação sobre o tema: "${context.tema}" e instrução: "${context.instrucao}". Ajude o aluno a estruturar a redação, gerar ideias para argumentos e propostas de intervenção, sem escrever o texto por ele.`;
+  } else if (context.type === "question") {
+    tutorPersona += `\nO contexto atual é uma questão de múltipla escolha. A questão é: "${context.questionText}". As opções são: ${context.options.join(", ")}.`;
+    if (context.userAnswer) {
+      tutorPersona += ` O aluno respondeu: "${context.userAnswer}".`;
+    }
+  } else if (context.type === "quizResults") {
+    tutorPersona += `\nO contexto atual é a análise de resultados de um quiz/simulado.`;
+  }
 
   const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
@@ -112,7 +231,7 @@ app.post('/api/tutor', async (req, res) => {
   });
 
   const chat = model.startChat({ history });
-  const result = await chat.sendMessage(initialContext || 'Olá');
+  const result = await chat.sendMessage(userMessage || 'Olá');
 
   const response = result.response;
 
@@ -126,6 +245,15 @@ app.post('/api/tutor', async (req, res) => {
       } else if (call.name === 'searchYouTube') {
         const { query } = call.args;
         apiResponse = await searchYouTubeVideos(query);
+      } else if (call.name === 'explainQuestion') {
+        const { questionText, options, correctAnswer, userAnswer } = call.args;
+        apiResponse = await explainQuestionLogic(questionText, options, correctAnswer, userAnswer);
+      } else if (call.name === 'provideHint') {
+        const { questionText, options } = call.args;
+        apiResponse = await provideHintLogic(questionText, options);
+      } else if (call.name === 'analyzeQuizPerformance') {
+        const { quizResults } = call.args;
+        apiResponse = await analyzeQuizPerformanceLogic(quizResults);
       }
 
       const result2 = await chat.sendMessage([

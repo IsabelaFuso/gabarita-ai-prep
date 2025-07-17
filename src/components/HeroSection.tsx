@@ -1,6 +1,14 @@
 import { ArrowRight, BookOpen, Brain, Target } from 'lucide-react';
 import { Button } from './ui/button';
 import heroImage from '../assets/hero-image.jpg';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { useAuth } from '@/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 interface HeroSectionProps {
   onStartQuiz: () => void;
@@ -8,6 +16,42 @@ interface HeroSectionProps {
 }
 
 export const HeroSection = ({ onStartQuiz, onStartSimulado }: HeroSectionProps) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setMessage(null);
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) setError(error.message);
+    else setMessage('Login bem-sucedido! Redirecionando...');
+    setLoading(false);
+  };
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setMessage(null);
+    setLoading(true);
+    const { error } = await supabase.auth.signUp({ email, password });
+    if (error) setError(error.message);
+    else setMessage('Cadastro realizado! Verifique seu e-mail para confirmação.');
+    setLoading(false);
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Modern gradient background */}
@@ -20,14 +64,14 @@ export const HeroSection = ({ onStartQuiz, onStartSimulado }: HeroSectionProps) 
       
       <div className="relative z-10 container mx-auto px-6 text-center">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fade-in">
+          <h1 className="text-5xl md:text-7xl font-bold text-black mb-6 animate-fade-in">
             Prepare-se para o
-            <span className="block bg-gradient-to-r from-white to-primary-glow bg-clip-text text-transparent">
+            <span className="block bg-gradient-to-r from-black to-primary-glow bg-clip-text text-transparent">
               Vestibular
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <p className="text-xl md:text-2xl text-black/90 mb-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.2s' }}>
             Sistema completo de estudos com questões de ENEM, FUVEST, UNICAMP e UEM
           </p>
           
@@ -47,29 +91,93 @@ export const HeroSection = ({ onStartQuiz, onStartSimulado }: HeroSectionProps) 
               onClick={onStartSimulado}
               variant="outline" 
               size="lg"
-              className="glass border-white/30 text-white hover:bg-white/10 text-lg px-8 py-6"
+              className="glass border-white/30 text-black hover:bg-white/10 text-lg px-8 py-6"
             >
               <Target className="mr-2 h-5 w-5" />
               Simulado Completo
             </Button>
           </div>
           
+          {/* Login/Signup Form */}
+          {!user && (
+            <div className="flex items-center justify-center min-h-screen bg-background">
+              <Tabs defaultValue="login" className="w-[400px]">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="login">Login</TabsTrigger>
+                  <TabsTrigger value="signup">Cadastro</TabsTrigger>
+                </TabsList>
+                <TabsContent value="login">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-black">Login</CardTitle>
+                      <CardDescription className="text-black">Acesse sua conta para continuar.</CardDescription>
+                    </CardHeader>
+                    <form onSubmit={handleLogin}>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="login-email" className="text-black">Email</Label>
+                          <Input id="login-email" type="email" placeholder="m@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="login-password" className="text-black">Senha</Label>
+                          <Input id="login-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+                        </div>
+                      </CardContent>
+                      <CardFooter>
+                        <Button type="submit" className="w-full" disabled={loading}>
+                          {loading ? 'Entrando...' : 'Entrar'}
+                        </Button>
+                      </CardFooter>
+                    </form>
+                  </Card>
+                </TabsContent>
+                <TabsContent value="signup">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-black">Cadastro</CardTitle>
+                      <CardDescription className="text-black">Crie sua conta para começar a praticar.</CardDescription>
+                    </CardHeader>
+                    <form onSubmit={handleSignup}>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="signup-email" className="text-black">Email</Label>
+                          <Input id="signup-email" type="email" placeholder="m@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="signup-password" className="text-black">Senha</Label>
+                          <Input id="signup-password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+                        </div>
+                      </CardContent>
+                      <CardFooter>
+                        <Button type="submit" className="w-full" disabled={loading}>
+                          {loading ? 'Criando conta...' : 'Criar conta'}
+                        </Button>
+                      </CardFooter>
+                    </form>
+                  </Card>
+                </TabsContent>
+                {error && <p className="mt-4 text-center text-red-500">{error}</p>}
+                {message && <p className="mt-4 text-center text-green-500">{message}</p>}
+              </Tabs>
+            </div>
+          )}
+
           {/* Stats cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto animate-fade-in" style={{ animationDelay: '0.6s' }}>
-            <div className="glass p-6 rounded-lg text-white">
+            <div className="glass p-6 rounded-lg text-black">
               <BookOpen className="h-8 w-8 text-primary-glow mx-auto mb-2" />
               <div className="text-2xl font-bold">1000+</div>
-              <div className="text-white/80">Questões</div>
+              <div className="text-black/80">Questões</div>
             </div>
-            <div className="glass p-6 rounded-lg text-white">
+            <div className="glass p-6 rounded-lg text-black">
               <Brain className="h-8 w-8 text-primary-glow mx-auto mb-2" />
               <div className="text-2xl font-bold">15+</div>
-              <div className="text-white/80">Matérias</div>
+              <div className="text-black/80">Matérias</div>
             </div>
-            <div className="glass p-6 rounded-lg text-white">
+            <div className="glass p-6 rounded-lg text-black">
               <Target className="h-8 w-8 text-primary-glow mx-auto mb-2" />
               <div className="text-2xl font-bold">4</div>
-              <div className="text-white/80">Vestibulares</div>
+              <div className="text-black/80">Vestibulares</div>
             </div>
           </div>
         </div>

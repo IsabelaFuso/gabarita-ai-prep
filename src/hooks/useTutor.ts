@@ -9,7 +9,7 @@ export interface TutorMessage {
 }
 
 // O hook principal que gerencia o estado e a comunicação do chat
-export const useTutor = (initialContext: string) => {
+export const useTutor = (context: Record<string, any>) => {
   const { user } = useAuth(); // Pega o usuário logado do contexto de autenticação
   const [history, setHistory] = useState<TutorMessage[]>([]);
   const [loading, setLoading] = useState(false);
@@ -39,7 +39,8 @@ export const useTutor = (initialContext: string) => {
         body: JSON.stringify({
           history: updatedHistory,
           userId: user.id, // Envia o ID do usuário para o backend
-          initialContext: message, // A mensagem atual do usuário é o contexto
+          context: context, // Envia o contexto flexível
+          userMessage: message, // A mensagem atual do usuário
         }),
       });
 
@@ -68,7 +69,7 @@ export const useTutor = (initialContext: string) => {
   const startChat = () => {
       const welcomeMessage: TutorMessage = {
           role: 'model',
-          parts: [{ text: `Olá! Sou seu tutor de IA. O contexto da nossa conversa é: "${initialContext}". Como posso te ajudar?` }]
+          parts: [{ text: `Olá! Sou seu tutor de IA. O contexto da nossa conversa é: ${JSON.stringify(context)}. Como posso te ajudar?` }]
       };
       setHistory([welcomeMessage]);
   };
