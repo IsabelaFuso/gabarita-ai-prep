@@ -31,7 +31,7 @@ export const useTutor = (context: Record<string, any>) => {
 
     try {
       // Envia o histórico e o contexto para o nosso backend
-      const response = await fetch('http://localhost:3001/api/tutor', {
+      const response = await fetch(import.meta.env.VITE_TUTOR_API_URL || 'http://localhost:3001/api/tutor', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

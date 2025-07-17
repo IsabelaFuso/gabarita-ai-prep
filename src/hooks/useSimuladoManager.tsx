@@ -9,15 +9,19 @@ interface SimuladoResults {
 }
 
 export const useSimuladoManager = (
-  generateQuestions: (count?: number, excludeUsed?: boolean) => Question[],
+  generateQuestions: (count?: number, excludeUsed?: boolean) => Promise<Question[]>,
   setCurrentView: (view: AppView) => void,
   setSimuladoResults: (results: SimuladoResults | null) => void
 ) => {
   const [currentQuestions, setCurrentQuestions] = useState<Question[]>([]);
+  const [loadingSimulado, setLoadingSimulado] = useState(false);
 
-  const startSimulado = () => {
-    const simuladoQuestions = generateQuestions(25);
+  const startSimulado = async () => {
+    setLoadingSimulado(true);
+    setCurrentQuestions([]); // Clear previous questions
+    const simuladoQuestions = await generateQuestions(25);
     setCurrentQuestions(simuladoQuestions);
+    setLoadingSimulado(false);
     setCurrentView('simulado');
   };
 
@@ -30,15 +34,19 @@ export const useSimuladoManager = (
     setCurrentView('dashboard');
   };
 
-  const restartSimulado = () => {
+  const restartSimulado = async () => {
+    setLoadingSimulado(true);
     setSimuladoResults(null);
-    const newQuestions = generateQuestions(25);
+    setCurrentQuestions([]); // Clear previous questions
+    const newQuestions = await generateQuestions(25);
     setCurrentQuestions(newQuestions);
+    setLoadingSimulado(false);
     setCurrentView('simulado');
   };
 
   return {
     currentQuestions,
+    loadingSimulado,
     startSimulado,
     handleSimuladoFinish,
     handleSimuladoExit,

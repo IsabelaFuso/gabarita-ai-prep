@@ -1,4 +1,3 @@
-
 import dotenv from 'dotenv';
 dotenv.config(); // Carrega as variáveis do .env para process.env
 
@@ -8,7 +7,13 @@ import { createClient } from '@supabase/supabase-js';
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold, Tool, FunctionDeclaration } from '@google/generative-ai';
 
 const app = express();
+
+// Explicit CORS configuration - MUST BE BEFORE other app.use() calls
 app.use(cors());
+
+// Handle preflight requests for all routes
+app.options('*', cors());
+
 app.use(express.json());
 
 // Initialize Supabase Admin Client
@@ -204,9 +209,25 @@ const analyzeQuizPerformanceLogic = async (quizResults: any[]) => {
 app.post('/api/tutor', async (req, res) => {
   const { history, context, userMessage, userId } = req.body;
 
+  console.log("API Tutor: Received request.");
+  console.log("Context Type Received:", context?.type); // Add this log
+  console.log("Context:", JSON.stringify(context, null, 2));
+  console.log("User Message:", userMessage);
+  console.log("User ID:", userId);
+
   if (!history || !userId || !context) {
+    console.error("API Tutor: Missing required fields.");
     return res.status(400).json({ error: 'Histórico, userId e contexto são obrigatórios.' });
   }
+
+  // --- Direct tool call for quiz results analysis ---
+  if (context.type === "quizResults") {
+    console.log("API Tutor: Directly calling analyzeQuizPerformanceLogic for quiz results.");
+    const analysisResult = await analyzeQuizPerformanceLogic(context.quizResults);
+    res.json({ message: analysisResult.analysis });
+    return;
+  }
+  // --- End of direct tool call ---
 
   let tutorPersona = `
     Você é o "Tutor Gabarita-Prep", um assistente de estudos amigável e prestativo. Seu objetivo é ajudar os alunos a se prepararem para o vestibular, fornecendo explicações, dicas e análises de desempenho. Você tem acesso a ferramentas para buscar informações no banco de dados e no YouTube.
@@ -226,13 +247,10 @@ app.post('/api/tutor', async (req, res) => {
     if (!userMessage) {
       promptForAI = `Com base na questão e nas opções, você pode me dar uma dica ou explicar a resposta?`;
     }
-  } else if (context.type === "quizResults") {
-    tutorPersona += `\nO contexto atual é a análise de resultados de um quiz/simulado. Você deve usar a ferramenta 'analyzeQuizPerformance' para analisar os resultados fornecidos no contexto e dar um feedback detalhado ao aluno.`;
-    // If no specific user message, explicitly ask for performance analysis
-    if (!userMessage) {
-      promptForAI = `Por favor, analise os resultados do quiz e me dê um feedback detalhado.`;
-    }
   }
+  // Note: quizResults context is now handled directly above, so no need for it here
+
+  console.log("Generated promptForAI:", promptForAI);
 
   const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
@@ -241,13 +259,40 @@ app.post('/api/tutor', async (req, res) => {
   });
 
   const chat = model.startChat({ history });
-  const result = await chat.sendMessage(promptForAI);
+
+  let geminiMessage;
+  try {
+    const parsedPrompt = JSON.parse(promptForAI);
+    if (parsedPrompt.tool_code && parsedPrompt.quizResults) {
+      console.log("API Tutor: Detected explicit tool call in promptForAI.");
+      geminiMessage = {
+        functionCall: {
+          name: parsedPrompt.tool_code,
+          args: { quizResults: parsedPrompt.quizResults },
+        },
+      };
+    } else {
+      geminiMessage = promptForAI; // Not a tool call, treat as plain text
+    }
+  } catch (e) {
+    console.log("API Tutor: promptForAI is not JSON, treating as plain text.");
+    geminiMessage = promptForAI; // Not valid JSON, treat as plain text
+  }
+
+  console.log("API Tutor: Sending to Gemini:", JSON.stringify(geminiMessage, null, 2));
+
+  const result = await chat.sendMessage(geminiMessage);
 
   const response = result.response;
+
+  console.log("API Tutor: Received response from Gemini.");
+  console.log("API Tutor: Response text:", response.text());
+  console.log("API Tutor: Function calls detected:", response.functionCalls);
 
   if (response.functionCalls) {
     const functionCalls = response.functionCalls;
     for (const call of functionCalls) {
+      console.log(`API Tutor: Executing tool: ${call.name} with args:`, JSON.stringify(call.args, null, 2));
       let apiResponse;
       if (call.name === 'getUserPerformanceSummary') {
         const { userId } = call.args;
@@ -266,6 +311,8 @@ app.post('/api/tutor', async (req, res) => {
         apiResponse = await analyzeQuizPerformanceLogic(quizResults);
       }
 
+      console.log(`API Tutor: Tool ${call.name} returned:`, JSON.stringify(apiResponse, null, 2));
+
       const result2 = await chat.sendMessage([
         {
           functionResponse: {
@@ -274,15 +321,11 @@ app.post('/api/tutor', async (req, res) => {
           },
         },
       ]);
+      console.log("API Tutor: Final response after tool call:", result2.response.text());
       res.json({ message: result2.response.text() });
       return;
     }
   }
   
   res.json({ message: response.text() });
-});
-
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Servidor do tutor rodando na porta ${PORT}`);
 });

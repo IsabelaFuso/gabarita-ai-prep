@@ -37,6 +37,7 @@ const Index = () => {
 
   const {
     currentQuestions,
+    loadingSimulado,
     startSimulado,
     handleSimuladoFinish,
     handleSimuladoExit,
@@ -50,7 +51,7 @@ const Index = () => {
     score,
     practiceQuestions,
     showQuestions,
-    loading, // New state
+    loading: loadingPracticeQuiz, // Renamed to avoid conflict
     error,   // New state
     handleAnswer,
     nextQuestion,
@@ -69,6 +70,22 @@ const Index = () => {
   }
 
   if (currentView === 'simulado') {
+    if (loadingSimulado) {
+      return (
+        <MainLayout 
+          onStartQuiz={() => handleNavigation('questoes')} 
+          onStartSimulado={startSimulado}
+          currentView={currentView}
+          onNavigate={handleNavigation}
+          showHero={currentView === 'dashboard'}
+        >
+          <div className="flex flex-col items-center justify-center min-h-[50vh]">
+            <Loader2 className="w-12 h-12 animate-spin text-primary mb-4" />
+            <p className="text-lg text-muted-foreground">Carregando simulado...</p>
+          </div>
+        </MainLayout>
+      );
+    }
     return (
       <SimuladoCompleto
         questions={currentQuestions}
@@ -122,7 +139,7 @@ const Index = () => {
   };
 
   const renderPracticeQuiz = () => {
-    if (loading) {
+    if (loadingPracticeQuiz) {
       return (
         <div className="flex flex-col items-center justify-center h-64">
           <Loader2 className="w-12 h-12 animate-spin text-primary mb-4" />
