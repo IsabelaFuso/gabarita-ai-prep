@@ -189,7 +189,7 @@ const Index = () => {
       case 'desempenho':
         return <DesempenhoView selectedConfig={selectedConfig} />;
       case 'tutor': // Add tutor view rendering
-        return <TutorView />;
+        return <TutorView context={{ general: "Tire suas dúvidas sobre o vestibular." }} />;
       case 'questoes':
         return renderPracticeQuiz();
       default:

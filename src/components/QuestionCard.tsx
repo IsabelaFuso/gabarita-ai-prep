@@ -151,7 +151,7 @@ export const QuestionCard = ({
             </Button>
           </CollapsibleTrigger>
           <CollapsibleContent className="mt-4">
-            <TutorView initialContext={tutorContext} />
+            <TutorView context={tutorContext} />
           </CollapsibleContent>
         </Collapsible>
 

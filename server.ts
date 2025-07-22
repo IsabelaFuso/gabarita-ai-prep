@@ -1,3 +1,4 @@
+
 import dotenv from 'dotenv';
 dotenv.config(); // Carrega as variáveis do .env para process.env
 
@@ -8,11 +9,12 @@ import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold, Tool, FunctionDec
 
 const app = express();
 
-// Explicit CORS configuration - MUST BE BEFORE other app.use() calls
-app.use(cors());
-
-// Handle preflight requests for all routes
-app.options('*', cors());
+// More robust CORS configuration
+app.use(cors({
+  origin: '*', // Allow any origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow specific methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
+}));
 
 app.use(express.json());
 
@@ -258,26 +260,11 @@ app.post('/api/tutor', async (req, res) => {
     tools: tools,
   });
 
-  const chat = model.startChat({ history });
+  const chat = model.startChat({
+    history: history.length > 1 ? history.slice(0, -1) : [],
+  });
 
-  let geminiMessage;
-  try {
-    const parsedPrompt = JSON.parse(promptForAI);
-    if (parsedPrompt.tool_code && parsedPrompt.quizResults) {
-      console.log("API Tutor: Detected explicit tool call in promptForAI.");
-      geminiMessage = {
-        functionCall: {
-          name: parsedPrompt.tool_code,
-          args: { quizResults: parsedPrompt.quizResults },
-        },
-      };
-    } else {
-      geminiMessage = promptForAI; // Not a tool call, treat as plain text
-    }
-  } catch (e) {
-    console.log("API Tutor: promptForAI is not JSON, treating as plain text.");
-    geminiMessage = promptForAI; // Not valid JSON, treat as plain text
-  }
+  let geminiMessage = userMessage;
 
   console.log("API Tutor: Sending to Gemini:", JSON.stringify(geminiMessage, null, 2));
 
@@ -287,10 +274,10 @@ app.post('/api/tutor', async (req, res) => {
 
   console.log("API Tutor: Received response from Gemini.");
   console.log("API Tutor: Response text:", response.text());
-  console.log("API Tutor: Function calls detected:", response.functionCalls);
+  console.log("API Tutor: Function calls detected:", response.functionCalls());
 
-  if (response.functionCalls) {
-    const functionCalls = response.functionCalls;
+  const functionCalls = response.functionCalls();
+  if (functionCalls) {
     for (const call of functionCalls) {
       console.log(`API Tutor: Executing tool: ${call.name} with args:`, JSON.stringify(call.args, null, 2));
       let apiResponse;
@@ -328,4 +315,9 @@ app.post('/api/tutor', async (req, res) => {
   }
   
   res.json({ message: response.text() });
+});
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Servidor do tutor rodando na porta ${PORT}`);
 });

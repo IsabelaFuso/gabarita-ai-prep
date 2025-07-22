@@ -13,7 +13,7 @@ interface TutorViewProps {
 }
 
 export const TutorView = ({ context }: TutorViewProps) => {
-  const { history, loading, error, sendMessage, startChat } = useTutor(context);
+  const { history, loading, error, welcomeMessage, sendMessage, startChat } = useTutor(context);
   const [input, setInput] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -30,12 +30,12 @@ export const TutorView = ({ context }: TutorViewProps) => {
         behavior: 'smooth',
       });
     }
-  }, [history]);
+  }, [history, welcomeMessage]);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
-      sendMessage(input);
+      sendMessage(input, context);
       setInput('');
     }
   };
@@ -60,6 +60,17 @@ export const TutorView = ({ context }: TutorViewProps) => {
 
       <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
         <div className="space-y-6">
+          {welcomeMessage && (
+            <div className="flex items-start gap-3 justify-start">
+              <Avatar className="w-8 h-8 border">
+                <AvatarImage src="/placeholder.svg" alt="Tutor" />
+                <AvatarFallback>IA</AvatarFallback>
+              </Avatar>
+              <div className="p-3 rounded-lg bg-muted max-w-sm md:max-w-md lg:max-w-lg">
+                {renderMessageContent(welcomeMessage)}
+              </div>
+            </div>
+          )}
           {history.map((message, index) => (
             <div
               key={index}
@@ -92,6 +103,7 @@ export const TutorView = ({ context }: TutorViewProps) => {
               )}
             </div>
           ))}
+
           {loading && (
             <div className="flex items-start gap-3 justify-start">
               <Avatar className="w-8 h-8 border">

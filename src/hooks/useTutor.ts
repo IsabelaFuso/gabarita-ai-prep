@@ -14,8 +14,53 @@ export const useTutor = (context: Record<string, any>) => {
   const [history, setHistory] = useState<TutorMessage[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [welcomeMessage, setWelcomeMessage] = useState<TutorMessage | null>(null);
 
-  const sendMessage = async (message: string) => {
+  const fetchQuizAnalysis = async () => {
+    if (!user) {
+      setError("Usuário não autenticado.");
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    setWelcomeMessage(null); // Ensure no welcome message is shown
+
+    const payload = {
+      history: [], // No history needed for initial analysis
+      userId: user.id,
+      context: context,
+      userMessage: '', // No user message for initial analysis
+    };
+
+    console.log("Fetching quiz analysis from API:", payload);
+
+    try {
+      const response = await fetch('/api/tutor', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Falha ao buscar análise do simulado.');
+      }
+
+      const data = await response.json();
+      const analysisMessage: TutorMessage = { role: 'model', parts: [{ text: data.message }] };
+      setHistory([analysisMessage]); // Set the analysis as the first message
+
+    } catch (err) {
+      console.error("Error fetching quiz analysis:", err);
+      const errorMessage = err instanceof Error ? err.message : "Ocorreu um erro desconhecido.";
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const sendMessage = async (message: string, currentContext: Record<string, any>) => {
     if (!user) {
       setError("Usuário não autenticado.");
       return;
@@ -29,19 +74,24 @@ export const useTutor = (context: Record<string, any>) => {
     const updatedHistory = [...history, newUserMessage];
     setHistory(updatedHistory);
 
+    const payload = {
+      history: updatedHistory,
+      userId: user.id,
+      context: currentContext,
+      userMessage: message,
+    };
+
+    // Log para depuração no console do navegador
+    console.log("Enviando para a API do Tutor:", payload);
+
     try {
       // Envia o histórico e o contexto para o nosso backend
-      const response = await fetch(import.meta.env.VITE_TUTOR_API_URL || 'http://localhost:3001/api/tutor', {
+      const response = await fetch('/api/tutor', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          history: updatedHistory,
-          userId: user.id, // Envia o ID do usuário para o backend
-          context: context, // Envia o contexto flexível
-          userMessage: message, // A mensagem atual do usuário
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
@@ -65,14 +115,19 @@ export const useTutor = (context: Record<string, any>) => {
     }
   };
   
-  // Função para iniciar o chat com uma mensagem de boas-vindas
+  // Função para iniciar o chat
   const startChat = () => {
-      const welcomeMessage: TutorMessage = {
+    if (context?.type === 'quizResults') {
+      fetchQuizAnalysis();
+    } else {
+      const message: TutorMessage = {
           role: 'model',
           parts: [{ text: `Olá! Sou seu tutor de IA. O contexto da nossa conversa é: ${JSON.stringify(context)}. Como posso te ajudar?` }]
       };
-      setHistory([welcomeMessage]);
+      setWelcomeMessage(message);
+      setHistory([]); // Limpa o histórico para garantir que não seja enviado
+    }
   };
 
-  return { history, loading, error, sendMessage, startChat };
+  return { history, loading, error, welcomeMessage, sendMessage, startChat };
 };
