@@ -208,25 +208,6 @@ const analyzeQuizPerformanceLogic = async (quizResults: any[]) => {
 
 // --- API ENDPOINT ---
 
-app.get('/api/dashboard-stats', async (req, res) => {
-  const { userId } = req.query;
-
-  if (!userId || typeof userId !== 'string') {
-    return res.status(400).json({ error: 'O ID do usuário é obrigatório.' });
-  }
-
-  console.log(`API: Received dashboard stats request for user: ${userId}`);
-
-  try {
-    const { data, error } = await supabase.rpc('get_dashboard_stats', { p_user_id: userId });
-    if (error) throw error;
-    res.json(data[0] || {}); // rpc returns an array, we want the first object or an empty one
-  } catch (error) {
-    console.error("API: Error fetching dashboard stats:", error);
-    res.status(500).json({ error: 'Erro interno do servidor.' });
-  }
-});
-
 app.post('/api/tutor', async (req, res) => {
   const { history, context, userMessage, userId } = req.body;
 
@@ -235,7 +216,6 @@ app.post('/api/tutor', async (req, res) => {
   console.log("Context:", JSON.stringify(context, null, 2));
   console.log("User Message:", userMessage);
   console.log("User ID:", userId);
-
 
   if (!history || !userId || !context) {
     console.error("API Tutor: Missing required fields.");

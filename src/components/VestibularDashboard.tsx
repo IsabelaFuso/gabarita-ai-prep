@@ -1,36 +1,9 @@
-import { useState, useEffect, useMemo } from "react";
-import { 
-  BookOpen, 
-  Target, 
-  Trophy, 
-  TrendingUp, 
-  PlayCircle, 
-  Users, 
-  Clock, 
-  Award, 
-  PenTool, 
-  RefreshCw, 
-  AlertCircle, 
-  Loader2 
-} from "lucide-react";
+import { useState } from "react";
+import { BookOpen, Target, Trophy, TrendingUp, PlayCircle, Users, Clock, Award, PenTool, RefreshCw, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { usePerformance } from "@/hooks/usePerformance";
-import { useDashboardStats } from "@/hooks/useDashboardStats";
-
-interface Subject {
-  id: string;
-  name: string;
-}
 
 interface VestibularDashboardProps {
   selectedConfig: {
@@ -40,53 +13,12 @@ interface VestibularDashboardProps {
   };
   onStartSimulado?: () => void;
   onStartRedacao?: () => void;
-  onStartPracticeBySubject: (subject: string) => void;
-  onStartReviewed: () => void;
   usedQuestionIds: number[];
   onResetUsedQuestions: () => void;
 }
 
-export const VestibularDashboard = ({ 
-  selectedConfig, 
-  onStartSimulado, 
-  onStartRedacao, 
-  onStartPracticeBySubject,
-  onStartReviewed,
-  usedQuestionIds, 
-  onResetUsedQuestions 
-}: VestibularDashboardProps) => {
+export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRedacao, usedQuestionIds, onResetUsedQuestions }: VestibularDashboardProps) => {
   const hasSelection = selectedConfig.university && selectedConfig.firstChoice;
-  const [subjects, setSubjects] = useState<Subject[]>([]);
-  const { performanceData, loading: loadingPerformance } = usePerformance();
-  const { stats, loading: loadingStats } = useDashboardStats();
-
-  const formatStudyTime = (minutes: number) => {
-    if (!minutes) return "0m";
-    const h = Math.floor(minutes / 60);
-    const m = minutes % 60;
-    return `${h > 0 ? `${h}h ` : ''}${m}m`;
-  }
-
-  const performanceBySubject = useMemo(() => {
-    if (!performanceData || performanceData.length === 0) return [];
-
-    const statsBySubject: { [key: string]: { correct: number; total: number } } = {};
-
-    for (const item of performanceData) {
-      if (!statsBySubject[item.subject_name]) {
-        statsBySubject[item.subject_name] = { correct: 0, total: 0 };
-      }
-      statsBySubject[item.subject_name].total += item.total_attempts;
-      statsBySubject[item.subject_name].correct += item.correct_attempts;
-    }
-
-    return Object.entries(statsBySubject).map(([subject, stats]) => ({
-      subject,
-      progress: Math.round((stats.correct / stats.total) * 100),
-      questions: stats.total,
-      color: "text-primary", // Simplified color for now
-    })).sort((a, b) => b.questions - a.questions);
-  }, [performanceData]);
 
   if (!hasSelection) {
     return (
@@ -112,8 +44,8 @@ export const VestibularDashboard = ({
             <BookOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {loadingStats ? <Loader2 className="h-6 w-6 animate-spin" /> : <div className="text-2xl font-bold text-primary">{stats?.questions_today || 0}</div>}
-            <p className="text-xs text-muted-foreground">Total de hoje</p>
+            <div className="text-2xl font-bold text-primary">47</div>
+            <p className="text-xs text-muted-foreground">+23% desde ontem</p>
           </CardContent>
         </Card>
 
@@ -123,8 +55,8 @@ export const VestibularDashboard = ({
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {loadingStats ? <Loader2 className="h-6 w-6 animate-spin" /> : <div className="text-2xl font-bold text-success">{Math.round(stats?.overall_accuracy || 0)}%</div>}
-            <p className="text-xs text-muted-foreground">Média geral</p>
+            <div className="text-2xl font-bold text-success">84%</div>
+            <p className="text-xs text-muted-foreground">+7% esta semana</p>
           </CardContent>
         </Card>
 
@@ -134,8 +66,8 @@ export const VestibularDashboard = ({
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {loadingStats ? <Loader2 className="h-6 w-6 animate-spin" /> : <div className="text-2xl font-bold text-warning">{formatStudyTime(stats?.study_time_minutes || 0)}</div>}
-            <p className="text-xs text-muted-foreground">Tempo estimado</p>
+            <div className="text-2xl font-bold text-warning">3h 42m</div>
+            <p className="text-xs text-muted-foreground">Meta diária: 4h</p>
           </CardContent>
         </Card>
 
@@ -145,8 +77,8 @@ export const VestibularDashboard = ({
             <Award className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {loadingStats ? <Loader2 className="h-6 w-6 animate-spin" /> : <div className="text-2xl font-bold text-primary">{stats?.total_score || 0}</div>}
-            <p className="text-xs text-muted-foreground">Total de pontos</p>
+            <div className="text-2xl font-bold text-primary">2,847</div>
+            <p className="text-xs text-muted-foreground">Top 15% nacional</p>
           </CardContent>
         </Card>
       </div>
@@ -245,33 +177,15 @@ export const VestibularDashboard = ({
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <Select onValueChange={(value) => onStartPracticeBySubject(value)}>
-              <SelectTrigger className="w-full justify-start">
-                <BookOpen className="mr-2 h-4 w-4" />
-                <SelectValue placeholder="Questões por Matéria" />
-              </SelectTrigger>
-              <SelectContent>
-                {subjects.map((subject) => (
-                  <SelectItem key={subject.id} value={subject.name}>
-                    {subject.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Button 
-              className="w-full justify-start" 
-              variant="outline"
-              onClick={handleStartWorstSubjectPractice}
-              disabled={loadingPerformance || !worstSubject}
-            >
-              <TrendingUp className="mr-2 h-4 w-4" />
-              {loadingPerformance ? 'Analisando...' : `Focar em ${worstSubject || 'Dificuldades'}`}
+            <Button className="w-full justify-start" variant="outline">
+              <BookOpen className="mr-2 h-4 w-4" />
+              Questões por Matéria
             </Button>
-            <Button 
-              className="w-full justify-start" 
-              variant="outline"
-              onClick={onStartReviewed}
-            >
+            <Button className="w-full justify-start" variant="outline">
+              <TrendingUp className="mr-2 h-4 w-4" />
+              Minhas Dificuldades
+            </Button>
+            <Button className="w-full justify-start" variant="outline">
               <Users className="mr-2 h-4 w-4" />
               Questões Comentadas
             </Button>
@@ -288,26 +202,25 @@ export const VestibularDashboard = ({
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {loadingPerformance ? (
-            <div className="flex justify-center items-center h-24">
-              <Loader2 className="h-8 w-8 animate-spin" />
-            </div>
-          ) : performanceBySubject.length > 0 ? (
-            performanceBySubject.map((item) => (
-              <div key={item.subject} className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">{item.subject}</span>
-                    <Badge variant="outline">{item.questions} questões</Badge>
-                  </div>
-                  <span className={`font-bold ${item.color}`}>{item.progress}%</span>
+          {[
+            { subject: "Matemática", progress: 88, questions: 142, color: "text-primary" },
+            { subject: "Português", progress: 79, questions: 98, color: "text-success" },
+            { subject: "Biologia", progress: 85, questions: 76, color: "text-warning" },
+            { subject: "Química", progress: 71, questions: 54, color: "text-destructive" },
+            { subject: "Física", progress: 66, questions: 67, color: "text-muted-foreground" },
+            { subject: "História", progress: 82, questions: 43, color: "text-accent-foreground" }
+          ].map((item) => (
+            <div key={item.subject} className="space-y-2">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">{item.subject}</span>
+                  <Badge variant="outline">{item.questions} questões</Badge>
                 </div>
-                <Progress value={item.progress} className="h-2" />
+                <span className={`font-bold ${item.color}`}>{item.progress}%</span>
               </div>
-            ))
-          ) : (
-            <p className="text-sm text-muted-foreground text-center">Ainda não há dados de desempenho.</p>
-          )}
+              <Progress value={item.progress} className="h-2" />
+            </div>
+          ))}
         </CardContent>
       </Card>
 
