@@ -1,9 +1,14 @@
-import { useState } from "react";
-import { BookOpen, Target, Trophy, TrendingUp, PlayCircle, Users, Clock, Award, PenTool, RefreshCw, AlertCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { BookOpen, Target, Clock, Award, PenTool, RefreshCw, AlertCircle, PlayCircle, TrendingUp, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+import { Skeleton } from "@/components/ui/skeleton";
+import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 interface VestibularDashboardProps {
   selectedConfig: {
@@ -17,7 +22,102 @@ interface VestibularDashboardProps {
   onResetUsedQuestions: () => void;
 }
 
+interface PerformanceData {
+  accuracy: number;
+  performance_by_subject: { subject: string; accuracy: number; total_questions: number }[];
+}
+
+interface RecentActivity {
+  id: number;
+  completed_at: string;
+  name: string;
+  score: number;
+}
+
 export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRedacao, usedQuestionIds, onResetUsedQuestions }: VestibularDashboardProps) => {
+  const { user } = useAuth();
+  const [summary, setSummary] = useState<PerformanceData | null>(null);
+  const [questionsToday, setQuestionsToday] = useState(0);
+  const [recentActivities, setRecentActivities] = useState<RecentActivity[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!user) return;
+
+      setLoading(true);
+      try {
+        // Fetch performance summary
+        const { data: performanceData, error: summaryError } = await supabase
+          .rpc('get_user_performance_summary', { p_user_id: user.id });
+
+        if (summaryError) throw summaryError;
+
+        if (performanceData) {
+            let totalCorrect = 0;
+            let totalAttempted = 0;
+            const subjectMap = new Map<string, { correct: number; total: number }>();
+
+            performanceData.forEach(item => {
+                totalCorrect += item.correct_attempts;
+                totalAttempted += item.total_attempts;
+
+                if (!subjectMap.has(item.subject_name)) {
+                    subjectMap.set(item.subject_name, { correct: 0, total: 0 });
+                }
+                const subjectPerf = subjectMap.get(item.subject_name)!;
+                subjectPerf.correct += item.correct_attempts;
+                subjectPerf.total += item.total_attempts;
+            });
+
+            const overallAccuracy = totalAttempted > 0 ? totalCorrect / totalAttempted : 0;
+            const performance_by_subject = Array.from(subjectMap.entries()).map(([subject, data]) => ({
+                subject,
+                accuracy: data.total > 0 ? data.correct / data.total : 0,
+                total_questions: data.total,
+            }));
+
+            setSummary({
+                accuracy: overallAccuracy,
+                performance_by_subject,
+            });
+        }
+
+
+        // Fetch questions answered today
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const { count, error: todayError } = await supabase
+          .from('user_attempts')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', user.id)
+          .gte('attempt_date', today.toISOString());
+
+        if (todayError) throw todayError;
+        setQuestionsToday(count ?? 0);
+
+        // Fetch recent activities (completed simulados)
+        const { data: activityData, error: activityError } = await supabase
+          .from('simulados')
+          .select('id, completed_at, name, score')
+          .eq('user_id', user.id)
+          .not('completed_at', 'is', null)
+          .order('completed_at', { ascending: false })
+          .limit(3);
+
+        if (activityError) throw activityError;
+        setRecentActivities(activityData as RecentActivity[]);
+
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [user]);
+
   const hasSelection = selectedConfig.university && selectedConfig.firstChoice;
 
   if (!hasSelection) {
@@ -34,6 +134,20 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
     );
   }
 
+  const subjectColors: { [key: string]: string } = {
+    'Matemática': 'text-primary',
+    'Português': 'text-success',
+    'Biologia': 'text-warning',
+    'Química': 'text-destructive',
+    'Física': 'text-info',
+    'História': 'text-accent-foreground',
+    'Geografia': 'text-secondary-foreground',
+    'Filosofia': 'text-primary',
+    'Sociologia': 'text-success',
+    'Inglês': 'text-warning',
+    'Espanhol': 'text-destructive',
+  };
+
   return (
     <div className="space-y-6">
       {/* Study Session Stats */}
@@ -44,8 +158,8 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
             <BookOpen className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">47</div>
-            <p className="text-xs text-muted-foreground">+23% desde ontem</p>
+            {loading ? <Skeleton className="h-7 w-12" /> : <div className="text-2xl font-bold text-primary">{questionsToday}</div>}
+            <p className="text-xs text-muted-foreground invisible">+0% desde ontem</p>
           </CardContent>
         </Card>
 
@@ -55,8 +169,8 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-success">84%</div>
-            <p className="text-xs text-muted-foreground">+7% esta semana</p>
+            {loading ? <Skeleton className="h-7 w-20" /> : <div className="text-2xl font-bold text-success">{summary ? Math.round(summary.accuracy * 100) : 0}%</div>}
+            <p className="text-xs text-muted-foreground invisible">+0% esta semana</p>
           </CardContent>
         </Card>
 
@@ -202,25 +316,30 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {[
-            { subject: "Matemática", progress: 88, questions: 142, color: "text-primary" },
-            { subject: "Português", progress: 79, questions: 98, color: "text-success" },
-            { subject: "Biologia", progress: 85, questions: 76, color: "text-warning" },
-            { subject: "Química", progress: 71, questions: 54, color: "text-destructive" },
-            { subject: "Física", progress: 66, questions: 67, color: "text-muted-foreground" },
-            { subject: "História", progress: 82, questions: 43, color: "text-accent-foreground" }
-          ].map((item) => (
-            <div key={item.subject} className="space-y-2">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium">{item.subject}</span>
-                  <Badge variant="outline">{item.questions} questões</Badge>
+          {loading ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <Skeleton className="h-5 w-32" />
+                  <Skeleton className="h-5 w-12" />
                 </div>
-                <span className={`font-bold ${item.color}`}>{item.progress}%</span>
+                <Skeleton className="h-2 w-full" />
               </div>
-              <Progress value={item.progress} className="h-2" />
-            </div>
-          ))}
+            ))
+          ) : (
+            summary?.performance_by_subject.map((item) => (
+              <div key={item.subject} className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium">{item.subject}</span>
+                    <Badge variant="outline">{item.total_questions} questões</Badge>
+                  </div>
+                  <span className={`font-bold ${subjectColors[item.subject] || 'text-muted-foreground'}`}>{Math.round(item.accuracy * 100)}%</span>
+                </div>
+                <Progress value={item.accuracy * 100} className="h-2" />
+              </div>
+            ))
+          )}
         </CardContent>
       </Card>
 
@@ -231,19 +350,29 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {[
-              { time: "Hoje, 14:30", action: "Completou simulado de Matemática", score: "78%" },
-              { time: "Ontem, 16:45", action: "Praticou 25 questões de Biologia", score: "84%" },
-              { time: "Ontem, 10:20", action: "Revisou questões de Química", score: "71%" }
-            ].map((activity, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-accent/30 rounded-lg">
-                <div>
-                  <p className="text-sm font-medium">{activity.action}</p>
-                  <p className="text-xs text-muted-foreground">{activity.time}</p>
+            {loading ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="flex items-center justify-between p-3">
+                  <div>
+                    <Skeleton className="h-5 w-48 mb-2" />
+                    <Skeleton className="h-4 w-24" />
+                  </div>
+                  <Skeleton className="h-6 w-16" />
                 </div>
-                <Badge variant="secondary">{activity.score}</Badge>
-              </div>
-            ))}
+              ))
+            ) : (
+              recentActivities.map((activity) => (
+                <div key={activity.id} className="flex items-center justify-between p-3 bg-accent/30 rounded-lg">
+                  <div>
+                    <p className="text-sm font-medium">{activity.name || 'Simulado'}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {formatDistanceToNow(new Date(activity.completed_at), { addSuffix: true, locale: ptBR })}
+                    </p>
+                  </div>
+                  <Badge variant="secondary">{Math.round(activity.score)}%</Badge>
+                </div>
+              ))
+            )}
           </div>
         </CardContent>
       </Card>
