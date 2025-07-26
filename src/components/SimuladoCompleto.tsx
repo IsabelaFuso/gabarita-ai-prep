@@ -5,18 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-
-interface Question {
-  id: string;
-  institution?: string;
-  year?: number;
-  subject: string;
-  topic: string;
-  statement: string;
-  alternatives: string[];
-  correctAnswer: number;
-  explanation: string;
-}
+import { TutorView } from "./TutorView"; // Importar o TutorView
+import { type Question } from "@/data/types"; // Importar o tipo Question correto
 
 interface SimuladoCompletoProps {
   questions: Question[];
@@ -41,17 +31,18 @@ export const SimuladoCompleto = ({
   onExit,
   selectedConfig 
 }: SimuladoCompletoProps) => {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<(number | null)[]>(new Array(questions.length).fill(null));
   const [timeRemaining, setTimeRemaining] = useState(timeLimit * 60); // converter para segundos
   const [showConfirmExit, setShowConfirmExit] = useState(false);
+
+  const currentQuestion = questions[currentQuestionIndex];
 
   // Cronômetro
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeRemaining((prev) => {
         if (prev <= 1) {
-          // Tempo acabou - finalizar automaticamente
           handleFinish();
           return 0;
         }
@@ -75,23 +66,23 @@ export const SimuladoCompleto = ({
 
   const handleAnswer = (answerIndex: number) => {
     const newAnswers = [...answers];
-    newAnswers[currentQuestion] = answerIndex;
+    newAnswers[currentQuestionIndex] = answerIndex;
     setAnswers(newAnswers);
   };
 
   const goToQuestion = (questionIndex: number) => {
-    setCurrentQuestion(questionIndex);
+    setCurrentQuestionIndex(questionIndex);
   };
 
   const nextQuestion = () => {
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
 
   const prevQuestion = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1);
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
   };
 
@@ -114,7 +105,7 @@ export const SimuladoCompleto = ({
 
   const getQuestionStatus = (index: number) => {
     if (answers[index] !== null) return "answered";
-    if (index === currentQuestion) return "current";
+    if (index === currentQuestionIndex) return "current";
     return "unanswered";
   };
 
@@ -123,6 +114,18 @@ export const SimuladoCompleto = ({
 
   const timeWarning = timeRemaining < 300; // últimos 5 minutos
   const timeCritical = timeRemaining < 60; // último minuto
+
+  // Contexto para o Tutor de IA
+  const tutorContext = {
+    type: "question",
+    questionId: currentQuestion?.id,
+    questionText: currentQuestion?.statement,
+    options: currentQuestion?.alternatives,
+    subject: currentQuestion?.subject,
+    topic: currentQuestion?.topic,
+    explanation: currentQuestion?.explanation,
+    correctAnswerIndex: currentQuestion?.correctAnswer,
+  };
 
   return (
     <div className="min-h-screen bg-gradient-background">
@@ -143,7 +146,7 @@ export const SimuladoCompleto = ({
               <div>
                 <h1 className="font-semibold">Simulado {selectedConfig.university.toUpperCase()}</h1>
                 <p className="text-sm text-muted-foreground">
-                  Questão {currentQuestion + 1} de {questions.length}
+                  Questão {currentQuestionIndex + 1} de {questions.length}
                 </p>
               </div>
             </div>
@@ -176,11 +179,81 @@ export const SimuladoCompleto = ({
         </div>
       </div>
 
+      {/* Layout Principal: Questão à Esquerda, Tutor à Direita */}
       <div className="container mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Navegação das Questões */}
-          <div className="lg:col-span-1">
-            <Card className="sticky top-32">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* Coluna da Esquerda: Questão e Navegação */}
+          <div className="lg:col-span-2 flex flex-col gap-6">
+            <Card className="shadow-elevated">
+              <CardHeader>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Badge variant="outline">
+                      {currentQuestion.institution} {currentQuestion.year}
+                    </Badge>
+                    <Badge variant="secondary">{currentQuestion.subject}</Badge>
+                    <Badge variant="secondary">{currentQuestion.topic}</Badge>
+                  </div>
+                  {answers[currentQuestionIndex] !== null && (
+                    <CheckCircle className="w-5 h-5 text-success" />
+                  )}
+                </div>
+                <CardTitle className="text-xl leading-relaxed">
+                  {currentQuestion.statement}
+                </CardTitle>
+              </CardHeader>
+
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  {currentQuestion.alternatives.map((alternative, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleAnswer(index)}
+                      className={cn(
+                        "w-full p-4 text-left rounded-lg border-2 transition-all duration-200",
+                        "flex items-center gap-3 min-h-[60px]",
+                        answers[currentQuestionIndex] === index
+                          ? "border-primary bg-accent"
+                          : "border-border hover:border-primary/50 hover:bg-accent/50"
+                      )}
+                    >
+                      <span className="flex-shrink-0 w-6 h-6 bg-muted rounded-full flex items-center justify-center text-sm font-medium">
+                        {String.fromCharCode(65 + index)}
+                      </span>
+                      <span className="flex-1">{alternative}</span>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="flex justify-between pt-4">
+                  <Button
+                    variant="outline"
+                    onClick={prevQuestion}
+                    disabled={currentQuestionIndex === 0}
+                    className="flex items-center gap-2"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    Anterior
+                  </Button>
+
+                  <Button
+                    onClick={nextQuestion}
+                    disabled={currentQuestionIndex === questions.length - 1}
+                    className="flex items-center gap-2"
+                  >
+                    Próxima
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Coluna da Direita: Tutor de IA e Navegação */}
+          <div className="lg:col-span-1 flex flex-col gap-6 lg:sticky lg:top-32 h-fit">
+            <TutorView context={tutorContext} />
+            <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Navegação</CardTitle>
                 <CardDescription>Clique para ir para uma questão</CardDescription>
@@ -204,90 +277,6 @@ export const SimuladoCompleto = ({
                       </button>
                     );
                   })}
-                </div>
-                
-                <div className="mt-4 space-y-2 text-sm">
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded border-2 border-success bg-success/10" />
-                    <span>Respondida</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded border-2 border-primary bg-primary" />
-                    <span>Atual</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded border-2 border-muted" />
-                    <span>Não respondida</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Questão Atual */}
-          <div className="lg:col-span-3">
-            <Card className="shadow-elevated">
-              <CardHeader>
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline">
-                      {questions[currentQuestion].institution} {questions[currentQuestion].year}
-                    </Badge>
-                    <Badge variant="secondary">{questions[currentQuestion].subject}</Badge>
-                    <Badge variant="secondary">{questions[currentQuestion].topic}</Badge>
-                  </div>
-                  {answers[currentQuestion] !== null && (
-                    <CheckCircle className="w-5 h-5 text-success" />
-                  )}
-                </div>
-                <CardTitle className="text-xl leading-relaxed">
-                  {questions[currentQuestion].statement}
-                </CardTitle>
-              </CardHeader>
-
-              <CardContent className="space-y-4">
-                {/* Alternativas */}
-                <div className="space-y-3">
-                  {questions[currentQuestion].alternatives.map((alternative, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleAnswer(index)}
-                      className={cn(
-                        "w-full p-4 text-left rounded-lg border-2 transition-all duration-200",
-                        "flex items-center gap-3 min-h-[60px]",
-                        answers[currentQuestion] === index
-                          ? "border-primary bg-accent"
-                          : "border-border hover:border-primary/50 hover:bg-accent/50"
-                      )}
-                    >
-                      <span className="flex-shrink-0 w-6 h-6 bg-muted rounded-full flex items-center justify-center text-sm font-medium">
-                        {String.fromCharCode(65 + index)}
-                      </span>
-                      <span className="flex-1">{alternative}</span>
-                    </button>
-                  ))}
-                </div>
-
-                {/* Navegação */}
-                <div className="flex justify-between pt-4">
-                  <Button
-                    variant="outline"
-                    onClick={prevQuestion}
-                    disabled={currentQuestion === 0}
-                    className="flex items-center gap-2"
-                  >
-                    <ArrowLeft className="w-4 h-4" />
-                    Anterior
-                  </Button>
-
-                  <Button
-                    onClick={nextQuestion}
-                    disabled={currentQuestion === questions.length - 1}
-                    className="flex items-center gap-2"
-                  >
-                    Próxima
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
                 </div>
               </CardContent>
             </Card>

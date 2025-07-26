@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from './useAuth';
 
 // Define a estrutura da mensagem do chat
@@ -14,53 +13,25 @@ export const useTutor = (context: Record<string, any>) => {
   const [history, setHistory] = useState<TutorMessage[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [welcomeMessage, setWelcomeMessage] = useState<TutorMessage | null>(null);
 
-  const fetchQuizAnalysis = async () => {
-    if (!user) {
-      setError("Usuário não autenticado.");
-      return;
-    }
-    setLoading(true);
-    setError(null);
-    setWelcomeMessage(null); // Ensure no welcome message is shown
+  // Efeito para iniciar a conversa proativamente
+  useEffect(() => {
+    const startProactiveChat = () => {
+      if (!user) return;
+      // Only start proactive chat if the context is question or quizResults
+      if (context?.type === 'quizResults' || context?.type === 'question') {
+        setLoading(true);
+        setError(null);
+        setHistory([]); // Limpa o histórico para uma nova análise/questão
 
-    const payload = {
-      history: [], // No history needed for initial analysis
-      userId: user.id,
-      context: context,
-      userMessage: '', // No user message for initial analysis
-    };
-
-    console.log("Fetching quiz analysis from API:", payload);
-
-    try {
-      const response = await fetch('/api/tutor', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error('Falha ao buscar análise do simulado.');
+        // A mensagem inicial é vazia para acionar a lógica proativa do backend
+        sendMessage('', context, true);
       }
+    };
+    startProactiveChat();
+  }, [user, context.type, context.questionId]); // Re-inicia quando o tipo ou ID da questão muda, or when user logs in
 
-      const data = await response.json();
-      const analysisMessage: TutorMessage = { role: 'model', parts: [{ text: data.message }] };
-      setHistory([analysisMessage]); // Set the analysis as the first message
-
-    } catch (err) {
-      console.error("Error fetching quiz analysis:", err);
-      const errorMessage = err instanceof Error ? err.message : "Ocorreu um erro desconhecido.";
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const sendMessage = async (message: string, currentContext: Record<string, any>) => {
+  const sendMessage = async (message: string, currentContext: Record<string, any>, isProactive = false) => {
     if (!user) {
       setError("Usuário não autenticado.");
       return;
@@ -69,13 +40,16 @@ export const useTutor = (context: Record<string, any>) => {
     setLoading(true);
     setError(null);
 
-    // Adiciona a mensagem do usuário ao histórico local imediatamente
-    const newUserMessage: TutorMessage = { role: 'user', parts: [{ text: message }] };
-    const updatedHistory = [...history, newUserMessage];
-    setHistory(updatedHistory);
+    let updatedHistory = [...history];
+    if (!isProactive) {
+      const newUserMessage: TutorMessage = { role: 'user', parts: [{ text: message }] };
+      updatedHistory.push(newUserMessage);
+      setHistory(updatedHistory);
+    }
 
     const payload = {
-      history: updatedHistory,
+      // Garante que o histórico enviado para a API sempre comece com 'user' se não estiver vazio
+      history: updatedHistory.length > 0 && updatedHistory[0].role === 'model' ? updatedHistory.slice(1) : updatedHistory,
       userId: user.id,
       context: currentContext,
       userMessage: message,
@@ -95,6 +69,8 @@ export const useTutor = (context: Record<string, any>) => {
       });
 
       if (!response.ok) {
+        const errorBody = await response.text();
+        console.error("Erro do servidor:", errorBody);
         throw new Error('Falha na comunicação com o servidor do tutor.');
       }
 
@@ -102,32 +78,26 @@ export const useTutor = (context: Record<string, any>) => {
       
       // Adiciona a resposta do modelo (IA) ao histórico
       const modelMessage: TutorMessage = { role: 'model', parts: [{ text: data.message }] };
-      setHistory([...updatedHistory, modelMessage]);
+      
+      // If the history was empty (proactive start), the first message is the model's response
+      if (isProactive) {
+          setHistory([modelMessage]);
+      } else {
+          setHistory([...updatedHistory, modelMessage]);
+      }
 
     } catch (err) {
       console.error("Error sending message:", err);
       const errorMessage = err instanceof Error ? err.message : "Ocorreu um erro desconhecido.";
       setError(errorMessage);
       // Opcional: reverte a adição da mensagem do usuário se a chamada falhar
-      setHistory(history);
+      if (!isProactive) {
+        setHistory(history);
+      }
     } finally {
       setLoading(false);
     }
   };
-  
-  // Função para iniciar o chat
-  const startChat = () => {
-    if (context?.type === 'quizResults') {
-      fetchQuizAnalysis();
-    } else {
-      const message: TutorMessage = {
-          role: 'model',
-          parts: [{ text: `Olá! Sou seu tutor de IA. O contexto da nossa conversa é: ${JSON.stringify(context)}. Como posso te ajudar?` }]
-      };
-      setWelcomeMessage(message);
-      setHistory([]); // Limpa o histórico para garantir que não seja enviado
-    }
-  };
 
-  return { history, loading, error, welcomeMessage, sendMessage, startChat };
+  return { history, loading, error, sendMessage };
 };

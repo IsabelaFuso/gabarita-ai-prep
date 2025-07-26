@@ -12,25 +12,34 @@ interface TutorViewProps {
   context: Record<string, any>;
 }
 
+// Componente para renderizar o player do YouTube
+const YouTubeEmbed = ({ videoId, title }: { videoId: string; title: string }) => (
+  <div className="aspect-video w-full max-w-md my-2 rounded-lg overflow-hidden">
+    <iframe
+      width="100%"
+      height="100%"
+      src={`https://www.youtube.com/embed/${videoId}`}
+      title={title}
+      frameBorder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
+    ></iframe>
+  </div>
+);
+
 export const TutorView = ({ context }: TutorViewProps) => {
-  const { history, loading, error, welcomeMessage, sendMessage, startChat } = useTutor(context);
+  const { history, loading, error, sendMessage } = useTutor(context);
   const [input, setInput] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Automatically start the chat when the component mounts
-    startChat();
-  }, [context]);
-
-  useEffect(() => {
-    // Scroll to the bottom whenever the history changes
     if (scrollAreaRef.current) {
       scrollAreaRef.current.scrollTo({
         top: scrollAreaRef.current.scrollHeight,
         behavior: 'smooth',
       });
     }
-  }, [history, welcomeMessage]);
+  }, [history]);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,11 +51,45 @@ export const TutorView = ({ context }: TutorViewProps) => {
 
   const renderMessageContent = (message: TutorMessage) => {
     const text = message.parts.map(part => (part as { text: string }).text).join('');
-    // Basic markdown-like formatting for bold and lists
+    
+    // Regex para encontrar a nossa tag customizada do YouTube
+    const youtubeRegex = /\[YOUTUBE_VIDEO\]\(([^,]+),\s*"([^"]+)"\)/g;
+    let lastIndex = 0;
+    const parts = [];
+
+    let match;
+    while ((match = youtubeRegex.exec(text)) !== null) {
+      // Adiciona o texto antes do vídeo
+      if (match.index > lastIndex) {
+        const textBefore = text.substring(lastIndex, match.index);
+        parts.push(<div key={`text-${lastIndex}`} dangerouslySetInnerHTML={{ __html: textBefore.replace(/(\r\n|\n|\r)/g, '<br />') }} />);
+      }
+      
+      const videoId = match[1];
+      const title = match[2];
+      
+      // Adiciona o componente do vídeo
+      parts.push(<YouTubeEmbed key={`youtube-${match.index}`} videoId={videoId} title={title} />);
+      
+      lastIndex = match.index + match[0].length;
+    }
+
+    // Adiciona o texto restante após o último vídeo
+    if (lastIndex < text.length) {
+      const textAfter = text.substring(lastIndex);
+      parts.push(<div key={`text-${lastIndex}`} dangerouslySetInnerHTML={{ __html: textAfter.replace(/(\r\n|\n|\r)/g, '<br />') }} />);
+    }
+
+    if (parts.length > 0) {
+      return <div>{parts}</div>;
+    }
+
+
+    // Renderização padrão para texto (com markdown básico)
     const html = text
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
-      .replace(/\* (.*?)(?=\n\* |$)/g, '<li>$1</li>') // List items
-      .replace(/(\r\n|\n|\r)/g, '<br />'); // Newlines
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\* (.*?)(?=\n\* |$)/g, '<li>$1</li>')
+      .replace(/(\r\n|\n|\r)/g, '<br />');
 
     return <div dangerouslySetInnerHTML={{ __html: html }} />;
   };
@@ -60,16 +103,16 @@ export const TutorView = ({ context }: TutorViewProps) => {
 
       <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
         <div className="space-y-6">
-          {welcomeMessage && (
-            <div className="flex items-start gap-3 justify-start">
-              <Avatar className="w-8 h-8 border">
-                <AvatarImage src="/placeholder.svg" alt="Tutor" />
-                <AvatarFallback>IA</AvatarFallback>
-              </Avatar>
-              <div className="p-3 rounded-lg bg-muted max-w-sm md:max-w-md lg:max-w-lg">
-                {renderMessageContent(welcomeMessage)}
-              </div>
-            </div>
+          {history.length === 0 && !loading && context?.type !== 'quizResults' && (
+             <div className="flex items-start gap-3 justify-start">
+               <Avatar className="w-8 h-8 border">
+                 <AvatarImage src="/placeholder.svg" alt="Tutor" />
+                 <AvatarFallback>IA</AvatarFallback>
+               </Avatar>
+               <div className="p-3 rounded-lg bg-muted max-w-sm md:max-w-md lg:max-w-lg">
+                 Olá! Sou seu tutor de IA. Como posso te ajudar hoje?
+               </div>
+             </div>
           )}
           {history.map((message, index) => (
             <div

@@ -29,7 +29,7 @@ interface PerformanceData {
 
 interface RecentActivity {
   id: number;
-  completed_at: string;
+  finished_at: string;
   name: string;
   score: number;
 }
@@ -99,10 +99,10 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
         // Fetch recent activities (completed simulados)
         const { data: activityData, error: activityError } = await supabase
           .from('simulados')
-          .select('id, completed_at, name, score')
+          .select('id, finished_at, title')
           .eq('user_id', user.id)
-          .not('completed_at', 'is', null)
-          .order('completed_at', { ascending: false })
+          .not('finished_at', 'is', null)
+          .order('finished_at', { ascending: false })
           .limit(3);
 
         if (activityError) throw activityError;
@@ -364,9 +364,9 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
               recentActivities.map((activity) => (
                 <div key={activity.id} className="flex items-center justify-between p-3 bg-accent/30 rounded-lg">
                   <div>
-                    <p className="text-sm font-medium">{activity.name || 'Simulado'}</p>
+                    <p className="text-sm font-medium">{activity.title || 'Simulado'}</p>
                     <p className="text-xs text-muted-foreground">
-                      {formatDistanceToNow(new Date(activity.completed_at), { addSuffix: true, locale: ptBR })}
+                      {formatDistanceToNow(new Date(activity.finished_at), { addSuffix: true, locale: ptBR })}
                     </p>
                   </div>
                   <Badge variant="secondary">{Math.round(activity.score)}%</Badge>
