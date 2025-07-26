@@ -352,9 +352,19 @@ app.post('/api/tutor', async (req, res) => {
 
   let geminiMessage = userMessage;
 
-  // For quiz results, the initial "message" is the context itself for the tool
+  // For proactive scenarios, generate the initial message for the AI
   if (context.type === 'quizResults' && !userMessage) {
-      geminiMessage = "Analise estes resultados de quiz, por favor.";
+      geminiMessage = "Por favor, analise os resultados do meu simulado e inicie a conversa.";
+  } else if (context.type === "question" && !userMessage) {
+      const topic = context.topic || "desconhecido";
+      const alternatives = (context.options || []).map((opt: string, i: number) => `- ${String.fromCharCode(65 + i)}: ${opt}`).join('\n');
+      geminiMessage = `
+        Estou com dúvida na seguinte questão sobre "${topic}" e gostaria de uma ajuda para começar. Não me dê a resposta, apenas uma dica.
+
+        **Questão:** ${context.questionText || 'Não informado'}
+        **Alternativas:**
+        ${alternatives}
+      `;
   }
 
   console.log("API Tutor: Sending to Gemini:", JSON.stringify(geminiMessage, null, 2));
