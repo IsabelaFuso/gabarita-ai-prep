@@ -41,6 +41,8 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
   const [summary, setSummary] = useState<PerformanceData | null>(null);
   const [questionsToday, setQuestionsToday] = useState(0);
   const [recentActivities, setRecentActivities] = useState<RecentActivity[]>([]);
+  const [studyTime, setStudyTime] = useState(0); // in seconds
+  const [gamificationScore, setGamificationScore] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -49,6 +51,19 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
 
       setLoading(true);
       try {
+        // Fetch user profile stats (time and score)
+        const { data: profileData, error: profileError } = await supabase
+          .from('user_profiles')
+          .select('total_study_time_seconds, gamification_score')
+          .eq('user_id', user.id)
+          .single();
+
+        if (profileError) console.error("Error fetching profile stats:", profileError);
+        if (profileData) {
+          setStudyTime(profileData.total_study_time_seconds || 0);
+          setGamificationScore(profileData.gamification_score || 0);
+        }
+
         // Fetch performance summary
         const { data: performanceData, error: summaryError } = await supabase
           .rpc('get_user_performance_summary', { p_user_id: user.id });
@@ -120,6 +135,12 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
     fetchData();
   }, [user]);
 
+  const formatStudyTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return `${hours}h ${minutes}m`;
+  };
+
   const hasSelection = selectedConfig.university && selectedConfig.firstChoice;
 
   if (!hasSelection) {
@@ -182,7 +203,7 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-warning">3h 42m</div>
+            {loading ? <Skeleton className="h-7 w-24" /> : <div className="text-2xl font-bold text-warning">{formatStudyTime(studyTime)}</div>}
             <p className="text-xs text-muted-foreground">Meta diária: 4h</p>
           </CardContent>
         </Card>
@@ -193,8 +214,8 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
             <Award className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">2,847</div>
-            <p className="text-xs text-muted-foreground">Top 15% nacional</p>
+            {loading ? <Skeleton className="h-7 w-20" /> : <div className="text-2xl font-bold text-primary">{gamificationScore.toLocaleString('pt-BR')}</div>}
+            <p className="text-xs text-muted-foreground">Continue assim!</p>
           </CardContent>
         </Card>
       </div>

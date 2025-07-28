@@ -12,13 +12,14 @@ interface GenerateQuestionsOptions {
   subjects?: string[];
   difficulty?: ('facil' | 'medio' | 'dificil')[];
   excludeUsed?: boolean;
+  prioritizeWeaknesses?: boolean;
 }
 
 export const useQuestionManager = (selectedConfig: SelectedConfig, user: any) => {
   const [usedQuestionIds, setUsedQuestionIds] = useState<string[]>([]);
 
   const generateQuestions = async (options: GenerateQuestionsOptions): Promise<Question[]> => {
-    const { type, count, subjects, difficulty, excludeUsed = true } = options;
+    const { type, count, subjects, difficulty, excludeUsed = true, prioritizeWeaknesses = false } = options;
 
     const rpcParams = {
       p_user_id: user.id,
@@ -27,6 +28,7 @@ export const useQuestionManager = (selectedConfig: SelectedConfig, user: any) =>
       p_subject_names: subjects,
       p_difficulty_levels: difficulty,
       p_exclude_ids: excludeUsed ? usedQuestionIds : null,
+      p_prioritize_weaknesses: prioritizeWeaknesses,
     };
 
     const { data, error } = await supabase.rpc('get_custom_simulado_questions', rpcParams);

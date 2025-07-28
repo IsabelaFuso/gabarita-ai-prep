@@ -45,7 +45,7 @@ const Index = () => {
     handleSimuladoFinish,
     handleSimuladoExit,
     restartSimulado
-  } = useSimuladoManager(generateQuestions, setCurrentView, setSimuladoResults);
+  } = useSimuladoManager(generateQuestions, setCurrentView, setSimuladoResults, user);
 
   // Updated usePracticeQuiz hook, no longer needs generateQuestions
   const {
