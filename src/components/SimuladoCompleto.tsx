@@ -32,14 +32,21 @@ export const SimuladoCompleto = ({
   selectedConfig 
 }: SimuladoCompletoProps) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<(number | null)[]>(new Array(questions.length).fill(null));
+  const [answers, setAnswers] = useState<(number | null)[]>([]);
   const [timeRemaining, setTimeRemaining] = useState(timeLimit * 60); // converter para segundos
   const [showConfirmExit, setShowConfirmExit] = useState(false);
 
-  const currentQuestion = questions[currentQuestionIndex];
+  useEffect(() => {
+    // Initialize answers array only when questions are loaded
+    if (questions.length > 0) {
+      setAnswers(new Array(questions.length).fill(null));
+    }
+  }, [questions]);
 
   // Cronômetro
   useEffect(() => {
+    if (questions.length === 0) return;
+
     const timer = setInterval(() => {
       setTimeRemaining((prev) => {
         if (prev <= 1) {
@@ -51,7 +58,31 @@ export const SimuladoCompleto = ({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [questions]);
+
+  if (!questions || questions.length === 0) {
+    return (
+      <div className="min-h-screen bg-gradient-background flex items-center justify-center">
+        <Card className="w-full max-w-md text-center">
+          <CardHeader>
+            <CardTitle className="flex items-center justify-center gap-2">
+              <AlertCircle className="w-6 h-6 text-destructive" />
+              Nenhuma Questão Encontrada
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p>Não foi possível carregar as questões para este simulado. Isso pode acontecer se não houver questões disponíveis para os filtros selecionados (universidade, matéria, etc.) ou se você já respondeu todas as questões disponíveis.</p>
+            <Button onClick={onExit}>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar ao Dashboard
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  const currentQuestion = questions[currentQuestionIndex];
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);

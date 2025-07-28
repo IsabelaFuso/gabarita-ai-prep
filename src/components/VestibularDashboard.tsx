@@ -10,15 +10,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
+import { SimuladoType } from "@/hooks/useQuestionManager";
+
 interface VestibularDashboardProps {
   selectedConfig: {
     university: string;
     firstChoice: string;
     secondChoice: string;
   };
-  onStartSimulado?: () => void;
+  onStartSimulado: (type: SimuladoType) => void;
   onStartRedacao?: () => void;
-  usedQuestionIds: number[];
+  usedQuestionIds: string[];
   onResetUsedQuestions: () => void;
 }
 
@@ -248,15 +250,15 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <Button className="w-full justify-start" size="lg" onClick={onStartSimulado}>
+            <Button className="w-full justify-start" size="lg" onClick={() => onStartSimulado('completo')}>
               <PlayCircle className="mr-2 h-5 w-5" />
               Simulado Completo - {selectedConfig.university.toUpperCase()}
             </Button>
-            <Button className="w-full justify-start" variant="outline">
+            <Button className="w-full justify-start" variant="outline" onClick={() => onStartSimulado('foco_curso')}>
               <Target className="mr-2 h-4 w-4" />
               Foco no Meu Curso
             </Button>
-            <Button className="w-full justify-start" variant="outline">
+            <Button className="w-full justify-start" variant="outline" onClick={() => onStartSimulado('rapido')}>
               <Clock className="mr-2 h-4 w-4" />
               Simulado Rápido (30 min)
             </Button>

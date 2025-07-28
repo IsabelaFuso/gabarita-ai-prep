@@ -15,7 +15,10 @@ import { usePracticeQuiz } from "@/hooks/usePracticeQuiz";
 import { Button } from "@/components/ui/button";
 import { Loader2, AlertTriangle } from "lucide-react";
 
+import { useAuth } from "@/hooks/useAuth";
+
 const Index = () => {
+  const { user } = useAuth();
   // Custom hooks for state management
   const {
     selectedConfig,
@@ -33,7 +36,7 @@ const Index = () => {
     usedQuestionIds,
     generateQuestions,
     resetUsedQuestions
-  } = useQuestionManager(selectedConfig);
+  } = useQuestionManager(selectedConfig, user);
 
   const {
     currentQuestions,

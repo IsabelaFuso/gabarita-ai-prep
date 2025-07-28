@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { type Question } from "@/data/questionsBank";
+import { type Question } from "@/data/types";
 import { AppView } from "./useAppState";
+import { GenerateQuestionsOptions, SimuladoType } from "./useQuestionManager";
 
 interface SimuladoResults {
   answers: (number | null)[];
@@ -9,17 +10,46 @@ interface SimuladoResults {
 }
 
 export const useSimuladoManager = (
-  generateQuestions: (count?: number, excludeUsed?: boolean) => Promise<Question[]>,
+  generateQuestions: (options: GenerateQuestionsOptions) => Promise<Question[]>,
   setCurrentView: (view: AppView) => void,
   setSimuladoResults: (results: SimuladoResults | null) => void
 ) => {
   const [currentQuestions, setCurrentQuestions] = useState<Question[]>([]);
   const [loadingSimulado, setLoadingSimulado] = useState(false);
+  const [currentSimuladoType, setCurrentSimuladoType] = useState<SimuladoType | null>(null);
 
-  const startSimulado = async () => {
+  const startSimulado = async (type: SimuladoType, options?: Partial<GenerateQuestionsOptions>) => {
     setLoadingSimulado(true);
-    setCurrentQuestions([]); // Clear previous questions
-    const simuladoQuestions = await generateQuestions(25);
+    setCurrentQuestions([]);
+    setCurrentSimuladoType(type);
+
+    const defaultOptions: GenerateQuestionsOptions = {
+      type: type,
+      count: 0,
+      excludeUsed: true,
+    };
+
+    switch (type) {
+      case 'completo':
+        defaultOptions.count = 90;
+        break;
+      case 'rapido':
+        defaultOptions.count = 30;
+        break;
+      case 'foco_curso':
+        defaultOptions.count = 45;
+        // Here you could add logic to get subjects for the user's course
+        break;
+      case 'por_materia':
+        defaultOptions.count = 20;
+        break;
+      case 'minhas_dificuldades':
+        defaultOptions.count = 20;
+        // Add logic to get user's weak subjects
+        break;
+    }
+
+    const simuladoQuestions = await generateQuestions({ ...defaultOptions, ...options });
     setCurrentQuestions(simuladoQuestions);
     setLoadingSimulado(false);
     setCurrentView('simulado');
@@ -35,13 +65,12 @@ export const useSimuladoManager = (
   };
 
   const restartSimulado = async () => {
+    if (!currentSimuladoType) return;
     setLoadingSimulado(true);
     setSimuladoResults(null);
-    setCurrentQuestions([]); // Clear previous questions
-    const newQuestions = await generateQuestions(25);
-    setCurrentQuestions(newQuestions);
+    setCurrentQuestions([]);
+    await startSimulado(currentSimuladoType);
     setLoadingSimulado(false);
-    setCurrentView('simulado');
   };
 
   return {
@@ -50,6 +79,6 @@ export const useSimuladoManager = (
     startSimulado,
     handleSimuladoFinish,
     handleSimuladoExit,
-    restartSimulado
+    restartSimulado,
   };
 };

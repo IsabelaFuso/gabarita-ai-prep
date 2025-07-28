@@ -13,6 +13,7 @@ import {
   Star,
   Zap
 } from "lucide-react";
+import { SimuladoType } from "@/hooks/useQuestionManager";
 
 interface SimuladosViewProps {
   selectedConfig: {
@@ -20,12 +21,13 @@ interface SimuladosViewProps {
     firstChoice: string;
     secondChoice: string;
   };
-  onStartSimulado: () => void;
+  onStartSimulado: (type: SimuladoType) => void;
 }
 
 export const SimuladosView = ({ selectedConfig, onStartSimulado }: SimuladosViewProps) => {
   const simuladoTypes = [
     {
+      type: 'completo' as SimuladoType,
       title: "Simulado Completo",
       description: "Prova completa seguindo o padrão oficial",
       icon: BookOpen,
@@ -37,6 +39,7 @@ export const SimuladosView = ({ selectedConfig, onStartSimulado }: SimuladosView
       features: ["Todas as matérias", "Cronômetro oficial", "Correção detalhada"]
     },
     {
+      type: 'rapido' as SimuladoType,
       title: "Simulado Rápido",
       description: "Versão reduzida para treino diário",
       icon: Zap,
@@ -48,6 +51,7 @@ export const SimuladosView = ({ selectedConfig, onStartSimulado }: SimuladosView
       features: ["Questões essenciais", "Feedback instantâneo", "Foco na velocidade"]
     },
     {
+      type: 'por_materia' as SimuladoType,
       title: "Simulado por Área",
       description: "Concentre-se em matérias específicas",
       icon: Target,
@@ -138,7 +142,7 @@ export const SimuladosView = ({ selectedConfig, onStartSimulado }: SimuladosView
               <Button 
                 className="w-full" 
                 size="lg"
-                onClick={onStartSimulado}
+                onClick={() => onStartSimulado(simulado.type)}
               >
                 <PlayCircle className="mr-2 h-5 w-5" />
                 Iniciar {simulado.title}
