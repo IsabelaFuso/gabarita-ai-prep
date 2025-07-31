@@ -4,7 +4,7 @@
     "nome_usuario": "Juliana Santos",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_1",
     "xp": 2500,
-    "patente": "Mestre da Aprovação",
+    "patente": "Oráculo do Vestibular",
     "instituicao_alvo": "USP",
     "curso_alvo": "Medicina",
     "conquistas": ["Mestre da Biologia", "Rainha da Redação", "1000 Questões Resolvidas"]
@@ -14,7 +14,7 @@
     "nome_usuario": "Lucas Oliveira",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_2",
     "xp": 1800,
-    "patente": "Estrategista do Vestibular",
+    "patente": "Arquiteto do Saber",
     "instituicao_alvo": "Unicamp",
     "curso_alvo": "Engenharia da Computação",
     "conquistas": ["Calculista Supremo", "500 Questões Resolvidas"]
@@ -24,7 +24,7 @@
     "nome_usuario": "Beatriz Costa",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_3",
     "xp": 4200,
-    "patente": "Lenda do Gabarito",
+    "patente": "Titã do Gabarito",
     "instituicao_alvo": "ITA",
     "curso_alvo": "Engenharia Aeroespacial",
     "conquistas": ["Lenda da Física", "Velocista de Simulados", "Gênio da Química"]
@@ -34,7 +34,7 @@
     "nome_usuario": "Gabriel Pereira",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_4",
     "xp": 850,
-    "patente": "Desbravador de Questões",
+    "patente": "Desbravador de Manuscritos",
     "instituicao_alvo": "UFRJ",
     "curso_alvo": "Direito",
     "conquistas": ["Historiador Épico", "Primeiro Simulado Concluído"]
@@ -44,7 +44,7 @@
     "nome_usuario": "Mariana Almeida",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_5",
     "xp": 350,
-    "patente": "Explorador do Conhecimento",
+    "patente": "Acadêmico Iniciante",
     "instituicao_alvo": "UFMG",
     "curso_alvo": "Arquitetura e Urbanismo",
     "conquistas": ["Primeiro Simulado Concluído", "100 Questões Resolvidas"]
@@ -54,7 +54,7 @@
     "nome_usuario": "Rafael Ferreira",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_6",
     "xp": 90,
-    "patente": "Iniciante Curioso",
+    "patente": "Neófito Curioso",
     "instituicao_alvo": "UNESP",
     "curso_alvo": "Relações Internacionais",
     "conquistas": ["Começando a Jornada"]
@@ -64,7 +64,7 @@
     "nome_usuario": "Larissa Rodrigues",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_7",
     "xp": 1100,
-    "patente": "Estrategista do Vestibular",
+    "patente": "Arquiteto do Saber",
     "instituicao_alvo": "PUC-Rio",
     "curso_alvo": "Psicologia",
     "conquistas": ["Leitor Voraz", "Simulado de Humanas Concluído"]
@@ -74,7 +74,7 @@
     "nome_usuario": "Felipe Martins",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_8",
     "xp": 2900,
-    "patente": "Mestre da Aprovação",
+    "patente": "Oráculo do Vestibular",
     "instituicao_alvo": "UnB",
     "curso_alvo": "Ciência da Computação",
     "conquistas": ["Mestre da Lógica", "Trilíngue", "1500 Questões Resolvidas"]
@@ -84,7 +84,7 @@
     "nome_usuario": "Camila Gonçalves",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_9",
     "xp": 620,
-    "patente": "Desbravador de Questões",
+    "patente": "Desbravador de Manuscritos",
     "instituicao_alvo": "UFSC",
     "curso_alvo": "Design",
     "conquistas": ["Artista da Geometria", "Simulado de Linguagens Concluído"]
@@ -94,7 +94,7 @@
     "nome_usuario": "Pedro Ribeiro",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_10",
     "xp": 4800,
-    "patente": "Lenda do Gabarito",
+    "patente": "Titã do Gabarito",
     "instituicao_alvo": "USP",
     "curso_alvo": "Engenharia Elétrica",
     "conquistas": ["Calculista Supremo", "Lenda da Física", "2000 Questões Resolvidas"]
@@ -104,7 +104,7 @@
     "nome_usuario": "Sofia Lima",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_11",
     "xp": 150,
-    "patente": "Explorador do Conhecimento",
+    "patente": "Acadêmico Iniciante",
     "instituicao_alvo": "UFC",
     "curso_alvo": "Jornalismo",
     "conquistas": ["Primeira Redação Enviada"]
@@ -114,7 +114,7 @@
     "nome_usuario": "Thiago Azevedo",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_12",
     "xp": 1950,
-    "patente": "Estrategista do Vestibular",
+    "patente": "Arquiteto do Saber",
     "instituicao_alvo": "UFBA",
     "curso_alvo": "Medicina Veterinária",
     "conquistas": ["Cientista Prodígio", "Amigo dos Animais"]
@@ -124,7 +124,7 @@
     "nome_usuario": "Isabela Nogueira",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_13",
     "xp": 780,
-    "patente": "Desbravador de Questões",
+    "patente": "Desbravador de Manuscritos",
     "instituicao_alvo": "Mackenzie",
     "curso_alvo": "Publicidade e Propaganda",
     "conquistas": ["Mestre da Interpretação", "Simulado de Linguagens Concluído"]
@@ -134,7 +134,7 @@
     "nome_usuario": "Gustavo Carvalho",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_14",
     "xp": 2200,
-    "patente": "Mestre da Aprovação",
+    "patente": "Oráculo do Vestibular",
     "instituicao_alvo": "FGV",
     "curso_alvo": "Administração",
     "conquistas": ["Especialista em Atualidades", "Debatedor Nato"]
@@ -144,7 +144,7 @@
     "nome_usuario": "Laura Mendes",
     "avatar_url": "https://i.pravatar.cc/150?u=mock_user_15",
     "xp": 450,
-    "patente": "Explorador do Conhecimento",
+    "patente": "Acadêmico Iniciante",
     "instituicao_alvo": "UERJ",
     "curso_alvo": "Ciências Sociais",
     "conquistas": ["Historiadora Épica", "Primeiro Simulado Concluído"]

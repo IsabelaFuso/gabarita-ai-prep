@@ -198,7 +198,12 @@ const Index = () => {
         return renderPracticeQuiz();
       default:
         return (
-          <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex flex-col lg:flex-row gap-8 items-stretch">
+            <aside className="w-full lg:w-96 lg:order-last">
+              <div className="sticky top-8 h-full">
+                <RankingView />
+              </div>
+            </aside>
             <main className="flex-1 space-y-8">
               <UniversitySelector onSelectionChange={handleSelectionChange} />
               <VestibularDashboard 
@@ -209,9 +214,6 @@ const Index = () => {
                 onResetUsedQuestions={resetUsedQuestions}
               />
             </main>
-            <aside className="w-full lg:w-96">
-              <RankingView />
-            </aside>
           </div>
         );
     }
