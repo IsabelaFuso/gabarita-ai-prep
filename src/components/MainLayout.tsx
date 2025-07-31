@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
+import { useAppState } from "@/hooks/useAppState";
+import ReactConfetti from "react-confetti";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -19,8 +21,11 @@ export const MainLayout = ({
   onNavigate,
   showHero = true 
 }: MainLayoutProps) => {
+  const { showConfetti } = useAppState();
+
   return (
     <div className="min-h-screen">
+      {showConfetti && <ReactConfetti width={window.innerWidth} height={window.innerHeight} />}
       <Header currentView={currentView} onNavigate={onNavigate} />
       
       <main>

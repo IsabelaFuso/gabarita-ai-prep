@@ -26,6 +26,8 @@ export const useAppState = () => {
     score: number;
   } | null>(null);
 
+  const [showConfetti, setShowConfetti] = useState(false);
+
   // Fetch user's saved config on initial load
   useEffect(() => {
     const fetchUserConfig = async () => {
@@ -88,14 +90,21 @@ export const useAppState = () => {
     setCurrentView('redacao');
   };
 
+  const triggerConfetti = () => {
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 5000); // Confetti runs for 5 seconds
+  };
+
   return {
     selectedConfig,
     currentView,
     simuladoResults,
+    showConfetti,
     handleSelectionChange,
     goHome,
     startRedacao,
     setCurrentView,
-    setSimuladoResults
+    setSimuladoResults,
+    triggerConfetti,
   };
 };

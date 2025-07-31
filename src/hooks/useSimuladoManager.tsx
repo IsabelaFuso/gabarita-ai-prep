@@ -16,7 +16,8 @@ export const useSimuladoManager = (
   generateQuestions: (options: GenerateQuestionsOptions) => Promise<Question[]>,
   setCurrentView: (view: AppView) => void,
   setSimuladoResults: (results: SimuladoResults | null) => void,
-  user: User | null
+  user: User | null,
+  triggerConfetti: () => void
 ) => {
   const [currentQuestions, setCurrentQuestions] = useState<Question[]>([]);
   const [loadingSimulado, setLoadingSimulado] = useState(false);
@@ -90,6 +91,7 @@ export const useSimuladoManager = (
         institution_id: institution?.id,
         total_questions: totalQuestions,
         status: 'finalizado',
+        score: accuracy, // Add the accuracy score here
       });
 
       const { data: newAchievements, error: achievementsError } = await supabase
@@ -101,10 +103,12 @@ export const useSimuladoManager = (
       
       if (achievementsError) {
         console.error("Error checking achievements:", achievementsError);
-      } else if (newAchievements) {
+      } else if (newAchievements && newAchievements.length > 0) {
+        triggerConfetti(); // <-- A MÁGICA ACONTECE AQUI!
         (newAchievements as any[]).forEach((ach: any) => {
           toast.success("Nova Conquista Desbloqueada!", {
-            description: ach.name,
+            description: `${ach.name}: ${ach.description}`,
+            duration: 5000,
           });
         });
       }

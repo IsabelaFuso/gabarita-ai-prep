@@ -4,10 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { 
-  TrendingUp, 
   TrendingDown, 
   Target, 
-  Clock, 
   Trophy, 
   BookOpen,
   RefreshCw,
@@ -15,20 +13,12 @@ import {
   AlertTriangle
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-
-interface DesempenhoViewProps {
-  selectedConfig: {
-    university: string;
-    firstChoice: string;
-    secondChoice: string;
-  };
-}
+import { useAuth } from "@/hooks/useAuth";
 
 interface PerformanceData {
-  subject: string;
-  score: number;
-  questions: number;
-  color: string;
+  subject_name: string;
+  accuracy: number;
+  total_questions: number;
 }
 
 const subjectColors: { [key: string]: string } = {
@@ -46,7 +36,8 @@ const subjectColors: { [key: string]: string } = {
   "Default": "text-gray-500",
 };
 
-export const DesempenhoView = ({ selectedConfig }: DesempenhoViewProps) => {
+export const DesempenhoView = () => {
+  const { user } = useAuth();
   const [performanceData, setPerformanceData] = useState<PerformanceData[]>([]);
   const [totalAttempts, setTotalAttempts] = useState(0);
   const [overallScore, setOverallScore] = useState(0);
@@ -54,30 +45,21 @@ export const DesempenhoView = ({ selectedConfig }: DesempenhoViewProps) => {
   const [error, setError] = useState<string | null>(null);
 
   const fetchPerformanceData = async () => {
+    if (!user) {
+      setError("Usuário não autenticado.");
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        setError("Usuário não autenticado.");
-        setLoading(false);
-        return;
-      }
+      const { data, error: rpcError } = await supabase.rpc('get_performance_summary', { p_user_id: user.id });
 
-      const { data: attempts, error: attemptsError } = await supabase
-        .from('user_attempts')
-        .select(`
-          is_correct,
-          question:questions (
-            subject:subjects (name)
-          )
-        `)
-        .eq('user_id', user.id);
+      if (rpcError) throw rpcError;
 
-      if (attemptsError) throw attemptsError;
-
-      if (!attempts || attempts.length === 0) {
+      if (!data || data.length === 0) {
         setPerformanceData([]);
         setTotalAttempts(0);
         setOverallScore(0);
@@ -85,32 +67,18 @@ export const DesempenhoView = ({ selectedConfig }: DesempenhoViewProps) => {
         return;
       }
 
-      const statsBySubject: { [key: string]: { correct: number; total: number } } = {};
-
-      for (const attempt of attempts) {
-        if (attempt.question?.subject?.name) {
-          const subjectName = attempt.question.subject.name;
-          if (!statsBySubject[subjectName]) {
-            statsBySubject[subjectName] = { correct: 0, total: 0 };
-          }
-          statsBySubject[subjectName].total++;
-          if (attempt.is_correct) {
-            statsBySubject[subjectName].correct++;
-          }
-        }
-      }
-
-      const formattedData: PerformanceData[] = Object.entries(statsBySubject).map(([subject, stats]) => ({
-        subject,
-        score: Math.round((stats.correct / stats.total) * 100),
-        questions: stats.total,
-        color: subjectColors[subject] || subjectColors.Default,
+      const totalCorrect = data.reduce((sum, item) => sum + (item.correct_answers || 0), 0);
+      const totalQuestions = data.reduce((sum, item) => sum + (item.total_questions || 0), 0);
+      
+      const formattedData = data.map(item => ({
+        subject_name: item.subject_name,
+        accuracy: Math.round(item.accuracy * 100),
+        total_questions: item.total_questions,
       }));
 
-      const totalCorrect = attempts.filter(a => a.is_correct).length;
-      setOverallScore(Math.round((totalCorrect / attempts.length) * 100));
-      setTotalAttempts(attempts.length);
-      setPerformanceData(formattedData.sort((a, b) => b.questions - a.questions));
+      setOverallScore(totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0);
+      setTotalAttempts(totalQuestions);
+      setPerformanceData(formattedData);
 
     } catch (err: any) {
       console.error("Error fetching performance data:", err);
@@ -122,7 +90,7 @@ export const DesempenhoView = ({ selectedConfig }: DesempenhoViewProps) => {
 
   useEffect(() => {
     fetchPerformanceData();
-  }, []);
+  }, [user]);
 
   if (loading) {
     return (
@@ -142,6 +110,8 @@ export const DesempenhoView = ({ selectedConfig }: DesempenhoViewProps) => {
       </div>
     );
   }
+
+  const getSubjectColor = (subject: string) => subjectColors[subject] || subjectColors.Default;
 
   return (
     <div className="space-y-6">
@@ -176,7 +146,7 @@ export const DesempenhoView = ({ selectedConfig }: DesempenhoViewProps) => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-success">
-              {performanceData.length > 0 ? performanceData.reduce((prev, current) => (prev.score > current.score) ? prev : current).subject : '-'}
+              {performanceData.length > 0 ? [...performanceData].sort((a, b) => b.accuracy - a.accuracy)[0].subject_name : '-'}
             </div>
             <p className="text-xs text-muted-foreground">Sua área de destaque</p>
           </CardContent>
@@ -189,7 +159,7 @@ export const DesempenhoView = ({ selectedConfig }: DesempenhoViewProps) => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-destructive">
-            {performanceData.length > 0 ? performanceData.reduce((prev, current) => (prev.score < current.score) ? prev : current).subject : '-'}
+            {performanceData.length > 0 ? [...performanceData].sort((a, b) => a.accuracy - b.accuracy)[0].subject_name : '-'}
             </div>
             <p className="text-xs text-muted-foreground">Seu ponto de foco</p>
           </CardContent>
@@ -215,15 +185,15 @@ export const DesempenhoView = ({ selectedConfig }: DesempenhoViewProps) => {
         <CardContent className="space-y-4">
           {performanceData.length > 0 ? (
             performanceData.map((item) => (
-              <div key={item.subject} className="space-y-2">
+              <div key={item.subject_name} className="space-y-2">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-3">
-                    <span className="font-medium">{item.subject}</span>
-                    <Badge variant="outline">{item.questions} questões</Badge>
+                    <span className="font-medium">{item.subject_name}</span>
+                    <Badge variant="outline">{item.total_questions} questões</Badge>
                   </div>
-                  <span className={`font-bold text-lg ${item.color}`}>{item.score}%</span>
+                  <span className={`font-bold text-lg ${getSubjectColor(item.subject_name)}`}>{item.accuracy}%</span>
                 </div>
-                <Progress value={item.score} className="h-3" />
+                <Progress value={item.accuracy} className="h-3" />
               </div>
             ))
           ) : (

@@ -12,6 +12,7 @@ import { ptBR } from 'date-fns/locale';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 
+import { AchievementTrail } from "./AchievementTrail";
 import { SimuladoType } from "@/hooks/useQuestionManager";
 
 interface VestibularDashboardProps {
@@ -81,32 +82,19 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
 
         // Fetch performance summary
         const { data: performanceData, error: summaryError } = await supabase
-          .rpc('get_user_performance_summary', { p_user_id: user.id });
+          .rpc('get_performance_summary', { p_user_id: user.id });
 
         if (summaryError) throw summaryError;
 
         if (performanceData) {
-            let totalCorrect = 0;
-            let totalAttempted = 0;
-            const subjectMap = new Map<string, { correct: number; total: number }>();
-
-            performanceData.forEach(item => {
-                totalCorrect += item.correct_attempts;
-                totalAttempted += item.total_attempts;
-
-                if (!subjectMap.has(item.subject_name)) {
-                    subjectMap.set(item.subject_name, { correct: 0, total: 0 });
-                }
-                const subjectPerf = subjectMap.get(item.subject_name)!;
-                subjectPerf.correct += item.correct_attempts;
-                subjectPerf.total += item.total_attempts;
-            });
-
+            const totalCorrect = performanceData.reduce((sum, item) => sum + (item.correct_answers || 0), 0);
+            const totalAttempted = performanceData.reduce((sum, item) => sum + (item.total_questions || 0), 0);
+            
             const overallAccuracy = totalAttempted > 0 ? totalCorrect / totalAttempted : 0;
-            const performance_by_subject = Array.from(subjectMap.entries()).map(([subject, data]) => ({
-                subject,
-                accuracy: data.total > 0 ? data.correct / data.total : 0,
-                total_questions: data.total,
+            const performance_by_subject = performanceData.map(item => ({
+                subject: item.subject_name,
+                accuracy: item.accuracy,
+                total_questions: item.total_questions,
             }));
 
             setSummary({
@@ -131,7 +119,7 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
         // Fetch recent activities (completed simulados)
         const { data: activityData, error: activityError } = await supabase
           .from('simulados')
-          .select('id, finished_at, title')
+          .select('id, finished_at, title, score')
           .eq('user_id', user.id)
           .not('finished_at', 'is', null)
           .order('finished_at', { ascending: false })
@@ -367,54 +355,30 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
         </Card>
       </div>
 
+      import { AchievementTrail } from "./AchievementTrail";
+...
       {/* Achievements */}
       <Card className="shadow-soft">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <Award className="w-5 h-5 text-amber-500" />
-            Conquistas
+            Sua Trilha de Conquistas
           </CardTitle>
           <CardDescription>
-            Medalhas que você ganhou por seu esforço e dedicação.
+            Seu progresso e suas próximas metas. Passe o mouse para ver os detalhes.
           </CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 gap-4">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="flex flex-col items-center gap-2">
-                  <Skeleton className="w-16 h-16 rounded-full" />
-                  <Skeleton className="h-4 w-20" />
-                </div>
-              ))}
+            <div className="flex items-center justify-center h-24">
+              <Skeleton className="h-16 w-full" />
             </div>
           ) : (
-            <TooltipProvider>
-              <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 gap-4">
-                {allAchievements.map((ach) => (
-                  <Tooltip key={ach.code}>
-                    <TooltipTrigger asChild>
-                      <div className="flex flex-col items-center gap-2 text-center">
-                        <div className={`w-16 h-16 rounded-full flex items-center justify-center transition-all ${unlockedAchievements.has(ach.code) ? 'bg-amber-400 shadow-lg' : 'bg-muted grayscale opacity-50'}`}>
-                          <ShieldCheck className={`w-8 h-8 ${unlockedAchievements.has(ach.code) ? 'text-white' : 'text-muted-foreground'}`} />
-                        </div>
-                        <span className={`text-xs font-medium ${unlockedAchievements.has(ach.code) ? 'text-foreground' : 'text-muted-foreground'}`}>
-                          {ach.name}
-                        </span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="font-bold">{ach.name}</p>
-                      <p>{ach.description}</p>
-                      {!unlockedAchievements.has(ach.code) && <p className="text-xs text-muted-foreground italic">Continue estudando para desbloquear!</p>}
-                    </TooltipContent>
-                  </Tooltip>
-                ))}
-              </div>
-            </TooltipProvider>
+            <AchievementTrail allAchievements={allAchievements} unlockedAchievements={unlockedAchievements} />
           )}
         </CardContent>
       </Card>
+...
 
       {/* Performance by Subject */}
       <Card className="shadow-soft">
