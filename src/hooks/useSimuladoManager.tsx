@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { type Question } from "@/data/types";
 import { AppView } from "./useAppState";
 import { GenerateQuestionsOptions, SimuladoType } from "./useQuestionManager";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "./useAuth";
+import { User } from "@supabase/supabase-js";
+import { toast } from "sonner";
 
 interface SimuladoResults {
   answers: (number | null)[];
@@ -15,87 +16,52 @@ export const useSimuladoManager = (
   generateQuestions: (options: GenerateQuestionsOptions) => Promise<Question[]>,
   setCurrentView: (view: AppView) => void,
   setSimuladoResults: (results: SimuladoResults | null) => void,
-  user: any
+  user: User | null
 ) => {
   const [currentQuestions, setCurrentQuestions] = useState<Question[]>([]);
   const [loadingSimulado, setLoadingSimulado] = useState(false);
   const [currentSimuladoType, setCurrentSimuladoType] = useState<SimuladoType | null>(null);
 
-  const startSimulado = async (type: SimuladoType, options?: Partial<GenerateQuestionsOptions>) => {
+  const startSimulado = useCallback(async (type: SimuladoType) => {
     setLoadingSimulado(true);
-    setCurrentQuestions([]);
     setCurrentSimuladoType(type);
-
-    const defaultOptions: GenerateQuestionsOptions = {
-      type: type,
-      count: 0,
-      excludeUsed: true,
-      prioritizeWeaknesses: false,
-    };
-
-    switch (type) {
-      case 'completo':
-        defaultOptions.count = 90;
-        break;
-      case 'rapido':
-        defaultOptions.count = 30;
-        break;
-      case 'foco_curso':
-        defaultOptions.count = 45;
-        if (user) {
-          const { data: profile, error } = await supabase
-            .from('user_profiles')
-            .select('target_subjects')
-            .eq('user_id', user.id)
-            .single();
-          
-          if (profile && profile.target_subjects) {
-            const { data: subjects, error: subjectsError } = await supabase
-              .from('subjects')
-              .select('name')
-              .in('id', profile.target_subjects);
-
-            if (subjects) {
-              defaultOptions.subjects = subjects.map(s => s.name);
-            }
-          }
-        }
-        break;
-      case 'por_materia':
-        defaultOptions.count = 20;
-        // This would require a UI to select subjects, passing them in options
-        break;
-      case 'minhas_dificuldades':
-        defaultOptions.count = 20;
-        defaultOptions.prioritizeWeaknesses = true;
-        break;
+    try {
+      const options: GenerateQuestionsOptions = {
+        type: type,
+        count: type === 'rapido' ? 10 : 50,
+      };
+      const questions = await generateQuestions(options);
+      setCurrentQuestions(questions);
+      setCurrentView('simulado');
+    } catch (error) {
+      console.error("Error starting simulado:", error);
+      toast.error("Não foi possível carregar o simulado. Tente novamente.");
+      setCurrentView('dashboard');
+    } finally {
+      setLoadingSimulado(false);
     }
-
-    const simuladoQuestions = await generateQuestions({ ...defaultOptions, ...options });
-    setCurrentQuestions(simuladoQuestions);
-    setLoadingSimulado(false);
-    setCurrentView('simulado');
-  };
+  }, [generateQuestions, setCurrentView]);
 
   const handleSimuladoFinish = async (results: SimuladoResults) => {
     setSimuladoResults(results);
 
     if (user && currentSimuladoType && currentQuestions.length > 0) {
-      // 1. Calculate score and time
+      const totalQuestions = currentQuestions.length;
+      const correctAnswers = results.score;
+      const accuracy = totalQuestions > 0 ? correctAnswers / totalQuestions : 0;
+
       const timeIncrease = Math.round(results.timeUsed);
-      const scoreIncrease = results.answers.reduce((acc, answer, index) => {
-        if (answer === null) return acc; // Skip unanswered
+      const xpIncrease = results.answers.reduce((acc, answer, index) => {
+        if (answer === null) return acc;
         return acc + (answer === currentQuestions[index].correctAnswer ? 10 : -2);
       }, 0);
 
-      // 2. Update stats in user_profiles
       await supabase.rpc('update_user_stats', {
         p_user_id: user.id,
         p_time_increase: timeIncrease,
-        p_score_increase: scoreIncrease,
+        p_xp_increase: xpIncrease,
       });
 
-      // 3. Save individual attempts
       const attemptsToInsert = results.answers.map((answer, index) => {
         const question = currentQuestions[index];
         return {
@@ -111,37 +77,51 @@ export const useSimuladoManager = (
         await supabase.from('user_attempts').insert(attemptsToInsert);
       }
 
-      // 4. Save the simulado summary
       const institutionName = currentQuestions[0].institution;
       const { data: institution } = await supabase
         .from('institutions')
         .select('id')
-        .eq('name', institutionName)
+        .eq('name', institutionName || '')
         .single();
 
       await supabase.from('simulados').insert({
         user_id: user.id,
         title: `Simulado ${currentSimuladoType.replace('_', ' ')}`,
         institution_id: institution?.id,
-        total_questions: currentQuestions.length,
+        total_questions: totalQuestions,
         status: 'finalizado',
       });
+
+      const { data: newAchievements, error: achievementsError } = await supabase
+        .rpc('check_and_grant_achievements', {
+          p_user_id: user.id,
+          p_simulado_accuracy: accuracy,
+          p_simulado_question_count: totalQuestions,
+        });
+      
+      if (achievementsError) {
+        console.error("Error checking achievements:", achievementsError);
+      } else if (newAchievements) {
+        (newAchievements as any[]).forEach((ach: any) => {
+          toast.success("Nova Conquista Desbloqueada!", {
+            description: ach.name,
+          });
+        });
+      }
     }
 
     setCurrentView('resultado');
   };
 
   const handleSimuladoExit = () => {
+    setCurrentQuestions([]);
     setCurrentView('dashboard');
   };
 
-  const restartSimulado = async () => {
-    if (!currentSimuladoType) return;
-    setLoadingSimulado(true);
-    setSimuladoResults(null);
-    setCurrentQuestions([]);
-    await startSimulado(currentSimuladoType);
-    setLoadingSimulado(false);
+  const restartSimulado = () => {
+    if (currentSimuladoType) {
+      startSimulado(currentSimuladoType);
+    }
   };
 
   return {
@@ -153,4 +133,3 @@ export const useSimuladoManager = (
     restartSimulado,
   };
 };
-

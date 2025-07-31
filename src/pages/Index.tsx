@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, AlertTriangle } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
+import { RankingView } from "@/components/RankingView";
 
 const Index = () => {
   const { user } = useAuth();
@@ -197,14 +198,9 @@ const Index = () => {
         return renderPracticeQuiz();
       default:
         return (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Configuration Panel */}
-            <div className="lg:col-span-1">
+          <div className="flex flex-col lg:flex-row gap-8">
+            <main className="flex-1 space-y-8">
               <UniversitySelector onSelectionChange={handleSelectionChange} />
-            </div>
-
-            {/* Dashboard/Questions */}
-            <div className="lg:col-span-2">
               <VestibularDashboard 
                 selectedConfig={selectedConfig} 
                 onStartSimulado={startSimulado}
@@ -212,7 +208,10 @@ const Index = () => {
                 usedQuestionIds={usedQuestionIds}
                 onResetUsedQuestions={resetUsedQuestions}
               />
-            </div>
+            </main>
+            <aside className="w-full lg:w-96">
+              <RankingView />
+            </aside>
           </div>
         );
     }

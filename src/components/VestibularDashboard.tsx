@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BookOpen, Target, Clock, Award, PenTool, RefreshCw, AlertCircle, PlayCircle, TrendingUp, Users } from "lucide-react";
+import { BookOpen, Target, Clock, Award, PenTool, RefreshCw, AlertCircle, PlayCircle, TrendingUp, Users, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
 
 import { SimuladoType } from "@/hooks/useQuestionManager";
 
@@ -32,8 +34,15 @@ interface PerformanceData {
 interface RecentActivity {
   id: number;
   finished_at: string;
-  name: string;
+  title: string;
   score: number;
+}
+
+interface Achievement {
+    code: string;
+    name: string;
+    description: string;
+    icon_url: string;
 }
 
 export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRedacao, usedQuestionIds, onResetUsedQuestions }: VestibularDashboardProps) => {
@@ -42,7 +51,11 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
   const [questionsToday, setQuestionsToday] = useState(0);
   const [recentActivities, setRecentActivities] = useState<RecentActivity[]>([]);
   const [studyTime, setStudyTime] = useState(0); // in seconds
-  const [gamificationScore, setGamificationScore] = useState(0);
+  const [xp, setXp] = useState(0);
+  const [level, setLevel] = useState('Iniciante');
+  const [streak, setStreak] = useState(0);
+  const [allAchievements, setAllAchievements] = useState<Achievement[]>([]);
+  const [unlockedAchievements, setUnlockedAchievements] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -51,17 +64,19 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
 
       setLoading(true);
       try {
-        // Fetch user profile stats (time and score)
+        // Fetch user profile stats (time, xp, level, streak)
         const { data: profileData, error: profileError } = await supabase
           .from('user_profiles')
-          .select('total_study_time_seconds, gamification_score')
+          .select('total_study_time_seconds, xp, level, current_streak')
           .eq('user_id', user.id)
           .single();
 
         if (profileError) console.error("Error fetching profile stats:", profileError);
         if (profileData) {
           setStudyTime(profileData.total_study_time_seconds || 0);
-          setGamificationScore(profileData.gamification_score || 0);
+          setXp(profileData.xp || 0);
+          setLevel(profileData.level || 'Iniciante');
+          setStreak(profileData.current_streak || 0);
         }
 
         // Fetch performance summary
@@ -124,6 +139,26 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
 
         if (activityError) throw activityError;
         setRecentActivities(activityData as RecentActivity[]);
+
+        // Fetch achievements
+        const { data: allAchievementsData, error: allAchievementsError } = await supabase
+            .from('achievements')
+            .select('*');
+
+        if (allAchievementsError) console.error("Error fetching all achievements:", allAchievementsError);
+        else setAllAchievements(allAchievementsData || []);
+
+        const { data: unlockedAchievementsData, error: unlockedAchievementsError } = await supabase
+            .from('user_achievements')
+            .select('achievement_code')
+            .eq('user_id', user.id);
+
+        if (unlockedAchievementsError) console.error("Error fetching unlocked achievements:", unlockedAchievementsError);
+        else {
+            const unlockedCodes = new Set(unlockedAchievementsData?.map(a => a.achievement_code) || []);
+            setUnlockedAchievements(unlockedCodes);
+        }
+
 
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
@@ -199,23 +234,25 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
 
         <Card className="shadow-soft hover:shadow-elevated transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Tempo Estudo</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Sequência</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {loading ? <Skeleton className="h-7 w-24" /> : <div className="text-2xl font-bold text-warning">{formatStudyTime(studyTime)}</div>}
-            <p className="text-xs text-muted-foreground">Meta diária: 4h</p>
+            {loading ? <Skeleton className="h-7 w-24" /> : <div className="text-2xl font-bold text-warning">{streak} dias</div>}
+            <p className="text-xs text-muted-foreground">
+              {streak > 1 ? `Continue assim!` : 'Estude amanhã para começar uma sequência!'}
+            </p>
           </CardContent>
         </Card>
 
         <Card className="shadow-soft hover:shadow-elevated transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pontuação</CardTitle>
+            <CardTitle className="text-sm font-medium">XP Total</CardTitle>
             <Award className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {loading ? <Skeleton className="h-7 w-20" /> : <div className="text-2xl font-bold text-primary">{gamificationScore.toLocaleString('pt-BR')}</div>}
-            <p className="text-xs text-muted-foreground">Continue assim!</p>
+            {loading ? <Skeleton className="h-7 w-20" /> : <div className="text-2xl font-bold text-primary">{xp.toLocaleString('pt-BR')}</div>}
+            <p className="text-xs text-muted-foreground">Nível: {level}</p>
           </CardContent>
         </Card>
       </div>
@@ -329,6 +366,55 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
           </CardContent>
         </Card>
       </div>
+
+      {/* Achievements */}
+      <Card className="shadow-soft">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Award className="w-5 h-5 text-amber-500" />
+            Conquistas
+          </CardTitle>
+          <CardDescription>
+            Medalhas que você ganhou por seu esforço e dedicação.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {loading ? (
+            <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 gap-4">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="flex flex-col items-center gap-2">
+                  <Skeleton className="w-16 h-16 rounded-full" />
+                  <Skeleton className="h-4 w-20" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <TooltipProvider>
+              <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 gap-4">
+                {allAchievements.map((ach) => (
+                  <Tooltip key={ach.code}>
+                    <TooltipTrigger asChild>
+                      <div className="flex flex-col items-center gap-2 text-center">
+                        <div className={`w-16 h-16 rounded-full flex items-center justify-center transition-all ${unlockedAchievements.has(ach.code) ? 'bg-amber-400 shadow-lg' : 'bg-muted grayscale opacity-50'}`}>
+                          <ShieldCheck className={`w-8 h-8 ${unlockedAchievements.has(ach.code) ? 'text-white' : 'text-muted-foreground'}`} />
+                        </div>
+                        <span className={`text-xs font-medium ${unlockedAchievements.has(ach.code) ? 'text-foreground' : 'text-muted-foreground'}`}>
+                          {ach.name}
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="font-bold">{ach.name}</p>
+                      <p>{ach.description}</p>
+                      {!unlockedAchievements.has(ach.code) && <p className="text-xs text-muted-foreground italic">Continue estudando para desbloquear!</p>}
+                    </TooltipContent>
+                  </Tooltip>
+                ))}
+              </div>
+            </TooltipProvider>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Performance by Subject */}
       <Card className="shadow-soft">
