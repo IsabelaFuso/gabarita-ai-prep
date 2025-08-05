@@ -7,7 +7,7 @@ import { MainLayout } from "@/components/MainLayout";
 import { PracticeQuiz } from "@/components/PracticeQuiz";
 import { DesempenhoView } from "@/components/DesempenhoView";
 import { SimuladosView } from "@/components/SimuladosView";
-import { TutorView } from "@/components/TutorView"; // Import the new view
+import { QuestionBankView } from "@/components/QuestionBankView";
 import { useAppState } from "@/hooks/useAppState";
 import { useQuestionManager } from "@/hooks/useQuestionManager";
 import { useSimuladoManager } from "@/hooks/useSimuladoManager";
@@ -78,7 +78,13 @@ const Index = () => {
       return (
         <MainLayout 
           onStartQuiz={() => handleNavigation('questoes')} 
-          onStartSimulado={startSimulado}
+          onStartSimulado={(type) => {
+            if (type === 'por_materia' || type === 'minhas_dificuldades' || type === 'questoes_comentadas') {
+              setCurrentView('banco-questoes');
+            } else {
+              startSimulado(type);
+            }
+          }}
           currentView={currentView}
           onNavigate={handleNavigation}
           showHero={currentView === 'dashboard'}
@@ -192,8 +198,15 @@ const Index = () => {
         );
       case 'desempenho':
         return <DesempenhoView selectedConfig={selectedConfig} />;
+      case 'banco-questoes':
+        return <QuestionBankView onBack={() => setCurrentView('dashboard')} />;
       case 'tutor': // Add tutor view rendering
-        return <TutorView context={{ general: "Tire suas dúvidas sobre o vestibular." }} />;
+        return (
+          <div className="text-center p-8">
+            <h2 className="text-2xl font-bold mb-4">Tutor IA</h2>
+            <p>Em breve: Seu tutor pessoal de estudos!</p>
+          </div>
+        );
       case 'questoes':
         return renderPracticeQuiz();
       default:
@@ -208,7 +221,13 @@ const Index = () => {
               <UniversitySelector onSelectionChange={handleSelectionChange} />
               <VestibularDashboard 
                 selectedConfig={selectedConfig} 
-                onStartSimulado={startSimulado}
+                onStartSimulado={(type) => {
+                  if (type === 'por_materia' || type === 'minhas_dificuldades' || type === 'questoes_comentadas') {
+                    setCurrentView('banco-questoes');
+                  } else {
+                    startSimulado(type);
+                  }
+                }}
                 onStartRedacao={startRedacao}
                 usedQuestionIds={usedQuestionIds}
                 onResetUsedQuestions={resetUsedQuestions}

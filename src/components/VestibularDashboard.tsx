@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BookOpen, Target, Clock, Award, PenTool, RefreshCw, AlertCircle, PlayCircle, TrendingUp, Users, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -347,8 +347,6 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
         </Card>
       </div>
 
-      import { AchievementTrail } from "./AchievementTrail";
-...
       {/* Achievements */}
       <Card className="shadow-soft">
         <CardHeader>
@@ -370,7 +368,6 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
           )}
         </CardContent>
       </Card>
-...
 
       {/* Performance by Subject */}
       <Card className="shadow-soft">
