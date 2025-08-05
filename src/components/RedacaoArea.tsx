@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Clock, FileText, Send, RotateCcw, CheckCircle, AlertCircle, BookOpen, BrainCircuit } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Clock, FileText, Send, RotateCcw, CheckCircle, AlertCircle, BookOpen, BrainCircuit, Star, ChevronDown, TrendingUp, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,8 +13,9 @@ import {
 } from "@/components/ui/collapsible";
 import { TutorView } from "./TutorView";
 import { SistemaPredicaoTemas } from "./SistemaPredicaoTemas";
-
-// (O resto do código permanece o mesmo até a definição do componente)
+import { useAppState } from "@/hooks/useAppState";
+import temasRedacao from "@/data/redacao-themes.json";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface RedacaoTema {
   id: number;
@@ -24,7 +25,44 @@ interface RedacaoTema {
   instrucao: string;
   ano: number;
   vestibular: string;
+  tipo: 'regular' | 'preditivo';
+  probabilidade?: number;
+  status?: string;
+  justificativa?: string;
+  fontes?: string;
 }
+
+// Banco de temas adicionais para simular a descoberta de novos temas
+const novosTemasPreditivos: RedacaoTema[] = [
+  {
+    id: 9,
+    titulo: "A importância da valorização de comunidades e povos tradicionais",
+    descricao: "Tema Preditivo 2025",
+    textoMotivador: "O conhecimento ancestral e a cultura de povos indígenas e quilombolas são fundamentais para a identidade nacional e para a preservação da biodiversidade. No entanto, esses grupos enfrentam constantes ameaças a seus territórios e modos de vida.",
+    instrucao: "Discuta a importância da valorização dos povos tradicionais para o desenvolvimento sustentável e a diversidade cultural do Brasil.",
+    ano: 2025,
+    vestibular: "Preditivo",
+    tipo: 'preditivo',
+    probabilidade: 80,
+    status: "Relevante",
+    justificativa: "Pauta social e ambiental que ganha força em discussões sobre direitos humanos e sustentabilidade.",
+    fontes: "FUNAI, Relatórios de ONGs, Mídia"
+  },
+  {
+    id: 10,
+    titulo: "Os desafios da inclusão digital na terceira idade",
+    descricao: "Tema Preditivo 2025",
+    textoMotivador: "Enquanto a sociedade se torna cada vez mais digital, parte da população idosa encontra dificuldades de acesso e uso das novas tecnologias, o que pode gerar exclusão social e dificultar o acesso a serviços.",
+    instrucao: "Analise os desafios da inclusão digital para a população idosa no Brasil e proponha ações para mitigar esse problema.",
+    ano: 2025,
+    vestibular: "Preditivo",
+    tipo: 'preditivo',
+    probabilidade: 78,
+    status: "Estável",
+    justificativa: "Com o envelhecimento da população, a inclusão digital dos idosos se torna um tema social cada vez mais pertinente.",
+    fontes: "Pesquisas de Inclusão Digital, IBGE"
+  }
+];
 
 interface CriterioAvaliacao {
   nome: string;
@@ -34,47 +72,17 @@ interface CriterioAvaliacao {
   feedback: string;
 }
 
-const temasRedacao: RedacaoTema[] = [
-  {
-    id: 1,
-    titulo: "Desafios para a formação educacional de surdos no Brasil",
-    descricao: "Tema ENEM 2017",
-    textoMotivador: "A educação inclusiva é um direito garantido pela Constituição Federal de 1988. No entanto, pessoas surdas ainda enfrentam diversos obstáculos para ter acesso a uma formação educacional de qualidade.",
-    instrucao: "Com base na leitura dos textos motivadores e nos conhecimentos construídos ao longo de sua formação, redija texto dissertativo-argumentativo em modalidade escrita formal da língua portuguesa sobre o tema 'Desafios para a formação educacional de surdos no Brasil', apresentando proposta de intervenção que respeite os direitos humanos.",
-    ano: 2017,
-    vestibular: "ENEM"
-  },
-  {
-    id: 2,
-    titulo: "Democratização do acesso ao cinema no Brasil",
-    descricao: "Tema ENEM 2019",
-    textoMotivador: "O cinema brasileiro tem grande potencial, mas ainda enfrenta desafios para democratizar o acesso da population à sétima arte, especialmente em regiões mais afastadas dos grandes centros urbanos.",
-    instrucao: "Com base na leitura dos textos motivadores e nos conhecimentos construídos ao longo de sua formação, redija texto dissertativo-argumentativo em modalidade escrita formal da língua portuguesa sobre o tema 'Democratização do acesso ao cinema no Brasil', apresentando proposta de intervenção que respeite os direitos humanos.",
-    ano: 2019,
-    vestibular: "ENEM"
-  },
-  {
-    id: 3,
-    titulo: "O estigma associado às doenças mentais na sociedade brasileira",
-    descricao: "Tema ENEM 2020",
-    textoMotivador: "As doenças mentais afetam milhões de brasileiros, mas ainda existe muito preconceito e desinformação sobre o tema, dificultando o tratamento e a inclusão social dessas pessoas.",
-    instrucao: "Com base na leitura dos textos motivadores e nos conhecimentos construídos ao longo de sua formação, redija texto dissertativo-argumentativo em modalidade escrita formal da língua portuguesa sobre o tema 'O estigma associado às doenças mentais na sociedade brasileira', apresentando proposta de intervenção que respeite os direitos humanos.",
-    ano: 2020,
-    vestibular: "ENEM"
-  }
-];
-
 interface RedacaoAreaProps {
   onBack: () => void;
-  selectedConfig: {
-    university: string;
-    firstChoice: string;
-    secondChoice: string;
-  };
 }
 
-export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
-  const [temaAtual, setTemaAtual] = useState<RedacaoTema>(temasRedacao[0]);
+export const RedacaoArea = ({ onBack }: RedacaoAreaProps) => {
+  const { updateUserStats, triggerConfetti } = useAppState();
+  const [todosOsTemas, setTodosOsTemas] = useState<RedacaoTema[]>(temasRedacao);
+  const [analisandoTemas, setAnalisandoTemas] = useState(false);
+  const [temaTipo, setTemaTipo] = useState<'regular' | 'preditivo'>('regular');
+  const [temasFiltrados, setTemasFiltrados] = useState<RedacaoTema[]>([]);
+  const [temaAtual, setTemaAtual] = useState<RedacaoTema | null>(null);
   const [textoRedacao, setTextoRedacao] = useState("");
   const [tempoRestante, setTempoRestante] = useState(90 * 60);
   const [iniciadoTempo, setIniciadoTempo] = useState(false);
@@ -83,6 +91,29 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
   const [notaFinal, setNotaFinal] = useState<number | null>(null);
   const [isTutorOpen, setIsTutorOpen] = useState(false);
   const [showPredicaoTemas, setShowPredicaoTemas] = useState(false);
+  const [openCollapsible, setOpenCollapsible] = useState<number | null>(null);
+
+  useEffect(() => {
+    const filtered = todosOsTemas.filter(t => t.tipo === temaTipo);
+    setTemasFiltrados(filtered);
+
+    if (!temaAtual || !filtered.some(t => t.id === temaAtual.id)) {
+        setTemaAtual(filtered.length > 0 ? filtered[0] : null);
+    }
+  }, [temaTipo, todosOsTemas, temaAtual]);
+
+  const analisarNovosTemas = () => {
+    setAnalisandoTemas(true);
+    setTimeout(() => {
+      const temaJaAdicionadoIds = new Set(todosOsTemas.map(t => t.id));
+      const proximoTema = novosTemasPreditivos.find(nt => !temaJaAdicionadoIds.has(nt.id));
+
+      if (proximoTema) {
+        setTodosOsTemas(prevTemas => [...prevTemas, proximoTema]);
+      }
+      setAnalisandoTemas(false);
+    }, 1500);
+  };
 
   const formatarTempo = (segundos: number) => {
     const minutos = Math.floor(segundos / 60);
@@ -104,7 +135,7 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
     }, 1000);
   };
 
-  const enviarRedacao = () => {
+  const enviarRedacao = async () => {
     if (textoRedacao.trim().length < 100) {
       alert("A redação deve ter pelo menos 100 caracteres.");
       return;
@@ -122,6 +153,10 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
     setAvaliacao(criterios);
     setNotaFinal(notaTotal);
     setRedacaoEnviada(true);
+
+    const xpGanho = 50 + Math.floor(notaTotal / 20);
+    await updateUserStats({ xp: xpGanho, essays_written: 1 });
+    triggerConfetti();
   };
 
   const reiniciarRedacao = () => {
@@ -132,15 +167,20 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
     setAvaliacao(null);
     setNotaFinal(null);
     setIsTutorOpen(false);
+    const filtered = todosOsTemas.filter(t => t.tipo === temaTipo);
+    setTemasFiltrados(filtered);
+    if (filtered.length > 0) {
+      setTemaAtual(filtered[0]);
+    }
   };
 
   const contadorPalavras = textoRedacao.trim().split(/\s+/).filter(word => word.length > 0).length;
-  const progressoPalavras = Math.min((contadorPalavras / 30) * 100, 100);
+  const progressoPalavras = Math.min((contadorPalavras / 300) * 100, 100);
 
   const tutorContext = {
     type: "redacao",
-    tema: temaAtual.titulo,
-    instrucao: temaAtual.instrucao,
+    tema: temaAtual?.titulo || "Nenhum tema selecionado",
+    instrucao: temaAtual?.instrucao || "Nenhuma instrução disponível",
   };
 
   if (redacaoEnviada && avaliacao && notaFinal) {
@@ -154,7 +194,7 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
               </Button>
               <div className="text-center">
                 <h1 className="text-2xl font-bold">Avaliação da Redação</h1>
-                <p className="text-muted-foreground">{temaAtual.titulo}</p>
+                <p className="text-muted-foreground">{temaAtual?.titulo}</p>
               </div>
               <div></div>
             </div>
@@ -215,7 +255,7 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
             </Button>
             <div className="text-center">
               <h1 className="text-2xl font-bold">Área de Redação</h1>
-              <p className="text-muted-foreground">Pratique redação dissertativo-argumentativa</p>
+              <p className="text-muted-foreground">Pratique com temas de vestibulares ou temas preditivos</p>
             </div>
             <div className="flex items-center gap-4">
               <Button 
@@ -250,134 +290,207 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <BookOpen className="w-5 h-5" />
-                    Tema da Redação
+                    Escolha o Tema
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  {temasRedacao.map((tema) => (
-                    <button
-                      key={tema.id}
-                      onClick={() => setTemaAtual(tema)}
-                      className={cn(
-                        "w-full p-3 text-left rounded-lg border transition-all",
-                        temaAtual.id === tema.id
-                          ? "border-primary bg-accent"
-                          : "border-muted hover:border-primary/50"
-                      )}
-                    >
-                      <div className="font-medium text-sm mb-1">{tema.titulo}</div>
-                      <div className="text-xs text-muted-foreground">{tema.descricao}</div>
-                    </button>
-                  ))}
-                </CardContent>
-              </Card>
-
-              <Card className="shadow-soft">
-                <CardHeader>
-                  <CardTitle>Instruções</CardTitle>
-                </CardHeader>
                 <CardContent className="space-y-4">
-                  <div>
-                    <h4 className="font-medium mb-2">Texto Motivador:</h4>
-                    <p className="text-sm text-muted-foreground">{temaAtual.textoMotivador}</p>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-medium mb-2">Proposta:</h4>
-                    <p className="text-sm text-muted-foreground">{temaAtual.instrucao}</p>
-                  </div>
+                  <ToggleGroup 
+                    type="single" 
+                    value={temaTipo}
+                    onValueChange={(value: 'regular' | 'preditivo') => { if(value) setTemaTipo(value) }} 
+                    className="w-full grid grid-cols-2"
+                  >
+                    <ToggleGroupItem value="regular">Temas Anteriores</ToggleGroupItem>
+                    <ToggleGroupItem value="preditivo">
+                      <Star className="w-4 h-4 mr-2 text-yellow-400" />
+                      Temas Preditivos
+                    </ToggleGroupItem>
+                  </ToggleGroup>
 
-                  <div className="border-t pt-4">
-                    <h4 className="font-medium mb-2">Critérios de Avaliação:</h4>
-                    <ul className="text-sm text-muted-foreground space-y-1">
-                      <li>• Domínio da norma culta</li>
-                      <li>• Compreensão do tema</li>
-                      <li>• Organização das ideias</li>
-                      <li>• Uso de conectivos</li>
-                      <li>• Proposta de intervenção</li>
-                    </ul>
+                  {temaTipo === 'preditivo' && (
+                    <Card className="bg-accent border-primary/50">
+                      <CardHeader>
+                        <CardTitle className="text-lg">Sistema Preditivo de Temas</CardTitle>
+                        <CardDescription>Análise baseada em tendências atuais e padrões históricos.</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <Button onClick={analisarNovosTemas} disabled={analisandoTemas || !novosTemasPreditivos.some(nt => !todosOsTemas.map(t => t.id).includes(nt.id))} className="w-full">
+                          {analisandoTemas ? (
+                            <>
+                              <RotateCcw className="w-4 h-4 mr-2 animate-spin" />
+                              Analisando...
+                            </>
+                          ) : (
+                            "Analisar Novos Temas"
+                          )}
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+                    {temasFiltrados.map((tema) => (
+                      <Collapsible key={tema.id} open={openCollapsible === tema.id} onOpenChange={() => setOpenCollapsible(prev => prev === tema.id ? null : tema.id)}>
+                        <Card className={cn("transition-all", temaAtual?.id === tema.id && "border-primary")}>
+                          <CardHeader className="p-4 cursor-pointer" onClick={() => setTemaAtual(tema)}>
+                            <div className="font-medium text-sm mb-1">{tema.titulo}</div>
+                            <div className="text-xs text-muted-foreground">{tema.descricao}</div>
+                          </CardHeader>
+                          
+                          {tema.tipo === 'preditivo' && tema.probabilidade && (
+                            <CardContent className="p-4 pt-0 space-y-3">
+                              <div>
+                                <div className="flex justify-between items-center mb-1">
+                                  <span className="text-xs font-medium">Probabilidade: {tema.probabilidade}%</span>
+                                  <Badge variant={tema.probabilidade > 85 ? "default" : "secondary"}>{tema.status}</Badge>
+                                </div>
+                                <Progress value={tema.probabilidade} className="h-2" />
+                              </div>
+                              <CollapsibleTrigger className="w-full text-sm flex items-center justify-center text-muted-foreground hover:text-primary">
+                                Ver Análise <ChevronDown className="w-4 h-4 ml-1" />
+                              </CollapsibleTrigger>
+                            </CardContent>
+                          )}
+
+                          <CollapsibleContent className="p-4 pt-0 space-y-2">
+                            <div className="border-t pt-3">
+                              <h4 className="font-semibold text-sm flex items-center gap-2"><TrendingUp className="w-4 h-4 text-primary"/> Justificativa</h4>
+                              <p className="text-xs text-muted-foreground mt-1">{tema.justificativa}</p>
+                            </div>
+                            <div className="border-t pt-3">
+                              <h4 className="font-semibold text-sm flex items-center gap-2"><Info className="w-4 h-4 text-primary"/> Fontes</h4>
+                              <p className="text-xs text-muted-foreground mt-1">{tema.fontes}</p>
+                            </div>
+                          </CollapsibleContent>
+                        </Card>
+                      </Collapsible>
+                    ))}
+                    {temasFiltrados.length === 0 && (
+                      <div className="text-center text-muted-foreground py-4">
+                        <p>Nenhum tema {temaTipo === 'preditivo' ? 'preditivo' : 'anterior'} encontrado.</p>
+                        {temaTipo === 'preditivo' && <p className="text-sm">Clique em "Analisar Novos Temas" para buscar previsões.</p>}
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
+
+              {temaAtual && (
+                <Card className="shadow-soft">
+                  <CardHeader>
+                    <CardTitle>Instruções</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h4 className="font-medium mb-2">Texto Motivador:</h4>
+                      <p className="text-sm text-muted-foreground">{temaAtual.textoMotivador}</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-2">Proposta:</h4>
+                      <p className="text-sm text-muted-foreground">{temaAtual.instrucao}</p>
+                    </div>
+
+                    <div className="border-t pt-4">
+                      <h4 className="font-medium mb-2">Critérios de Avaliação:</h4>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        <li>• Domínio da norma culta</li>
+                        <li>• Compreensão do tema</li>
+                        <li>• Organização das ideias</li>
+                        <li>• Uso de conectivos</li>
+                        <li>• Proposta de intervenção</li>
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
             </div>
 
             <div className="lg:col-span-2">
-              <Card className="shadow-elevated h-full flex flex-col">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center gap-2">
-                      <FileText className="w-5 h-5" />
-                      {temaAtual.titulo}
-                    </CardTitle>
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm text-muted-foreground">
-                        {contadorPalavras} palavras
-                      </span>
-                      {!iniciadoTempo && (
-                        <Button onClick={iniciarCronometro} size="sm">
-                          Iniciar Cronômetro
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                  
-                  {contadorPalavras > 0 && (
-                    <div className="mt-2">
-                      <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                        <span>Progresso</span>
-                        <span>{Math.round(progressoPalavras)}%</span>
+              {temaAtual ? (
+                <Card className="shadow-elevated h-full flex flex-col">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="flex items-center gap-2">
+                        <FileText className="w-5 h-5" />
+                        {temaAtual.titulo}
+                      </CardTitle>
+                      <div className="flex items-center gap-4">
+                        <span className="text-sm text-muted-foreground">
+                          {contadorPalavras} palavras
+                        </span>
+                        {!iniciadoTempo && (
+                          <Button onClick={iniciarCronometro} size="sm">
+                            Iniciar Cronômetro
+                          </Button>
+                        )}
                       </div>
-                      <Progress value={progressoPalavras} className="h-1" />
-                    </div>
-                  )}
-                </CardHeader>
-
-                <CardContent className="flex-1 flex flex-col">
-                  <Textarea
-                    placeholder="Comece sua redação aqui..."
-                    value={textoRedacao}
-                    onChange={(e) => setTextoRedacao(e.target.value)}
-                    className="flex-1 resize-none text-base leading-6"
-                    disabled={redacaoEnviada}
-                  />
-                  
-                  <div className="flex justify-between items-center mt-4">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <AlertCircle className="w-4 h-4" />
-                      Mínimo: 100 caracteres | Recomendado: 400-500 palavras
                     </div>
                     
-                    <div className="flex gap-2">
-                      {textoRedacao && (
-                        <Button variant="outline" onClick={reiniciarRedacao}>
-                          <RotateCcw className="w-4 h-4 mr-2" />
-                          Limpar
+                    {contadorPalavras > 0 && (
+                      <div className="mt-2">
+                        <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                          <span>Progresso</span>
+                          <span>{Math.round(progressoPalavras)}%</span>
+                        </div>
+                        <Progress value={progressoPalavras} className="h-1" />
+                      </div>
+                    )}
+                  </CardHeader>
+
+                  <CardContent className="flex-1 flex flex-col">
+                    <Textarea
+                      placeholder="Comece sua redação aqui..."
+                      value={textoRedacao}
+                      onChange={(e) => setTextoRedacao(e.target.value)}
+                      className="flex-1 resize-none text-base leading-6"
+                      disabled={redacaoEnviada}
+                    />
+                    
+                    <div className="flex justify-between items-center mt-4">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <AlertCircle className="w-4 h-4" />
+                        Mínimo: 100 caracteres | Recomendado: 300+ palavras
+                      </div>
+                      
+                      <div className="flex gap-2">
+                        {textoRedacao && (
+                          <Button variant="outline" onClick={() => setTextoRedacao('')}>
+                            <RotateCcw className="w-4 h-4 mr-2" />
+                            Limpar
+                          </Button>
+                        )}
+                        <Button 
+                          onClick={enviarRedacao}
+                          disabled={textoRedacao.trim().length < 100}
+                          className="flex items-center gap-2"
+                        >
+                          <Send className="w-4 h-4" />
+                          Enviar Redação
                         </Button>
-                      )}
-                      <Button 
-                        onClick={enviarRedacao}
-                        disabled={textoRedacao.trim().length < 100}
-                        className="flex items-center gap-2"
-                      >
-                        <Send className="w-4 h-4" />
-                        Enviar Redação
-                      </Button>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-                
-                <Collapsible open={isTutorOpen} onOpenChange={setIsTutorOpen} className="m-6">
-                    <CollapsibleTrigger asChild>
-                        <Button variant="outline" className="w-full flex items-center gap-2">
-                            <BrainCircuit className="w-4 h-4" />
-                            {isTutorOpen ? "Fechar Tutor" : "Pedir ajuda à IA"}
-                        </Button>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="mt-4">
-                        <TutorView context={tutorContext} />
-                    </CollapsibleContent>
-                </Collapsible>
-              </Card>
+                  </CardContent>
+                  
+                  <Collapsible open={isTutorOpen} onOpenChange={setIsTutorOpen} className="m-6">
+                      <CollapsibleTrigger asChild>
+                          <Button variant="outline" className="w-full flex items-center gap-2">
+                              <BrainCircuit className="w-4 h-4" />
+                              {isTutorOpen ? "Fechar Tutor" : "Pedir ajuda à IA"}
+                          </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="mt-4">
+                          <TutorView context={tutorContext} />
+                      </CollapsibleContent>
+                  </Collapsible>
+                </Card>
+              ) : (
+                <Card className="flex items-center justify-center h-full">
+                  <CardContent>
+                    <p className="text-muted-foreground">Selecione um tipo de tema para começar.</p>
+                  </CardContent>
+                </Card>
+              )}
             </div>
           </div>
         </div>

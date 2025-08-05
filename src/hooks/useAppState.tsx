@@ -95,6 +95,26 @@ export const useAppState = () => {
     setTimeout(() => setShowConfetti(false), 5000); // Confetti runs for 5 seconds
   };
 
+  const updateUserStats = async (stats: { xp?: number; essays_written?: number }) => {
+    if (!user) return;
+
+    try {
+      const { error } = await supabase.rpc('update_user_stats', {
+        p_user_id: user.id,
+        p_xp_increment: stats.xp || 0,
+        p_essays_increment: stats.essays_written || 0,
+        p_questions_increment: 0,
+        p_simulados_increment: 0,
+      });
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      console.error("Error updating user stats:", error);
+    }
+  };
+
   return {
     selectedConfig,
     currentView,
@@ -106,5 +126,6 @@ export const useAppState = () => {
     setCurrentView,
     setSimuladoResults,
     triggerConfetti,
+    updateUserStats,
   };
 };

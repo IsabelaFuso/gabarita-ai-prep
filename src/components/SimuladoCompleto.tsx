@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
-import { Clock, ArrowLeft, ArrowRight, Flag, CheckCircle, AlertCircle } from "lucide-react";
+import { Clock, ArrowLeft, ArrowRight, Flag, CheckCircle, AlertCircle, BrainCircuit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { TutorView } from "./TutorView"; // Importar o TutorView
-import { type Question } from "@/data/types"; // Importar o tipo Question correto
+import { TutorView } from "./TutorView";
+import { type Question } from "@/data/types";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 interface SimuladoCompletoProps {
   questions: Question[];
@@ -35,6 +40,7 @@ export const SimuladoCompleto = ({
   const [answers, setAnswers] = useState<(number | null)[]>([]);
   const [timeRemaining, setTimeRemaining] = useState(timeLimit * 60); // converter para segundos
   const [showConfirmExit, setShowConfirmExit] = useState(false);
+  const [isTutorOpen, setIsTutorOpen] = useState(false);
 
   useEffect(() => {
     // Initialize answers array only when questions are loaded
@@ -283,7 +289,18 @@ export const SimuladoCompleto = ({
 
           {/* Coluna da Direita: Tutor de IA e Navegação */}
           <div className="lg:col-span-1 flex flex-col gap-6 lg:sticky lg:top-32 h-fit">
-            <TutorView context={tutorContext} />
+            <Collapsible open={isTutorOpen} onOpenChange={setIsTutorOpen}>
+              <CollapsibleTrigger asChild>
+                <Button variant="outline" className="w-full flex items-center gap-2">
+                  <BrainCircuit className="w-4 h-4" />
+                  {isTutorOpen ? "Fechar Tutor" : "Pedir ajuda à IA"}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="mt-4">
+                <TutorView context={tutorContext} />
+              </CollapsibleContent>
+            </Collapsible>
+            
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Navegação</CardTitle>

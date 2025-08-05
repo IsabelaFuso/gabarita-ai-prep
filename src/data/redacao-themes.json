@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "titulo": "Desafios para a formação educacional de surdos no Brasil",
+    "descricao": "Tema ENEM 2017",
+    "textoMotivador": "A educação inclusiva é um direito garantido pela Constituição Federal de 1988. No entanto, pessoas surdas ainda enfrentam diversos obstáculos para ter acesso a uma formação educacional de qualidade.",
+    "instrucao": "Com base na leitura dos textos motivadores e nos conhecimentos construídos ao longo de sua formação, redija texto dissertativo-argumentativo em modalidade escrita formal da língua portuguesa sobre o tema 'Desafios para a formação educacional de surdos no Brasil', apresentando proposta de intervenção que respeite os direitos humanos.",
+    "ano": 2017,
+    "vestibular": "ENEM",
+    "tipo": "regular"
+  },
+  {
+    "id": 2,
+    "titulo": "Democratização do acesso ao cinema no Brasil",
+    "descricao": "Tema ENEM 2019",
+    "textoMotivador": "O cinema brasileiro tem grande potencial, mas ainda enfrenta desafios para democratizar o acesso da população à sétima arte, especialmente em regiões mais afastadas dos grandes centros urbanos.",
+    "instrucao": "Com base na leitura dos textos motivadores e nos conhecimentos construídos ao longo de sua formação, redija texto dissertativo-argumentativo em modalidade escrita formal da língua portuguesa sobre o tema 'Democratização do acesso ao cinema no Brasil', apresentando proposta de intervenção que respeite os direitos humanos.",
+    "ano": 2019,
+    "vestibular": "ENEM",
+    "tipo": "regular"
+  },
+  {
+    "id": 3,
+    "titulo": "O estigma associado às doenças mentais na sociedade brasileira",
+    "descricao": "Tema ENEM 2020",
+    "textoMotivador": "As doenças mentais afetam milhões de brasileiros, mas ainda existe muito preconceito e desinformação sobre o tema, dificultando o tratamento e a inclusão social dessas pessoas.",
+    "instrucao": "Com base na leitura dos textos motivadores e nos conhecimentos construídos ao longo de sua formação, redija texto dissertativo-argumentativo em modalidade escrita formal da língua portuguesa sobre o tema 'O estigma associado às doenças mentais na sociedade brasileira', apresentando proposta de intervenção que respeite os direitos humanos.",
+    "ano": 2020,
+    "vestibular": "ENEM",
+    "tipo": "regular"
+  },
+  {
+    "id": 4,
+    "titulo": "Inteligência Artificial e o futuro do mercado de trabalho",
+    "descricao": "Tema Preditivo 2025",
+    "textoMotivador": "A ascensão da inteligência artificial está transformando profissões e o mercado de trabalho global. Enquanto novas oportunidades surgem, cresce o debate sobre automação, desemprego e a necessidade de novas habilidades para os trabalhadores do futuro.",
+    "instrucao": "Desenvolva um texto dissertativo-argumentativo sobre o papel da inteligência artificial no futuro do trabalho, discutindo seus benefícios, desafios e as adaptações necessárias por parte da sociedade.",
+    "ano": 2025,
+    "vestibular": "Preditivo",
+    "tipo": "preditivo",
+    "probabilidade": 92,
+    "status": "Muito Alta",
+    "justificativa": "Tema de alto impacto social e econômico, com discussões contínuas na mídia e em debates acadêmicos. Relevante para todas as áreas do conhecimento.",
+    "fontes": "Google Trends, Notícias da Mídia, Fórum Econômico Mundial"
+  },
+  {
+    "id": 5,
+    "titulo": "Crise hídrica e segurança alimentar no Brasil",
+    "descricao": "Tema Preditivo 2025",
+    "textoMotivador": "A escassez de água, intensificada por mudanças climáticas, ameaça diretamente a produção de alimentos no Brasil, um dos maiores exportadores agrícolas do mundo. A gestão sustentável dos recursos hídricos torna-se crucial para garantir a segurança alimentar da população.",
+    "instrucao": "Com base em seus conhecimentos, redija um texto dissertativo-argumentativo sobre a relação entre a crise hídrica e a segurança alimentar no Brasil, propondo soluções para o problema.",
+    "ano": 2025,
+    "vestibular": "Preditivo",
+    "tipo": "preditivo",
+    "probabilidade": 88,
+    "status": "Em Alta",
+    "justificativa": "A pauta ambiental continua forte e a conexão com a produção de alimentos é um desdobramento direto e de grande relevância social.",
+    "fontes": "Relatórios da ONU, Agência Nacional de Águas (ANA), Embrapa"
+  },
+  {
+    "id": 6,
+    "titulo": "O desafio do envelhecimento da população no século XXI",
+    "descricao": "Tema Preditivo 2025",
+    "textoMotivador": "O aumento da expectativa de vida e a queda nas taxas de natalidade estão levando a um envelhecimento rápido da população brasileira. Esse fenômeno demográfico impõe desafios para os sistemas de saúde, previdência social e para a organização da sociedade.",
+    "instrucao": "Desenvolva um texto dissertativo-argumentativo sobre os desafios do envelhecimento populacional no Brasil e as medidas necessárias para garantir a qualidade de vida dos idosos.",
+    "ano": 2025,
+    "vestibular": "Preditivo",
+    "tipo": "preditivo",
+    "probabilidade": 85,
+    "status": "Em Alta",
+    "justificativa": "Questão demográfica com fortes implicações em políticas públicas. Tema relevante e que afeta diretamente a estrutura social do país.",
+    "fontes": "IBGE, Organização Mundial da Saúde (OMS)"
+  },
+  {
+    "id": 7,
+    "titulo": "A cultura do cancelamento e seus efeitos na liberdade de expressão",
+    "descricao": "Tema Preditivo 2025",
+    "textoMotivador": "A prática de 'cancelar' figuras públicas ou anônimas nas redes sociais por opiniões controversas gera um intenso debate sobre os limites da liberdade de expressão, o linchamento virtual e o papel do diálogo em uma sociedade democrática.",
+    "instrucao": "Redija um texto dissertativo-argumentativo refletindo sobre a cultura do cancelamento e suas implicações para a liberdade de expressão e o debate público no Brasil.",
+    "ano": 2025,
+    "vestibular": "Preditivo",
+    "tipo": "preditivo",
+    "probabilidade": 82,
+    "status": "Estável",
+    "justificativa": "Debate contemporâneo sobre comportamento social e digital, explorando tensões entre direitos individuais e responsabilidade coletiva.",
+    "fontes": "Artigos de Opinião, Análises de Mídia Social"
+  },
+  {
+    "id": 8,
+    "titulo": "Impacto da desinformação (fake news) no processo democrático",
+    "descricao": "Tema Preditivo 2025",
+    "textoMotivador": "A disseminação de notícias falsas, especialmente em períodos eleitorais, representa uma ameaça à democracia ao manipular a opinião pública e minar a confiança nas instituições. O combate à desinformação é um dos maiores desafios da atualidade.",
+    "instrucao": "Desenvolva um texto dissertativo-argumentativo sobre o impacto da desinformação no processo democrático brasileiro e discuta possíveis caminhos para combater esse fenômeno.",
+    "ano": 2025,
+    "vestibular": "Preditivo",
+    "tipo": "preditivo",
+    "probabilidade": 90,
+    "status": "Muito Alta",
+    "justificativa": "Tema de extrema relevância cívica e política, especialmente em anos eleitorais. Conecta tecnologia, sociedade e política.",
+    "fontes": "Tribunal Superior Eleitoral (TSE), Pesquisas Acadêmicas"
+  }
+]

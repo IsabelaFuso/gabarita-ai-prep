@@ -72,12 +72,12 @@ export const PracticeQuiz = ({
         )}
       </div>
 
-      {/* Coluna da Direita: Tutor de IA */}
-      <div className="lg:sticky lg:top-24 h-fit">
+      {/* Coluna da Direita: Tutor de IA (Removido para otimização, agora está no QuestionCard) */}
+      {/* <div className="lg:sticky lg:top-24 h-fit">
         {currentQuestion && (
           <TutorView context={tutorContext} />
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
