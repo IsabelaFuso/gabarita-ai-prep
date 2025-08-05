@@ -12,9 +12,9 @@ import {
 import { TutorView } from "./TutorView";
 
 interface Question {
-  id: number;
-  institution: string;
-  year: number;
+  id: string;
+  institution?: string;
+  year?: number;
   subject: string;
   topic: string;
   statement: string;
@@ -151,7 +151,13 @@ export const QuestionCard = ({
             </Button>
           </CollapsibleTrigger>
           <CollapsibleContent className="mt-4">
-            <TutorView context={tutorContext} />
+            <TutorView context={{
+              type: "question",
+              questionText: tutorContext,
+              questionId: question.id,
+              subject: question.subject,
+              topic: question.topic
+            }} />
           </CollapsibleContent>
         </Collapsible>
 

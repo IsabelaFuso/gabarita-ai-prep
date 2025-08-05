@@ -4,7 +4,7 @@ import { Question } from "@/data/types"; // Import the Question type
 import { SelectedConfig } from "./useAppState";
 
 
-export type SimuladoType = 'completo' | 'rapido' | 'foco_curso' | 'por_materia' | 'minhas_dificuldades';
+export type SimuladoType = 'completo' | 'rapido' | 'foco_curso' | 'por_materia' | 'minhas_dificuldades' | 'questoes_comentadas';
 
 interface GenerateQuestionsOptions {
   type: SimuladoType;

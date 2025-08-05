@@ -32,25 +32,18 @@ interface PerformanceData {
   performance_by_subject: { subject: string; accuracy: number; total_questions: number }[];
 }
 
-interface RecentActivity {
-  id: number;
-  finished_at: string;
-  title: string;
-  score: number;
-}
-
 interface Achievement {
-    code: string;
-    name: string;
-    description: string;
-    icon_url: string;
+  code: string;
+  name: string;
+  description: string;
+  icon_name: string;
 }
 
 export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRedacao, usedQuestionIds, onResetUsedQuestions }: VestibularDashboardProps) => {
   const { user } = useAuth();
   const [summary, setSummary] = useState<PerformanceData | null>(null);
   const [questionsToday, setQuestionsToday] = useState(0);
-  const [recentActivities, setRecentActivities] = useState<RecentActivity[]>([]);
+  const [recentActivities, setRecentActivities] = useState<{id: string; finished_at: string; title: string; score: number}[]>([]);
   const [studyTime, setStudyTime] = useState(0); // in seconds
   const [xp, setXp] = useState(0);
   const [level, setLevel] = useState('Iniciante');
@@ -65,10 +58,10 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
 
       setLoading(true);
       try {
-        // Fetch user profile stats (time, xp, level, streak)
+        // Fetch user profile stats (time, xp, streak)
         const { data: profileData, error: profileError } = await supabase
           .from('user_profiles')
-          .select('total_study_time_seconds, xp, level, current_streak')
+          .select('total_study_time_seconds, xp, current_streak')
           .eq('user_id', user.id)
           .single();
 
@@ -76,7 +69,6 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
         if (profileData) {
           setStudyTime(profileData.total_study_time_seconds || 0);
           setXp(profileData.xp || 0);
-          setLevel(profileData.level || 'Iniciante');
           setStreak(profileData.current_streak || 0);
         }
 
@@ -126,7 +118,7 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
           .limit(3);
 
         if (activityError) throw activityError;
-        setRecentActivities(activityData as RecentActivity[]);
+        setRecentActivities(activityData || []);
 
         // Fetch achievements
         const { data: allAchievementsData, error: allAchievementsError } = await supabase
@@ -339,15 +331,15 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            <Button className="w-full justify-start" variant="outline">
+            <Button className="w-full justify-start" variant="outline" onClick={() => onStartSimulado('por_materia')}>
               <BookOpen className="mr-2 h-4 w-4" />
               Questões por Matéria
             </Button>
-            <Button className="w-full justify-start" variant="outline">
+            <Button className="w-full justify-start" variant="outline" onClick={() => onStartSimulado('minhas_dificuldades')}>
               <TrendingUp className="mr-2 h-4 w-4" />
               Minhas Dificuldades
             </Button>
-            <Button className="w-full justify-start" variant="outline">
+            <Button className="w-full justify-start" variant="outline" onClick={() => onStartSimulado('questoes_comentadas')}>
               <Users className="mr-2 h-4 w-4" />
               Questões Comentadas
             </Button>

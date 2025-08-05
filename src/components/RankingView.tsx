@@ -21,16 +21,18 @@ interface RankingUser {
   full_name: string;
   avatar_url: string;
   xp: number;
-  level: string;
+  rank_name: string;
   target_institution: string;
   target_course: string;
+  latest_achievement_name?: string;
+  latest_achievement_icon?: string;
 }
 
 const mockedUsers: RankingUser[] = mockData.map(user => ({
   full_name: user.nome_usuario,
   avatar_url: user.avatar_url,
   xp: user.xp,
-  level: user.patente,
+  rank_name: user.patente,
   target_institution: user.instituicao_alvo,
   target_course: user.curso_alvo,
 }));
@@ -44,15 +46,15 @@ const patentIcons: { [key: string]: React.ComponentType<LucideProps> } = {
   "Neófito Curioso": Lightbulb,
 };
 
-const getPatentInfo = (level: string): { Icon: React.ComponentType<LucideProps>; color: string } => {
-  const Icon = patentIcons[level] || Lightbulb;
+const getPatentInfo = (rank_name: string): { Icon: React.ComponentType<LucideProps>; color: string } => {
+  const Icon = patentIcons[rank_name] || Lightbulb;
   let color = "text-gray-500";
 
-  if (level === "Titã do Gabarito") color = "text-yellow-500";
-  if (level === "Oráculo do Vestibular") color = "text-purple-500";
-  if (level === "Arquiteto do Saber") color = "text-blue-500";
-  if (level === "Desbravador de Manuscritos") color = "text-orange-600";
-  if (level === "Acadêmico Iniciante") color = "text-green-500";
+  if (rank_name === "Titã do Gabarito") color = "text-yellow-500";
+  if (rank_name === "Oráculo do Vestibular") color = "text-purple-500";
+  if (rank_name === "Arquiteto do Saber") color = "text-blue-500";
+  if (rank_name === "Desbravador de Manuscritos") color = "text-orange-600";
+  if (rank_name === "Acadêmico Iniciante") color = "text-green-500";
 
   return { Icon, color };
 };
@@ -94,7 +96,7 @@ export function RankingView() {
       <CardContent className="flex-grow overflow-y-auto pr-2">
         <ul className="space-y-4">
           {ranking.map((user, index) => {
-            const { Icon, color } = getPatentInfo(user.level);
+            const { Icon, color } = getPatentInfo(user.rank_name);
             return (
               <li key={user.user_id || index} className="flex items-start space-x-4">
                 <div className="flex items-center space-x-3 w-12">
@@ -112,7 +114,7 @@ export function RankingView() {
                   <div className="flex items-center space-x-2 mt-1">
                     <Badge variant="secondary" className="flex items-center gap-1">
                       <Icon className={cn("w-3.5 h-3.5", color)} />
-                      {user.level}
+                      {user.rank_name}
                     </Badge>
                     <span className="text-sm font-bold text-primary">{user.xp} XP</span>
                   </div>
