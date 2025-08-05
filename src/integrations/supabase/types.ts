@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          code: string
+          description: string
+          icon_name: string
+          name: string
+        }
+        Insert: {
+          code: string
+          description: string
+          icon_name: string
+          name: string
+        }
+        Update: {
+          code?: string
+          description?: string
+          icon_name?: string
+          name?: string
+        }
+        Relationships: []
+      }
       institutions: {
         Row: {
           code: string
@@ -129,6 +150,24 @@ export type Database = {
           },
         ]
       }
+      ranks: {
+        Row: {
+          id: number
+          name: string
+          xp_threshold: number
+        }
+        Insert: {
+          id?: number
+          name: string
+          xp_threshold: number
+        }
+        Update: {
+          id?: number
+          name?: string
+          xp_threshold?: number
+        }
+        Relationships: []
+      }
       simulado_questions: {
         Row: {
           answered_at: string | null
@@ -184,6 +223,7 @@ export type Database = {
           finished_at: string | null
           id: string
           institution_id: string | null
+          score: number | null
           started_at: string | null
           status: string | null
           time_limit: number | null
@@ -197,6 +237,7 @@ export type Database = {
           finished_at?: string | null
           id?: string
           institution_id?: string | null
+          score?: number | null
           started_at?: string | null
           status?: string | null
           time_limit?: number | null
@@ -210,6 +251,7 @@ export type Database = {
           finished_at?: string | null
           id?: string
           institution_id?: string | null
+          score?: number | null
           started_at?: string | null
           status?: string | null
           time_limit?: number | null
@@ -283,6 +325,35 @@ export type Database = {
           },
         ]
       }
+      user_achievements: {
+        Row: {
+          achievement_code: string
+          id: string
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          achievement_code: string
+          id?: string
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          achievement_code?: string
+          id?: string
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_achievements_achievement_code_fkey"
+            columns: ["achievement_code"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
       user_attempts: {
         Row: {
           attempt_date: string | null
@@ -326,48 +397,169 @@ export type Database = {
       }
       user_profiles: {
         Row: {
+          avatar_url: string | null
+          chosen_rank_id: number | null
           created_at: string | null
+          current_rank_id: number | null
+          current_streak: number
+          first_choice_course: string | null
+          full_name: string | null
           id: string
+          last_activity_date: string | null
           preferences: Json | null
+          second_choice_course: string | null
           study_hours_per_week: number | null
           study_level: Database["public"]["Enums"]["difficulty_level"] | null
           target_date: string | null
           target_exam: Database["public"]["Enums"]["exam_type"] | null
+          target_institution_id: string | null
           target_subjects: string[] | null
+          total_study_time_seconds: number
           updated_at: string | null
           user_id: string | null
+          username: string | null
+          xp: number
         }
         Insert: {
+          avatar_url?: string | null
+          chosen_rank_id?: number | null
           created_at?: string | null
+          current_rank_id?: number | null
+          current_streak?: number
+          first_choice_course?: string | null
+          full_name?: string | null
           id?: string
+          last_activity_date?: string | null
           preferences?: Json | null
+          second_choice_course?: string | null
           study_hours_per_week?: number | null
           study_level?: Database["public"]["Enums"]["difficulty_level"] | null
           target_date?: string | null
           target_exam?: Database["public"]["Enums"]["exam_type"] | null
+          target_institution_id?: string | null
           target_subjects?: string[] | null
+          total_study_time_seconds?: number
           updated_at?: string | null
           user_id?: string | null
+          username?: string | null
+          xp?: number
         }
         Update: {
+          avatar_url?: string | null
+          chosen_rank_id?: number | null
           created_at?: string | null
+          current_rank_id?: number | null
+          current_streak?: number
+          first_choice_course?: string | null
+          full_name?: string | null
           id?: string
+          last_activity_date?: string | null
           preferences?: Json | null
+          second_choice_course?: string | null
           study_hours_per_week?: number | null
           study_level?: Database["public"]["Enums"]["difficulty_level"] | null
           target_date?: string | null
           target_exam?: Database["public"]["Enums"]["exam_type"] | null
+          target_institution_id?: string | null
           target_subjects?: string[] | null
+          total_study_time_seconds?: number
           updated_at?: string | null
           user_id?: string | null
+          username?: string | null
+          xp?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_profiles_chosen_rank_id_fkey"
+            columns: ["chosen_rank_id"]
+            isOneToOne: false
+            referencedRelation: "ranks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_profiles_current_rank_id_fkey"
+            columns: ["current_rank_id"]
+            isOneToOne: false
+            referencedRelation: "ranks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_profiles_target_institution_id_fkey"
+            columns: ["target_institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+    }
+    Views: {
+      user_dashboard_data: {
+        Row: {
+          avatar_url: string | null
+          current_streak: number | null
+          full_name: string | null
+          last_activity_date: string | null
+          next_rank_xp_threshold: number | null
+          rank_name: string | null
+          rank_xp_threshold: number | null
+          user_id: string | null
+          xp: number | null
         }
         Relationships: []
       }
     }
-    Views: {
-      [_ in never]: never
-    }
     Functions: {
+      check_and_grant_achievements: {
+        Args: {
+          p_user_id: string
+          p_simulado_accuracy?: number
+          p_simulado_question_count?: number
+        }
+        Returns: {
+          code: string
+          name: string
+          description: string
+          icon_name: string
+        }[]
+      }
+      exec: {
+        Args: { sql: string }
+        Returns: undefined
+      }
+      get_custom_simulado_questions: {
+        Args: {
+          p_user_id: string
+          p_university_name: string
+          p_question_count: number
+          p_subject_names?: string[]
+          p_difficulty_levels?: Database["public"]["Enums"]["difficulty_level"][]
+          p_exclude_ids?: string[]
+          p_prioritize_weaknesses?: boolean
+        }
+        Returns: {
+          question_id: string
+          statement: string
+          image_url: string
+          alternatives: Json
+          correct_answer: string
+          explanation: string
+          difficulty: Database["public"]["Enums"]["difficulty_level"]
+          subject_name: string
+          topic_name: string
+          institution_name: string
+          year: number
+        }[]
+      }
+      get_performance_summary: {
+        Args: { p_user_id: string }
+        Returns: {
+          subject_name: string
+          correct_answers: number
+          total_questions: number
+          accuracy: number
+        }[]
+      }
       get_personalized_questions: {
         Args: { p_user_id: string; p_count?: number; p_institution_id?: string }
         Returns: {
@@ -378,7 +570,63 @@ export type Database = {
           difficulty: Database["public"]["Enums"]["difficulty_level"]
           subject_name: string
           topic_name: string
+          institution_name: string
+          year: number
         }[]
+      }
+      get_rank_for_xp: {
+        Args: { p_xp: number }
+        Returns: number
+      }
+      get_ranking: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          user_id: string
+          full_name: string
+          avatar_url: string
+          xp: number
+          rank_name: string
+          target_institution: string
+          target_course: string
+          latest_achievement_name: string
+          latest_achievement_icon: string
+        }[]
+      }
+      get_user_performance_summary: {
+        Args: { p_user_id: string }
+        Returns: {
+          subject_id: string
+          subject_name: string
+          topic_id: string
+          topic_name: string
+          total_attempts: number
+          correct_attempts: number
+          accuracy: number
+        }[]
+      }
+      handle_essay_submission: {
+        Args: { p_user_id: string; p_score: number }
+        Returns: {
+          code: string
+          name: string
+          description: string
+          icon_name: string
+        }[]
+      }
+      update_user_stats: {
+        Args:
+          | {
+              p_user_id: string
+              p_time_increase: number
+              p_xp_increase: number
+            }
+          | {
+              p_user_id: string
+              p_xp_change: number
+              p_correct_answers_change: number
+              p_wrong_answers_change: number
+            }
+        Returns: undefined
       }
     }
     Enums: {

@@ -2,8 +2,8 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL!;
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY!;
+const SUPABASE_URL = "https://muswjsloobcxgsconuag.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11c3dqc2xvb2JjeGdzY29udWFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NzUwODgsImV4cCI6MjA2ODI1MTA4OH0.9fskBylgkfWBUF78yCincYB_1oRke4SJrsvjGmUwyVw";
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
