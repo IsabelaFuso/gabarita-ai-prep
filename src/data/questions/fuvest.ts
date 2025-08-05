@@ -2,7 +2,7 @@ import { Question } from "../types";
 
 export const fuvestQuestions: Question[] = [
   {
-    id: 4,
+    id: "4",
     institution: "FUVEST",
     year: 2023,
     subject: "Matemática",
@@ -13,7 +13,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "Substituindo os pontos na equação: f(0) = c = 3; f(1) = a + b + c = 6; f(2) = 4a + 2b + c = 11. Resolvendo o sistema: a = 1, b = 2, c = 3. Portanto, a + b + c = 6."
   },
   {
-    id: 5,
+    id: "5",
     institution: "FUVEST",
     year: 2023,
     subject: "Matemática",
@@ -132,7 +132,7 @@ export const fuvestQuestions: Question[] = [
   },
   // FUVEST 2021
   {
-    id: 51,
+    id: "51",
     institution: "FUVEST",
     year: 2021,
     subject: "Matemática",
@@ -143,7 +143,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "Área = base × altura = 8 × 5 = 40 cm²"
   },
   {
-    id: 52,
+    id: "52",
     institution: "FUVEST",
     year: 2021,
     subject: "Física",
@@ -154,7 +154,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "A unidade de força no SI é o Newton (N)."
   },
   {
-    id: 53,
+    id: "53",
     institution: "FUVEST",
     year: 2021,
     subject: "Química",
@@ -165,7 +165,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "A densidade da água pura a 4°C é 1,0 g/cm³."
   },
   {
-    id: 54,
+    id: "54",
     institution: "FUVEST",
     year: 2021,
     subject: "Biologia",
@@ -176,7 +176,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "Os glóbulos vermelhos (hemácias) transportam oxigênio através da hemoglobina."
   },
   {
-    id: 55,
+    id: "55",
     institution: "FUVEST",
     year: 2021,
     subject: "Geografia",
@@ -188,7 +188,7 @@ export const fuvestQuestions: Question[] = [
   },
   // FUVEST 2020
   {
-    id: 71,
+    id: "71",
     institution: "FUVEST",
     year: 2020,
     subject: "Matemática",
@@ -199,7 +199,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "2⁴ = 2 × 2 × 2 × 2 = 16"
   },
   {
-    id: 72,
+    id: "72",
     institution: "FUVEST",
     year: 2020,
     subject: "Física",
@@ -210,7 +210,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "Densidade = massa/volume (d = m/V)"
   },
   {
-    id: 73,
+    id: "73",
     institution: "FUVEST",
     year: 2020,
     subject: "Química",
@@ -221,7 +221,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "Oxidação é a perda de elétrons por um átomo, íon ou molécula."
   },
   {
-    id: 74,
+    id: "74",
     institution: "FUVEST",
     year: 2020,
     subject: "Biologia",
@@ -232,7 +232,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "O DNA está localizado principalmente no núcleo das células eucarióticas."
   },
   {
-    id: 75,
+    id: "75",
     institution: "FUVEST",
     year: 2020,
     subject: "Geografia",
@@ -244,7 +244,7 @@ export const fuvestQuestions: Question[] = [
   },
   // FUVEST 2024 - Questões mais complexas
   {
-    id: 86,
+    id: "86",
     institution: "FUVEST",
     year: 2024,
     subject: "Matemática",
@@ -261,7 +261,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "O centro C(a,b) está na reta x+y=5, então b=5-a. Como CA=CB, temos (a-1)²+(b-2)²=(a-3)²+(b-4)². Resolvendo: a=2, b=3, raio=√2."
   },
   {
-    id: 87,
+    id: "87",
     institution: "FUVEST",
     year: 2024,
     subject: "Física",
@@ -272,7 +272,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "Pela equação de Gauss: 1/f = 1/p + 1/p' → 1/20 = 1/30 + 1/p' → 1/p' = 1/20 - 1/30 = 1/60 → p' = 60 cm."
   },
   {
-    id: 88,
+    id: "88",
     institution: "FUVEST",
     year: 2024,
     subject: "Química",
@@ -283,7 +283,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "Para reação de 1ª ordem: t₁/₂ = ln(2)/k = 0,693/0,693 = 1,0 min."
   },
   {
-    id: 89,
+    id: "89",
     institution: "FUVEST",
     year: 2024,
     subject: "Biologia",
@@ -300,7 +300,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "Especiação alopátrica ocorre quando populações ficam geograficamente isoladas e acumulam diferenças genéticas até se tornarem espécies distintas."
   },
   {
-    id: 90,
+    id: "90",
     institution: "FUVEST",
     year: 2024,
     subject: "História",
@@ -317,7 +317,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "A Declaração de 1789 estabeleceu princípios fundamentais dos direitos humanos e do liberalismo político, influenciando constituições modernas mundialmente."
   },
   {
-    id: 91,
+    id: "91",
     institution: "FUVEST",
     year: 2024,
     subject: "Literatura",
@@ -334,7 +334,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "João Romão exemplifica o burguês capitalista que enriquece explorando os mais pobres, representando a crítica naturalista aos vícios sociais."
   },
   {
-    id: 92,
+    id: "92",
     institution: "FUVEST",
     year: 2024,
     subject: "Geografia",
@@ -351,7 +351,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "O Aquífero Guarani estende-se pelos territórios do Brasil, Argentina, Uruguai e Paraguai, sendo um importante recurso hídrico compartilhado."
   },
   {
-    id: 93,
+    id: "93",
     institution: "FUVEST",
     year: 2024,
     subject: "Física",

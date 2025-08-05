@@ -2,7 +2,7 @@ import { Question } from "../types";
 
 export const uemQuestions: Question[] = [
   {
-    id: 7,
+    id: "7",
     institution: "UEM",
     year: 2023,
     subject: "Química",
@@ -10,7 +10,7 @@ export const uemQuestions: Question[] = [
     statement: "Na reação de combustão completa do etanol (C₂H₅OH), quais são os produtos formados?",
     alternatives: [
       "CO₂ e H₂O",
-      "CO e H₂O",
+      "CO e H₂O", 
       "C e H₂O",
       "CO₂ e H₂",
       "C₂H₄ e O₂"
@@ -19,7 +19,7 @@ export const uemQuestions: Question[] = [
     explanation: "Na combustão completa do etanol, este reage com oxigênio produzindo dióxido de carbono (CO₂) e água (H₂O) como produtos."
   },
   {
-    id: 8,
+    id: "8",
     institution: "UEM",
     year: 2023,
     subject: "Química",
@@ -30,7 +30,7 @@ export const uemQuestions: Question[] = [
     explanation: "Pela estequiometria da reação, a proporção é 2:2, então 4 moles de H₂ produzem 4 moles de H₂O."
   },
   {
-    id: 9,
+    id: "9",
     institution: "UEM",
     year: 2023,
     subject: "Química",
@@ -41,7 +41,7 @@ export const uemQuestions: Question[] = [
     explanation: "O metano é o hidrocarboneto mais simples, com fórmula molecular CH₄."
   },
   {
-    id: 18,
+    id: "18",
     institution: "UEM",
     year: 2023,
     subject: "Filosofia",
@@ -58,7 +58,7 @@ export const uemQuestions: Question[] = [
     explanation: "Aristóteles definiu a virtude ética como o meio-termo (mediania) entre dois extremos viciosos: o excesso e a falta."
   },
   {
-    id: 21,
+    id: "21",
     institution: "UEM",
     year: 2023,
     subject: "Inglês",
@@ -69,7 +69,7 @@ export const uemQuestions: Question[] = [
     explanation: "Em conditional sentences do tipo 2 (situações hipotéticas), usa-se 'were' para todas as pessoas após 'if'."
   },
   {
-    id: 24,
+    id: "24",
     institution: "UEM",
     year: 2023,
     subject: "Biologia",
@@ -87,7 +87,7 @@ export const uemQuestions: Question[] = [
   },
   // UEM 2022
   {
-    id: 41,
+    id: "41",
     institution: "UEM",
     year: 2022,
     subject: "Matemática",
@@ -199,7 +199,7 @@ export const uemQuestions: Question[] = [
   },
   // UEM 2024 - Questões mais complexas
   {
-    id: 100,
+    id: "100",
     institution: "UEM",
     year: 2024,
     subject: "Matemática",
@@ -210,7 +210,7 @@ export const uemQuestions: Question[] = [
     explanation: "A×B = [4 -2; 11 -3]. det(A×B) = 4×(-3) - (-2)×11 = -12 + 22 = 10. Alternativamente: det(A×B) = det(A)×det(B) = 5×2 = 10. Erro no cálculo, resultado é 25."
   },
   {
-    id: 101,
+    id: "101",
     institution: "UEM",
     year: 2024,
     subject: "Física",
@@ -227,7 +227,7 @@ export const uemQuestions: Question[] = [
     explanation: "A massa relativística (ou energia relativística) aumenta com a velocidade, aproximando-se do infinito quando v→c."
   },
   {
-    id: 102,
+    id: "102",
     institution: "UEM",
     year: 2024,
     subject: "Química",
@@ -238,7 +238,7 @@ export const uemQuestions: Question[] = [
     explanation: "32g de CH₄ = 32/16 = 2 mols. Energia liberada = 2 × 890 = 1780 kJ."
   },
   {
-    id: 103,
+    id: "103",
     institution: "UEM",
     year: 2024,
     subject: "Biologia",
@@ -249,7 +249,7 @@ export const uemQuestions: Question[] = [
     explanation: "A regra dos 10% estabelece que apenas cerca de 10% da energia é transferida entre níveis tróficos consecutivos."
   },
   {
-    id: 104,
+    id: "104",
     institution: "UEM",
     year: 2024,
     subject: "História",
@@ -266,7 +266,7 @@ export const uemQuestions: Question[] = [
     explanation: "A Doutrina Truman estabeleceu a política de contenção, visando impedir a expansão da influência comunista no mundo."
   },
   {
-    id: 105,
+    id: "105",
     institution: "UEM",
     year: 2024,
     subject: "Geografia",
@@ -283,7 +283,7 @@ export const uemQuestions: Question[] = [
     explanation: "As transnacionais fragmentam sua produção globalmente, aproveitando vantagens comparativas de diferentes países."
   },
   {
-    id: 106,
+    id: "106",
     institution: "UEM",
     year: 2024,
     subject: "Português",
@@ -300,7 +300,7 @@ export const uemQuestions: Question[] = [
     explanation: "O verbo 'fazer' indicando tempo é impessoal, devendo ficar na 3ª pessoa do singular: 'Faz dois anos que não o vejo'."
   },
   {
-    id: 107,
+    id: "107",
     institution: "UEM",
     year: 2024,
     subject: "Inglês",
@@ -317,7 +317,7 @@ export const uemQuestions: Question[] = [
     explanation: "Third conditional (past unreal): If + past perfect, would + have + past participle."
   },
   {
-    id: 108,
+    id: "108",
     institution: "UEM",
     year: 2024,
     subject: "Espanhol",

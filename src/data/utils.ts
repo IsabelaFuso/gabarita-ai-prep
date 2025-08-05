@@ -1,3 +1,4 @@
+
 import { Question, QuestionFilters } from "./types";
 
 // Função para filtrar questões por critérios
@@ -12,7 +13,7 @@ export const filterQuestions = (questionsBank: Question[], filters: QuestionFilt
 };
 
 // Função para obter questões aleatórias
-export const getRandomQuestions = (questionsBank: Question[], count: number, filters?: QuestionFilters, excludeIds?: number[]) => {
+export const getRandomQuestions = (questionsBank: Question[], count: number, filters?: QuestionFilters, excludeIds?: string[]) => {
   const filteredQuestions = filters ? filterQuestions(questionsBank, filters) : questionsBank;
   
   // Excluir questões já utilizadas

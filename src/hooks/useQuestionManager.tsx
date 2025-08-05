@@ -1,12 +1,12 @@
+
 import { useState } from "react";
 import { supabase } from '@/integrations/supabase/client';
-import { Question } from "@/data/types"; // Import the Question type
+import { Question } from "@/data/types";
 import { SelectedConfig } from "./useAppState";
-
 
 export type SimuladoType = 'completo' | 'rapido' | 'foco_curso' | 'por_materia' | 'minhas_dificuldades' | 'questoes_comentadas';
 
-interface GenerateQuestionsOptions {
+export interface GenerateQuestionsOptions {
   type: SimuladoType;
   count: number;
   subjects?: string[];

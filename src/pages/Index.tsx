@@ -1,3 +1,4 @@
+
 import { UniversitySelector } from "@/components/UniversitySelector";
 import { VestibularDashboard } from "@/components/VestibularDashboard";
 import { SimuladoCompleto } from "@/components/SimuladoCompleto";
@@ -14,12 +15,13 @@ import { useSimuladoManager } from "@/hooks/useSimuladoManager";
 import { usePracticeQuiz } from "@/hooks/usePracticeQuiz";
 import { Button } from "@/components/ui/button";
 import { Loader2, AlertTriangle } from "lucide-react";
-
 import { useAuth } from "@/hooks/useAuth";
 import { RankingView } from "@/components/RankingView";
+import { useCallback } from "react";
 
 const Index = () => {
   const { user } = useAuth();
+  
   // Custom hooks for state management
   const {
     selectedConfig,
@@ -39,6 +41,11 @@ const Index = () => {
     resetUsedQuestions
   } = useQuestionManager(selectedConfig, user);
 
+  const triggerConfetti = useCallback(() => {
+    // Confetti implementation here
+    console.log("🎉 Confetti triggered!");
+  }, []);
+
   const {
     currentQuestions,
     loadingSimulado,
@@ -46,7 +53,7 @@ const Index = () => {
     handleSimuladoFinish,
     handleSimuladoExit,
     restartSimulado
-  } = useSimuladoManager(generateQuestions, setCurrentView, setSimuladoResults, user);
+  } = useSimuladoManager(generateQuestions, setCurrentView, setSimuladoResults, user, triggerConfetti);
 
   // Updated usePracticeQuiz hook, no longer needs generateQuestions
   const {
@@ -55,13 +62,39 @@ const Index = () => {
     score,
     practiceQuestions,
     showQuestions,
-    loading: loadingPracticeQuiz, // Renamed to avoid conflict
-    error,   // New state
+    loading: loadingPracticeQuiz,
+    error,
     handleAnswer,
     nextQuestion,
     resetQuiz,
     startPractice
   } = usePracticeQuiz();
+
+  const handleNavigation = useCallback((view: string) => {
+    switch (view) {
+      case 'dashboard':
+        goHome();
+        break;
+      case 'redacao':
+        startRedacao();
+        break;
+      case 'simulados':
+        setCurrentView('simulados');
+        break;
+      case 'questoes':
+        startPractice();
+        setCurrentView('questoes');
+        break;
+      case 'desempenho':
+        setCurrentView('desempenho');
+        break;
+      case 'tutor':
+        setCurrentView('tutor');
+        break;
+      default:
+        goHome();
+    }
+  }, [goHome, startRedacao, setCurrentView, startPractice]);
 
   // Renderizar diferentes views
   if (currentView === 'redacao') {
@@ -78,13 +111,7 @@ const Index = () => {
       return (
         <MainLayout 
           onStartQuiz={() => handleNavigation('questoes')} 
-          onStartSimulado={(type) => {
-            if (type === 'por_materia' || type === 'minhas_dificuldades' || type === 'questoes_comentadas') {
-              setCurrentView('banco-questoes');
-            } else {
-              startSimulado(type);
-            }
-          }}
+          onStartSimulado={startSimulado}
           currentView={currentView}
           onNavigate={handleNavigation}
           showHero={currentView === 'dashboard'}
@@ -121,33 +148,6 @@ const Index = () => {
     );
   }
 
-  const handleNavigation = (view: string) => {
-    switch (view) {
-      case 'dashboard':
-        goHome();
-        break;
-      case 'redacao':
-        startRedacao();
-        break;
-      case 'simulados':
-        setCurrentView('simulados');
-        break;
-      case 'questoes':
-        // When navigating to 'questoes', immediately start fetching them
-        startPractice();
-        setCurrentView('questoes');
-        break;
-      case 'desempenho':
-        setCurrentView('desempenho');
-        break;
-      case 'tutor': // Add tutor view navigation
-        setCurrentView('tutor');
-        break;
-      default:
-        goHome();
-    }
-  };
-
   const renderPracticeQuiz = () => {
     if (loadingPracticeQuiz) {
       return (
@@ -183,7 +183,6 @@ const Index = () => {
       );
     }
     
-    // This case can be a fallback or initial state before practice starts
     return null;
   };
 
@@ -197,10 +196,10 @@ const Index = () => {
           />
         );
       case 'desempenho':
-        return <DesempenhoView selectedConfig={selectedConfig} />;
+        return <DesempenhoView />;
       case 'banco-questoes':
         return <QuestionBankView onBack={() => setCurrentView('dashboard')} />;
-      case 'tutor': // Add tutor view rendering
+      case 'tutor':
         return (
           <div className="text-center p-8">
             <h2 className="text-2xl font-bold mb-4">Tutor IA</h2>
