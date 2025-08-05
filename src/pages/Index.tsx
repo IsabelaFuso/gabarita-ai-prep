@@ -111,10 +111,10 @@ const Index = () => {
       return (
         <MainLayout 
           onStartQuiz={() => handleNavigation('questoes')} 
-          onStartSimulado={startSimulado}
+          onStartSimulado={() => startSimulado('completo')}
           currentView={currentView}
           onNavigate={handleNavigation}
-          showHero={currentView === 'dashboard'}
+          showHero={false}
         >
           <div className="flex flex-col items-center justify-center min-h-[50vh]">
             <Loader2 className="w-12 h-12 animate-spin text-primary mb-4" />
@@ -237,17 +237,17 @@ const Index = () => {
     }
   };
 
-  return (
-    <MainLayout 
-      onStartQuiz={() => handleNavigation('questoes')} 
-      onStartSimulado={startSimulado}
-      currentView={currentView}
-      onNavigate={handleNavigation}
-      showHero={currentView === 'dashboard'}
-    >
-      {renderCurrentView()}
-    </MainLayout>
-  );
+    return (
+      <MainLayout 
+        onStartQuiz={() => handleNavigation('questoes')} 
+        onStartSimulado={() => startSimulado('completo')}
+        currentView={currentView}
+        onNavigate={handleNavigation}
+        showHero={currentView === 'dashboard'}
+      >
+        {renderCurrentView()}
+      </MainLayout>
+    );
 };
 
 export default Index;

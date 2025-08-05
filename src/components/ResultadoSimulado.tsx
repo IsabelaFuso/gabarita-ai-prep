@@ -5,23 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useState } from 'react';
 import { TutorView } from '@/components/TutorView';
+import { type Question } from "@/data/types";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-
-interface Question {
-  id: number;
-  institution: string;
-  year: number;
-  subject: string;
-  topic: string;
-  statement: string;
-  alternatives: string[];
-  correctAnswer: number;
-  explanation: string;
-}
 
 interface ResultadoSimuladoProps {
   questions: Question[];
