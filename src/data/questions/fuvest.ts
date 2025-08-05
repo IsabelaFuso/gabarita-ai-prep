@@ -24,7 +24,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "Usando a fórmula da distância: d = √[(6-2)² + (6-3)²] = √[16 + 9] = √25 = 5."
   },
   {
-    id: 6,
+    id: "6",
     institution: "FUVEST",
     year: 2023,
     subject: "Matemática",
@@ -35,7 +35,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "Se log₂(x) = 3, então 2³ = x, portanto x = 8."
   },
   {
-    id: 19,
+    id: "19",
     institution: "FUVEST",
     year: 2023,
     subject: "Literatura",
@@ -52,7 +52,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "'O Guarani' é uma das principais obras de José de Alencar, representando o indianismo romântico brasileiro."
   },
   {
-    id: 23,
+    id: "23",
     institution: "FUVEST",
     year: 2023,
     subject: "Física",
@@ -70,7 +70,7 @@ export const fuvestQuestions: Question[] = [
   },
   // FUVEST 2022
   {
-    id: 31,
+    id: "31",
     institution: "FUVEST",
     year: 2022,
     subject: "Matemática",
@@ -81,7 +81,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "sen(60°) = √3/2"
   },
   {
-    id: 32,
+    id: "32",
     institution: "FUVEST",
     year: 2022,
     subject: "Física",
@@ -92,7 +92,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "A Segunda Lei de Newton: F = ma (força = massa × aceleração)"
   },
   {
-    id: 33,
+    id: "33",
     institution: "FUVEST",
     year: 2022,
     subject: "Química",
@@ -103,7 +103,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "Au é o símbolo químico do ouro (do latim aurum)."
   },
   {
-    id: 34,
+    id: "34",
     institution: "FUVEST",
     year: 2022,
     subject: "Biologia",
@@ -114,7 +114,7 @@ export const fuvestQuestions: Question[] = [
     explanation: "O coração humano possui 4 câmaras: 2 átrios e 2 ventrículos."
   },
   {
-    id: 35,
+    id: "35",
     institution: "FUVEST",
     year: 2022,
     subject: "Geografia",

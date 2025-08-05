@@ -2,7 +2,7 @@ import { Question } from "../types";
 
 export const unicampQuestions: Question[] = [
   {
-    id: 14,
+    id: "14",
     institution: "UNICAMP",
     year: 2023,
     subject: "História",
@@ -19,7 +19,7 @@ export const unicampQuestions: Question[] = [
     explanation: "O governo Vargas foi responsável pela criação da CLT (Consolidação das Leis do Trabalho) e pela implementação de importantes direitos trabalhistas no Brasil."
   },
   {
-    id: 15,
+    id: "15",
     institution: "UNICAMP",
     year: 2023,
     subject: "História",
@@ -36,7 +36,7 @@ export const unicampQuestions: Question[] = [
     explanation: "A Revolução Industrial foi marcada pela transição da produção artesanal para a produção mecanizada em fábricas, transformando profundamente a sociedade."
   },
   {
-    id: 22,
+    id: "22",
     institution: "UNICAMP",
     year: 2023,
     subject: "Espanhol",
@@ -48,7 +48,7 @@ export const unicampQuestions: Question[] = [
   },
   // UNICAMP 2022
   {
-    id: 36,
+    id: "36",
     institution: "UNICAMP",
     year: 2022,
     subject: "Matemática",
@@ -59,7 +59,7 @@ export const unicampQuestions: Question[] = [
     explanation: "2x + 6 = 14 → 2x = 8 → x = 4"
   },
   {
-    id: 37,
+    id: "37",
     institution: "UNICAMP",
     year: 2022,
     subject: "Física",
@@ -70,7 +70,7 @@ export const unicampQuestions: Question[] = [
     explanation: "A energia cinética é dada por E = mv²/2"
   },
   {
-    id: 38,
+    id: "38",
     institution: "UNICAMP",
     year: 2022,
     subject: "Química",
@@ -81,7 +81,7 @@ export const unicampQuestions: Question[] = [
     explanation: "pH = 7 indica uma solução neutra (nem ácida nem básica)."
   },
   {
-    id: 39,
+    id: "39",
     institution: "UNICAMP",
     year: 2022,
     subject: "Biologia",
@@ -98,7 +98,7 @@ export const unicampQuestions: Question[] = [
     explanation: "A mitose produz 2 células filhas geneticamente idênticas à célula mãe."
   },
   {
-    id: 40,
+    id: "40",
     institution: "UNICAMP",
     year: 2022,
     subject: "Literatura",
@@ -110,7 +110,7 @@ export const unicampQuestions: Question[] = [
   },
   // UNICAMP 2021
   {
-    id: 56,
+    id: "56",
     institution: "UNICAMP",
     year: 2021,
     subject: "Matemática",
@@ -121,7 +121,7 @@ export const unicampQuestions: Question[] = [
     explanation: "√64 = 8, pois 8² = 64"
   },
   {
-    id: 57,
+    id: "57",
     institution: "UNICAMP",
     year: 2021,
     subject: "Física",
@@ -132,7 +132,7 @@ export const unicampQuestions: Question[] = [
     explanation: "Todas as unidades representam a mesma pressão atmosférica ao nível do mar."
   },
   {
-    id: 58,
+    id: "58",
     institution: "UNICAMP",
     year: 2021,
     subject: "Química",
@@ -143,7 +143,7 @@ export const unicampQuestions: Question[] = [
     explanation: "O núcleo atômico contém prótons (carga positiva) e nêutrons (sem carga)."
   },
   {
-    id: 59,
+    id: "59",
     institution: "UNICAMP",
     year: 2021,
     subject: "Biologia",
@@ -154,7 +154,7 @@ export const unicampQuestions: Question[] = [
     explanation: "O núcleo contém o DNA e controla as atividades celulares."
   },
   {
-    id: 60,
+    id: "60",
     institution: "UNICAMP",
     year: 2021,
     subject: "Literatura",
@@ -166,7 +166,7 @@ export const unicampQuestions: Question[] = [
   },
   // UNICAMP 2024 - Questões mais complexas
   {
-    id: 93,
+    id: "93",
     institution: "UNICAMP",
     year: 2024,
     subject: "Matemática",
@@ -177,7 +177,7 @@ export const unicampQuestions: Question[] = [
     explanation: "Tratando as vogais UIA como um bloco: 5! arranjos × 3! arranjos das vogais = 120 × 12 = 1440."
   },
   {
-    id: 94,
+    id: "94",
     institution: "UNICAMP",
     year: 2024,
     subject: "Física",
@@ -194,7 +194,7 @@ export const unicampQuestions: Question[] = [
     explanation: "Sem observação, os elétrons comportam-se como ondas, criando padrão de interferência, demonstrando a dualidade onda-partícula."
   },
   {
-    id: 95,
+    id: "95",
     institution: "UNICAMP",
     year: 2024,
     subject: "Química",
@@ -211,7 +211,7 @@ export const unicampQuestions: Question[] = [
     explanation: "Pela regra de Markovnikov, o H liga-se ao carbono mais hidrogenado (terminal) e o Br ao menos hidrogenado (central), formando 2-bromopropano."
   },
   {
-    id: 96,
+    id: "96",
     institution: "UNICAMP",
     year: 2024,
     subject: "Biologia",
@@ -228,7 +228,7 @@ export const unicampQuestions: Question[] = [
     explanation: "CRISPR-Cas9 é um sistema que permite cortar o DNA em locais específicos e inserir, deletar ou modificar sequências genéticas com precisão."
   },
   {
-    id: 97,
+    id: "97",
     institution: "UNICAMP",
     year: 2024,
     subject: "História",
@@ -245,7 +245,7 @@ export const unicampQuestions: Question[] = [
     explanation: "O AI-5 marcou o período mais repressivo da ditadura, fechando o Congresso, cassando mandatos e instituindo a censura prévia."
   },
   {
-    id: 98,
+    id: "98",
     institution: "UNICAMP",
     year: 2024,
     subject: "Geografia",
@@ -262,7 +262,7 @@ export const unicampQuestions: Question[] = [
     explanation: "O Protocolo de Kyoto estabeleceu metas obrigatórias para países desenvolvidos reduzirem emissões de CO₂ e outros gases do efeito estufa."
   },
   {
-    id: 99,
+    id: "99",
     institution: "UNICAMP",
     year: 2024,
     subject: "Português",

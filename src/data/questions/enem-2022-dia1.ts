@@ -3,7 +3,7 @@ import { Question } from "../types";
 export const enem2022Dia1: Question[] = [
   // Redação
   {
-    id: 200,
+    id: "200",
     institution: "ENEM",
     year: 2022,
     subject: "Português",
@@ -21,7 +21,7 @@ export const enem2022Dia1: Question[] = [
   },
   // Linguagens e Códigos
   {
-    id: 201,
+    id: "201",
     institution: "ENEM",
     year: 2022,
     subject: "Português",
@@ -32,7 +32,7 @@ export const enem2022Dia1: Question[] = [
     explanation: "A função apelativa ou conativa é predominante, pois o objetivo principal é convencer o interlocutor a tomar uma ação (vacinar-se), utilizando verbos no imperativo ('proteja-se')."
   },
   {
-    id: 202,
+    id: "202",
     institution: "ENEM",
     year: 2022,
     subject: "Literatura",
@@ -49,7 +49,7 @@ export const enem2022Dia1: Question[] = [
     explanation: "A primeira fase do Modernismo (1922-1930) foi iconoclasta, buscando romper com o academicismo e as tradições europeias para construir uma arte genuinamente brasileira."
   },
   {
-    id: 203,
+    id: "203",
     institution: "ENEM",
     year: 2022,
     subject: "Inglês",
@@ -67,7 +67,7 @@ export const enem2022Dia1: Question[] = [
   },
   // ... (mais 40 questões de Linguagens)
   {
-    id: 245,
+    id: "245",
     institution: "ENEM",
     year: 2022,
     subject: "Português",
@@ -79,7 +79,7 @@ export const enem2022Dia1: Question[] = [
   },
   // Ciências Humanas
   {
-    id: 246,
+    id: "246",
     institution: "ENEM",
     year: 2022,
     subject: "História",
@@ -96,7 +96,7 @@ export const enem2022Dia1: Question[] = [
     explanation: "O Estado Novo foi uma ditadura imposta por Getúlio Vargas, marcada pela centralização do poder no Executivo, censura, repressão a opositores e um forte aparato de propaganda, como o DIP (Departamento de Imprensa e Propaganda)."
   },
   {
-    id: 247,
+    id: "247",
     institution: "ENEM",
     year: 2022,
     subject: "Geografia",
@@ -113,7 +113,7 @@ export const enem2022Dia1: Question[] = [
     explanation: "A revolução técnico-científico-informacional, com a internet, a fibra óptica e a modernização dos transportes (como contêineres), foi a base material que permitiu a aceleração e intensificação da globalização."
   },
   {
-    id: 248,
+    id: "248",
     institution: "ENEM",
     year: 2022,
     subject: "Filosofia",
@@ -130,7 +130,7 @@ export const enem2022Dia1: Question[] = [
     explanation: "Locke é um dos principais teóricos do liberalismo. Ele defendia que os indivíduos consentem em formar um governo para que este atue como um juiz imparcial na proteção dos direitos que já possuíam no estado de natureza."
   },
   {
-    id: 249,
+    id: "249",
     institution: "ENEM",
     year: 2022,
     subject: "Sociologia",
@@ -148,7 +148,7 @@ export const enem2022Dia1: Question[] = [
   },
   // ... (mais 40 questões de Humanas)
   {
-    id: 290,
+    id: "290",
     institution: "ENEM",
     year: 2022,
     subject: "História",

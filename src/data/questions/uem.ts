@@ -98,7 +98,7 @@ export const uemQuestions: Question[] = [
     explanation: "20% de 150 = 0,20 × 150 = 30"
   },
   {
-    id: 42,
+    id: "42",
     institution: "UEM",
     year: 2022,
     subject: "Física",
@@ -109,7 +109,7 @@ export const uemQuestions: Question[] = [
     explanation: "A água ferve a 100°C (ou 212°F) ao nível do mar."
   },
   {
-    id: 43,
+    id: "43",
     institution: "UEM",
     year: 2022,
     subject: "Química",
@@ -120,7 +120,7 @@ export const uemQuestions: Question[] = [
     explanation: "Vaporização é a mudança do estado líquido para o gasoso."
   },
   {
-    id: 44,
+    id: "44",
     institution: "UEM",
     year: 2022,
     subject: "Biologia",
@@ -131,7 +131,7 @@ export const uemQuestions: Question[] = [
     explanation: "O fígado produz a bile, que é armazenada na vesícula biliar."
   },
   {
-    id: 45,
+    id: "45",
     institution: "UEM",
     year: 2022,
     subject: "Geografia",
@@ -143,7 +143,7 @@ export const uemQuestions: Question[] = [
   },
   // UEM 2021
   {
-    id: 61,
+    id: "61",
     institution: "UEM",
     year: 2021,
     subject: "Matemática",
@@ -154,7 +154,7 @@ export const uemQuestions: Question[] = [
     explanation: "144 ÷ 12 = 12"
   },
   {
-    id: 62,
+    id: "62",
     institution: "UEM",
     year: 2021,
     subject: "Física",
@@ -165,7 +165,7 @@ export const uemQuestions: Question[] = [
     explanation: "A velocidade da luz no vácuo é aproximadamente 300.000.000 m/s (3×10⁸ m/s)."
   },
   {
-    id: 63,
+    id: "63",
     institution: "UEM",
     year: 2021,
     subject: "Química",
@@ -176,7 +176,7 @@ export const uemQuestions: Question[] = [
     explanation: "O carbono tem número atômico 6, ou seja, 6 prótons no núcleo."
   },
   {
-    id: 64,
+    id: "64",
     institution: "UEM",
     year: 2021,
     subject: "Biologia",
@@ -187,7 +187,7 @@ export const uemQuestions: Question[] = [
     explanation: "A vitamina C é fundamental para o sistema imunológico e síntese de colágeno."
   },
   {
-    id: 65,
+    id: "65",
     institution: "UEM",
     year: 2021,
     subject: "Geografia",

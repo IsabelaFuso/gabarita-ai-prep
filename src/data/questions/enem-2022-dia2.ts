@@ -3,7 +3,7 @@ import { Question } from "../types";
 export const enem2022Dia2: Question[] = [
   // Ciências da Natureza
   {
-    id: 301,
+    id: "301",
     institution: "ENEM",
     year: 2022,
     subject: "Química",
@@ -20,7 +20,7 @@ export const enem2022Dia2: Question[] = [
     explanation: "Na pilha de Daniell, o zinco (ânodo) tem maior potencial de oxidação e, portanto, perde elétrons, que fluem pelo circuito externo até o cobre (cátodo), onde ocorre a redução dos íons Cu²⁺."
   },
   {
-    id: 302,
+    id: "302",
     institution: "ENEM",
     year: 2022,
     subject: "Física",
@@ -37,7 +37,7 @@ export const enem2022Dia2: Question[] = [
     explanation: "A lente divergente (côncava) espalha os raios luminosos, fazendo com que o ponto focal se desloque para trás, ajustando-o para que a imagem se forme exatamente sobre a retina."
   },
   {
-    id: 303,
+    id: "303",
     institution: "ENEM",
     year: 2022,
     subject: "Biologia",
@@ -55,7 +55,7 @@ export const enem2022Dia2: Question[] = [
   },
   // ... (mais 42 questões de Ciências da Natureza)
   {
-    id: 345,
+    id: "345",
     institution: "ENEM",
     year: 2022,
     subject: "Física",
@@ -67,7 +67,7 @@ export const enem2022Dia2: Question[] = [
   },
   // Matemática e suas Tecnologias
   {
-    id: 346,
+    id: "346",
     institution: "ENEM",
     year: 2022,
     subject: "Matemática",
@@ -78,7 +78,7 @@ export const enem2022Dia2: Question[] = [
     explanation: "Como a ordem dos membros na comissão não importa, trata-se de uma combinação. C(10, 3) = 10! / (3! * (10-3)!) = (10 * 9 * 8) / (3 * 2 * 1) = 120."
   },
   {
-    id: 347,
+    id: "347",
     institution: "ENEM",
     year: 2022,
     subject: "Matemática",
@@ -89,7 +89,7 @@ export const enem2022Dia2: Question[] = [
     explanation: "O volume do cilindro é dado por V = π * r² * h. Substituindo os valores: V ≈ 3,14 * (2)² * 5 = 3,14 * 4 * 5 = 62,8 m³."
   },
   {
-    id: 348,
+    id: "348",
     institution: "ENEM",
     year: 2022,
     subject: "Matemática",
@@ -101,7 +101,7 @@ export const enem2022Dia2: Question[] = [
   },
   // ... (mais 42 questões de Matemática)
   {
-    id: 390,
+    id: "390",
     institution: "ENEM",
     year: 2022,
     subject: "Matemática",

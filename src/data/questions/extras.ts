@@ -3,7 +3,7 @@ import { Question } from "../types";
 export const extraQuestions: Question[] = [
   // Espanhol
   {
-    id: 101,
+    id: "101",
     institution: "ENEM",
     year: 2023,
     subject: "Espanhol",
@@ -20,7 +20,7 @@ export const extraQuestions: Question[] = [
     explanation: "El texto presenta dos caras de la tecnología: la transformación positiva de la comunicación y los desafíos negativos para la privacidad, mostrando un impacto dual."
   },
   {
-    id: 102,
+    id: "102",
     institution: "FUVEST",
     year: 2024,
     subject: "Espanhol",
@@ -39,7 +39,7 @@ export const extraQuestions: Question[] = [
 
   // Matemática
   {
-    id: 103,
+    id: "103",
     institution: "UNICAMP",
     year: 2023,
     subject: "Matemática",
@@ -52,7 +52,7 @@ export const extraQuestions: Question[] = [
 
   // Física
   {
-    id: 104,
+    id: "104",
     institution: "ENEM",
     year: 2022,
     subject: "Física",
@@ -71,7 +71,7 @@ export const extraQuestions: Question[] = [
 
   // Química
   {
-    id: 105,
+    id: "105",
     institution: "UEM",
     year: 2023,
     subject: "Química",
@@ -90,7 +90,7 @@ export const extraQuestions: Question[] = [
 
   // Biologia
   {
-    id: 106,
+    id: "106",
     institution: "FUVEST",
     year: 2024,
     subject: "Biologia",
@@ -109,7 +109,7 @@ export const extraQuestions: Question[] = [
 
   // História
   {
-    id: 107,
+    id: "107",
     institution: "ENEM",
     year: 2023,
     subject: "História",
