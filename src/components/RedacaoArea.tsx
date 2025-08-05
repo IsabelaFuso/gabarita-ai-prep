@@ -12,6 +12,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { TutorView } from "./TutorView";
+import { SistemaPredicaoTemas } from "./SistemaPredicaoTemas";
 
 // (O resto do código permanece o mesmo até a definição do componente)
 
@@ -81,6 +82,7 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
   const [avaliacao, setAvaliacao] = useState<CriterioAvaliacao[] | null>(null);
   const [notaFinal, setNotaFinal] = useState<number | null>(null);
   const [isTutorOpen, setIsTutorOpen] = useState(false);
+  const [showPredicaoTemas, setShowPredicaoTemas] = useState(false);
 
   const formatarTempo = (segundos: number) => {
     const minutos = Math.floor(segundos / 60);
@@ -216,6 +218,14 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
               <p className="text-muted-foreground">Pratique redação dissertativo-argumentativa</p>
             </div>
             <div className="flex items-center gap-4">
+              <Button 
+                variant="outline" 
+                onClick={() => setShowPredicaoTemas(!showPredicaoTemas)}
+                className="flex items-center gap-2"
+              >
+                <BrainCircuit className="w-4 h-4" />
+                {showPredicaoTemas ? "Ocultar" : "Predição de"} Temas
+              </Button>
               {iniciadoTempo && (
                 <div className={cn(
                   "flex items-center gap-2 font-mono text-lg",
@@ -227,6 +237,12 @@ export const RedacaoArea = ({ onBack, selectedConfig }: RedacaoAreaProps) => {
               )}
             </div>
           </div>
+
+          {showPredicaoTemas && (
+            <div className="mb-8">
+              <SistemaPredicaoTemas />
+            </div>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1 space-y-6">
