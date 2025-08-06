@@ -101,7 +101,6 @@ const Index = () => {
     return (
       <RedacaoArea
         onBack={goHome}
-        selectedConfig={selectedConfig}
       />
     );
   }

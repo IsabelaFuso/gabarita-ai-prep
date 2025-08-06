@@ -88,18 +88,8 @@ export const DesempenhoView = () => {
           setOverallScore(0);
         }
 
-        // Fetch essay performance
-        const { data: profile, error: profileError } = await supabase
-          .from('user_profiles')
-          .select('essays_written')
-          .eq('user_id', user.id)
-          .single();
-
-        if (profileError) {
-          console.warn("Could not fetch essay count.", profileError);
-        }
-        
-        const essaysWritten = profile?.essays_written || 0;
+        // Fetch essay performance - temporarily using mock data
+        const essaysWritten = 0; // profile?.essays_written || 0;
         setEssayPerformance({
           average_score: essaysWritten > 0 ? 820 + Math.floor(Math.random() * 60) - 30 : 0, 
           essays_written: essaysWritten,

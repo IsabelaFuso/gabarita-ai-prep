@@ -99,17 +99,18 @@ export const useAppState = () => {
     if (!user) return;
 
     try {
-      const { error } = await supabase.rpc('update_user_stats', {
-        p_user_id: user.id,
-        p_xp_increment: stats.xp || 0,
-        p_essays_increment: stats.essays_written || 0,
-        p_questions_increment: 0,
-        p_simulados_increment: 0,
-      });
+      // Temporarily disabled - need to fix database function
+      // const { error } = await supabase.rpc('update_user_stats', {
+      //   p_user_id: user.id,
+      //   p_xp_increment: stats.xp || 0,
+      //   p_essays_increment: stats.essays_written || 0,
+      //   p_questions_increment: 0,
+      //   p_simulados_increment: 0,
+      // });
 
-      if (error) {
-        throw error;
-      }
+      // if (error) {
+      //   throw error;
+      // }
     } catch (error) {
       console.error("Error updating user stats:", error);
     }

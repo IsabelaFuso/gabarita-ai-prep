@@ -29,9 +29,9 @@ export const MainLayout = ({
       <Header currentView={currentView} onNavigate={onNavigate} />
       
       <main>
-        {showHero && (
-          <HeroSection onStartQuiz={onStartQuiz} onStartSimulado={onStartSimulado} />
-        )}
+      {showHero && (
+        <HeroSection />
+      )}
         <div className="container mx-auto px-4 py-8">
           {children}
         </div>

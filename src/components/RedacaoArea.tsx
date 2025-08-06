@@ -78,7 +78,7 @@ interface RedacaoAreaProps {
 
 export const RedacaoArea = ({ onBack }: RedacaoAreaProps) => {
   const { updateUserStats, triggerConfetti } = useAppState();
-  const [todosOsTemas, setTodosOsTemas] = useState<RedacaoTema[]>(temasRedacao);
+  const [todosOsTemas, setTodosOsTemas] = useState<RedacaoTema[]>(temasRedacao.map(tema => ({ ...tema, tipo: tema.tipo as 'regular' | 'preditivo' })));
   const [analisandoTemas, setAnalisandoTemas] = useState(false);
   const [temaTipo, setTemaTipo] = useState<'regular' | 'preditivo'>('regular');
   const [temasFiltrados, setTemasFiltrados] = useState<RedacaoTema[]>([]);
