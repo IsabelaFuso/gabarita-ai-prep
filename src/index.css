@@ -137,6 +137,9 @@ All colors MUST be HSL.
     --sidebar-border: 160 15% 20%;
     --sidebar-ring: 160 75% 55%;
   }
+  /* Achievement gradients */
+  --gradient-celebration: linear-gradient(45deg, #fbbf24, #f59e0b, #d97706, #92400e);
+  --gradient-achievement: linear-gradient(135deg, #fbbf24 0%, #f59e0b 25%, #ea580c 50%, #dc2626 75%, #b91c1c 100%);
 }
 
 @layer base {

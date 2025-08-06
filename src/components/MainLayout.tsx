@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
+import { AchievementNotification } from "@/components/AchievementNotification";
 import { useAppState } from "@/hooks/useAppState";
 import ReactConfetti from "react-confetti";
 
@@ -21,7 +22,12 @@ export const MainLayout = ({
   onNavigate,
   showHero = true 
 }: MainLayoutProps) => {
-  const { showConfetti } = useAppState();
+  const { 
+    showConfetti, 
+    achievements, 
+    showAchievementNotification, 
+    closeAchievementNotification 
+  } = useAppState();
 
   return (
     <div className="min-h-screen">
@@ -36,6 +42,12 @@ export const MainLayout = ({
           {children}
         </div>
       </main>
+
+      <AchievementNotification
+        achievements={achievements}
+        show={showAchievementNotification}
+        onClose={closeAchievementNotification}
+      />
     </div>
   );
 };

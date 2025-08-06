@@ -27,6 +27,8 @@ export const useAppState = () => {
   } | null>(null);
 
   const [showConfetti, setShowConfetti] = useState(false);
+  const [achievements, setAchievements] = useState<any[]>([]);
+  const [showAchievementNotification, setShowAchievementNotification] = useState(false);
 
   // Fetch user's saved config on initial load
   useEffect(() => {
@@ -95,6 +97,16 @@ export const useAppState = () => {
     setTimeout(() => setShowConfetti(false), 5000); // Confetti runs for 5 seconds
   };
 
+  const triggerAchievementNotification = (newAchievements: any[]) => {
+    setAchievements(newAchievements);
+    setShowAchievementNotification(true);
+  };
+
+  const closeAchievementNotification = () => {
+    setShowAchievementNotification(false);
+    setAchievements([]);
+  };
+
   const updateUserStats = async (stats: { xp?: number; essays_written?: number }) => {
     if (!user) return;
 
@@ -121,12 +133,16 @@ export const useAppState = () => {
     currentView,
     simuladoResults,
     showConfetti,
+    achievements,
+    showAchievementNotification,
     handleSelectionChange,
     goHome,
     startRedacao,
     setCurrentView,
     setSimuladoResults,
     triggerConfetti,
+    triggerAchievementNotification,
+    closeAchievementNotification,
     updateUserStats,
   };
 };

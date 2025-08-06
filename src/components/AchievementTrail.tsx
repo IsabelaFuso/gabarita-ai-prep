@@ -3,6 +3,7 @@ import {
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from '@/lib/utils';
+import achievementIcons from '@/assets/achievement-icons.png';
 
 // Map icon names from the database to actual Lucide components
 const icons: Record<string, LucideIcon> = {
@@ -60,49 +61,111 @@ export const AchievementTrail = ({ allAchievements, unlockedAchievements }: Achi
 
   return (
     <TooltipProvider>
-      <div className="flex items-center justify-center w-full space-x-2 p-4">
-        {visibleAchievements.map((ach, index) => {
-          const isUnlocked = unlockedAchievements.has(ach.code);
-          const Icon = icons[ach.icon_name] || Award;
-          const isLastVisible = index === visibleAchievements.length - 1;
-          const nextAchievement = visibleAchievements[index + 1];
-          const isNextUnlocked = nextAchievement ? unlockedAchievements.has(nextAchievement.code) : false;
+      <div className="relative p-6 bg-gradient-to-r from-primary/5 via-background to-secondary/5 rounded-xl border border-primary/10">
+        {/* Background pattern */}
+        <div 
+          className="absolute inset-0 opacity-5 bg-cover bg-center rounded-xl"
+          style={{ backgroundImage: `url(${achievementIcons})` }}
+        />
+        
+        <div className="relative flex items-center justify-center w-full space-x-3">
+          {visibleAchievements.map((ach, index) => {
+            const isUnlocked = unlockedAchievements.has(ach.code);
+            const Icon = icons[ach.icon_name] || Award;
+            const isLastVisible = index === visibleAchievements.length - 1;
+            const nextAchievement = visibleAchievements[index + 1];
+            const isNextUnlocked = nextAchievement ? unlockedAchievements.has(nextAchievement.code) : false;
 
-          return (
-            <div key={ach.code} className="flex items-center">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex flex-col items-center gap-2 text-center">
+            return (
+              <div key={ach.code} className="flex items-center">
+                <Tooltip>
+                  <TooltipTrigger asChild>
                     <div className={cn(
-                      'w-16 h-16 rounded-full flex items-center justify-center transition-all transform hover:scale-110',
-                      isUnlocked ? 'bg-gradient-to-br from-amber-400 to-yellow-500 shadow-lg' : 'bg-muted grayscale opacity-60'
+                      "flex flex-col items-center gap-3 text-center transition-all duration-300 cursor-pointer group",
+                      isUnlocked && "animate-pulse-slow"
                     )}>
-                      <Icon className={cn('w-8 h-8', isUnlocked ? 'text-white' : 'text-muted-foreground')} />
+                      <div className={cn(
+                        'w-20 h-20 rounded-full flex items-center justify-center transition-all duration-500 transform group-hover:scale-110 relative',
+                        isUnlocked 
+                          ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 shadow-2xl shadow-amber-500/50 animate-scale-in' 
+                          : 'bg-gradient-to-br from-muted to-muted-foreground/20 grayscale opacity-40'
+                      )}>
+                        {isUnlocked && (
+                          <>
+                            {/* Sparkle effects */}
+                            <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full animate-ping opacity-75" />
+                            <div className="absolute -bottom-1 -left-1 w-4 h-4 bg-emerald-400 rounded-full animate-pulse" />
+                          </>
+                        )}
+                        <Icon className={cn(
+                          'w-10 h-10 transition-all duration-300',
+                          isUnlocked ? 'text-white drop-shadow-lg' : 'text-muted-foreground'
+                        )} />
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <span className={cn(
+                          'text-xs font-semibold w-24 block text-center leading-tight',
+                          isUnlocked ? 'text-foreground' : 'text-muted-foreground'
+                        )}>
+                          {ach.name}
+                        </span>
+                        
+                        {isUnlocked && (
+                          <div className="flex items-center justify-center gap-1">
+                            <Star className="w-3 h-3 text-yellow-500 fill-current" />
+                            <span className="text-xs text-yellow-600 dark:text-yellow-400 font-medium">
+                              Desbloqueada!
+                            </span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <span className={cn(
-                      'text-xs font-medium w-20 truncate',
-                      isUnlocked ? 'text-foreground' : 'text-muted-foreground'
-                    )}>
-                      {ach.name}
-                    </span>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="font-bold">{ach.name}</p>
-                  <p>{ach.description}</p>
-                  {!isUnlocked && <p className="text-xs text-muted-foreground italic">Continue estudando para desbloquear!</p>}
-                </TooltipContent>
-              </Tooltip>
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <div className="space-y-2">
+                      <p className="font-bold text-primary">{ach.name}</p>
+                      <p className="text-sm">{ach.description}</p>
+                      {!isUnlocked && (
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground italic">
+                          <Target className="w-3 h-3" />
+                          Continue estudando para desbloquear!
+                        </div>
+                      )}
+                      {isUnlocked && (
+                        <div className="flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400">
+                          <Trophy className="w-3 h-3" />
+                          Conquista desbloqueada! +50 XP
+                        </div>
+                      )}
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
 
-              {!isLastVisible && (
-                <div className={cn(
-                  "h-1.5 w-16 mx-2 rounded-full",
-                  isNextUnlocked ? "bg-gradient-to-r from-green-400 to-teal-500" : "bg-gray-300"
-                )} />
-              )}
-            </div>
-          );
-        })}
+                {!isLastVisible && (
+                  <div className="flex flex-col items-center mx-4">
+                    <div className={cn(
+                      "h-2 w-20 rounded-full transition-all duration-700 relative overflow-hidden",
+                      isNextUnlocked 
+                        ? "bg-gradient-to-r from-emerald-400 via-blue-500 to-purple-600 shadow-lg" 
+                        : "bg-muted"
+                    )}>
+                      {isNextUnlocked && (
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-slide-in-right" />
+                      )}
+                    </div>
+                    
+                    {isNextUnlocked && (
+                      <div className="mt-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium animate-fade-in">
+                        Conectado!
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </TooltipProvider>
   );
