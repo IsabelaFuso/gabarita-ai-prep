@@ -119,43 +119,43 @@ export const ConversionHeroSection = () => {
         ))}
       </div>
 
-      <div className="relative z-10 container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center min-h-screen">
+      <div className="relative z-10 container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-screen">
           
           {/* Coluna de Conteúdo Persuasivo */}
-          <div className="space-y-8 animate-slide-in-up">
+          <div className="space-y-6 animate-slide-in-up">
             {/* Header com Social Proof */}
-            <div className="text-center lg:text-left space-y-6">
+            <div className="text-center lg:text-left space-y-4">
               <Badge variant="secondary" className="glass text-primary border-primary/20">
                 <Star className="w-4 h-4 mr-2 fill-current" />
                 #1 Plataforma de Vestibular do Brasil
               </Badge>
 
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-white">
+              <h1 className="text-3xl md:text-5xl font-bold leading-tight text-white">
                 Sua
                 <span className="bg-gradient-to-r from-primary-glow to-primary bg-clip-text text-transparent"> Aprovação</span>
                 <br />
                 Começa Aqui.
               </h1>
 
-              <p className="text-xl md:text-2xl text-white/90 max-w-2xl">
+              <p className="text-base text-white/90 max-w-2xl">
                 A única plataforma que usa <span className="text-primary-glow font-semibold">Inteligência Artificial</span> para 
                 personalizar seus estudos e <span className="text-primary-glow font-semibold">acelerar sua aprovação</span> em até 3x.
               </p>
             </div>
 
             {/* Social Proof Numbers */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {socialProof.map((stat, index) => (
                 <div key={index} className="text-center animate-fade-in" style={{ animationDelay: `${index * 0.2}s` }}>
-                  <div className="text-2xl md:text-3xl font-bold text-primary-glow">{stat.number}</div>
-                  <div className="text-sm text-white/70">{stat.label}</div>
+                  <div className="text-lg md:text-xl font-bold text-primary-glow">{stat.number}</div>
+                  <div className="text-2xs text-white/70">{stat.label}</div>
                 </div>
               ))}
             </div>
 
             {/* Benefits Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
               {benefits.map((benefit, index) => (
                 <div 
                   key={index} 
@@ -163,23 +163,23 @@ export const ConversionHeroSection = () => {
                   style={{ animationDelay: `${0.8 + index * 0.1}s` }}
                 >
                   <benefit.icon className="w-8 h-8 text-primary-glow mb-3" />
-                  <h3 className="text-lg font-semibold text-white mb-2">{benefit.title}</h3>
-                  <p className="text-white/70 text-sm">{benefit.description}</p>
+                  <h3 className="text-base font-semibold text-black mb-2">{benefit.title}</h3>
+                  <p className="text-black/70 text-xs">{benefit.description}</p>
                 </div>
               ))}
             </div>
 
             {/* Urgency & Scarcity */}
-            <div className="glass p-6 rounded-xl border-primary/30 animate-pulse-glow">
-              <div className="flex items-center gap-3 mb-3">
+            <div className="glass p-4 rounded-xl border-primary/30 animate-pulse-glow">
+              <div className="flex items-center gap-3 mb-2">
                 <Zap className="w-6 h-6 text-yellow-400" />
-                <span className="text-lg font-semibold text-white">Oferta Limitada!</span>
+                <span className="text-base text-black">Oferta Limitada!</span>
               </div>
-              <p className="text-white/90 mb-3">
-                Apenas <span className="text-primary-glow font-bold">97 vagas restantes</span> para o programa de mentoria personalizada. 
+              <p className="text-2xs text-black/90 mb-3">
+                Apenas <span className="text-primary-glow">97 vagas restantes</span> para o programa de mentoria personalizada. 
                 Garante sua vaga agora e comece a estudar hoje mesmo!
               </p>
-              <div className="flex items-center gap-2 text-sm text-white/70">
+              <div className="flex items-center gap-2 text-2xs text-black/70">
                 <Users className="w-4 h-4" />
                 <span>2.847 pessoas se cadastraram nas últimas 24h</span>
               </div>
@@ -188,17 +188,17 @@ export const ConversionHeroSection = () => {
           
           {/* Coluna do Formulário Otimizado */}
           <div className="flex justify-center animate-slide-in-up" style={{ animationDelay: '0.4s' }}>
-            <Card className="w-full max-w-md glass-strong border-primary/20 shadow-xl">
+            <Card className="w-full max-w-sm glass-strong border-primary/20 shadow-xl">
               <form onSubmit={handleSubmit}>
                 <CardHeader className="text-center pb-4">
                   <div className="flex items-center justify-center gap-2 mb-4">
                     <GraduationCap className="w-8 h-8 text-primary-glow" />
-                    <span className="text-2xl font-bold text-white">VestibularIA</span>
+                    <span className="text-xl text-foreground">VestibularIA</span>
                   </div>
-                  <CardTitle className="text-2xl text-white">
+                  <CardTitle className="text-xl text-foreground">
                     {isLogin ? 'Acesse Sua Conta' : 'Comece Sua Jornada'}
                   </CardTitle>
-                  <CardDescription className="text-white/70">
+                  <CardDescription className="text-muted-foreground">
                     {isLogin ? 'Bem-vindo de volta, futuro universitário!' : 'Crie sua conta e transforme seus estudos em 30 segundos.'}
                   </CardDescription>
                 </CardHeader>
@@ -207,12 +207,12 @@ export const ConversionHeroSection = () => {
                   {!isLogin && (
                     <div className="flex items-center gap-2 p-3 bg-primary/10 rounded-lg border border-primary/20">
                       <CheckCircle className="w-5 h-5 text-primary-glow" />
-                      <span className="text-sm text-white/90">7 dias grátis + Mentoria personalizada</span>
+                      <span className="text-xs text-foreground">7 dias grátis + Mentoria personalizada</span>
                     </div>
                   )}
                   
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-white">Email</Label>
+                    <Label htmlFor="email">Email</Label>
                     <Input 
                       id="email" 
                       type="email" 
@@ -220,12 +220,12 @@ export const ConversionHeroSection = () => {
                       required 
                       value={email} 
                       onChange={(e) => setEmail(e.target.value)}
-                      className="bg-white/10 border-white/20 focus:ring-primary text-white placeholder:text-white/50"
+                      className="bg-transparent border-border focus:ring-primary text-foreground placeholder:text-muted-foreground"
                     />
                   </div>
                   
                   <div className="space-y-2">
-                    <Label htmlFor="password" className="text-white">Senha</Label>
+                    <Label htmlFor="password">Senha</Label>
                     <Input 
                       id="password" 
                       type="password" 
@@ -233,14 +233,14 @@ export const ConversionHeroSection = () => {
                       required 
                       value={password} 
                       onChange={(e) => setPassword(e.target.value)}
-                      className="bg-white/10 border-white/20 focus:ring-primary text-white placeholder:text-white/50"
+                      className="bg-transparent border-border focus:ring-primary text-foreground placeholder:text-muted-foreground"
                     />
                   </div>
 
                   {!isLogin && (
                     <div className="space-y-3 p-4 bg-white/5 rounded-lg">
-                      <div className="text-sm text-white/90 font-medium">✨ O que você ganha agora:</div>
-                      <div className="space-y-2 text-sm text-white/70">
+                      <div className="text-xs text-foreground">✨ O que você ganha agora:</div>
+                      <div className="space-y-2 text-xs text-muted-foreground">
                         <div className="flex items-center gap-2">
                           <BookOpen className="w-4 h-4 text-primary-glow" />
                           <span>Simulados personalizados com IA</span>
@@ -285,20 +285,20 @@ export const ConversionHeroSection = () => {
                       setError(null);
                       setMessage(null);
                     }}
-                    className="mt-4 text-sm text-white/70 hover:text-white transition-colors"
+                    className="mt-4 text-xs text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {isLogin ? 'Ainda não tem conta? Cadastre-se grátis' : 'Já tenho conta? Fazer login'}
                   </button>
 
                   {!isLogin && (
                     <div className="mt-4 text-center">
-                      <div className="text-xs text-white/50 mb-2">Mais de 12.000 estudantes já transformaram seus resultados:</div>
-                      <div className="flex justify-center items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        ))}
-                        <span className="text-sm text-white/70 ml-2">4.9/5 ⭐</span>
-                      </div>
+                      <div className="text-2xs text-muted-foreground/80 mb-2">Mais de 12.000 estudantes já transformaram seus resultados:</div>
+                  <div className="flex justify-center items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    ))}
+                    <span className="text-2xs text-muted-foreground ml-2">4.9/5 ⭐</span>
+                  </div>
                     </div>
                   )}
                 </CardFooter>

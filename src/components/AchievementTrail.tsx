@@ -3,16 +3,14 @@ import {
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from '@/lib/utils';
-import achievementIcons from '@/assets/achievement-icons.png';
 
-// Map icon names from the database to actual Lucide components
 const icons: Record<string, LucideIcon> = {
   Footprints, Award, Flame, Crown, Target, ShieldCheck, Trophy, BookUser, BrainCircuit, Gem, HelpCircle, Library, Eye, Zap, Star
 };
 
 interface Achievement {
   code: string;
-  name: string;
+  name:string;
   description: string;
   icon_name: string;
 }
@@ -22,22 +20,14 @@ interface AchievementTrailProps {
   unlockedAchievements: Set<string>;
 }
 
-// Define the logical order of the achievement trail
 const achievementOrder: string[] = [
-  'FIRST_SIMULADO',
-  'QUESTIONS_100',
-  'STREAK_3',
-  'XP_1000',
-  'QUESTIONS_250',
-  'ACCURACY_90',
-  'STREAK_7',
-  'QUESTIONS_500',
-  'XP_5000',
-  'STREAK_14',
-  'ACCURACY_95',
-  'QUESTIONS_1000',
-  'STREAK_30',
-  'XP_10000',
+  'FIRST_SIMULADO', 'QUESTIONS_100', 'STREAK_3', 'XP_1000', 'QUESTIONS_250', 'ACCURACY_90', 'STREAK_7',
+  'QUESTIONS_500', 'XP_5000', 'STREAK_14', 'ACCURACY_95', 'QUESTIONS_1000', 'STREAK_30', 'XP_10000',
+];
+
+const achievementPositions = [
+  { cx: "10%", cy: "80%" }, { cx: "25%", cy: "65%" }, { cx: "40%", cy: "50%" },
+  { cx: "55%", cy: "35%" }, { cx: "70%", cy: "20%" }, { cx: "85%", cy: "10%" }
 ];
 
 export const AchievementTrail = ({ allAchievements, unlockedAchievements }: AchievementTrailProps) => {
@@ -54,119 +44,91 @@ export const AchievementTrail = ({ allAchievements, unlockedAchievements }: Achi
     return unlockedAchievements.has(ach.code) ? currentIndex : lastIndex;
   }, -1);
 
-  // Determine the slice of achievements to show: from the second to last unlocked up to the next one
-  const startIndex = Math.max(0, lastUnlockedIndex - 1);
-  const endIndex = Math.min(orderedAchievements.length, lastUnlockedIndex + 2);
+  const startIndex = Math.max(0, lastUnlockedIndex - 2);
+  const endIndex = Math.min(orderedAchievements.length, lastUnlockedIndex + 4);
   const visibleAchievements = orderedAchievements.slice(startIndex, endIndex);
 
   return (
     <TooltipProvider>
-      <div className="relative p-6 bg-gradient-to-r from-primary/5 via-background to-secondary/5 rounded-xl border border-primary/10">
-        {/* Background pattern */}
-        <div 
-          className="absolute inset-0 opacity-5 bg-cover bg-center rounded-xl"
-          style={{ backgroundImage: `url(${achievementIcons})` }}
-        />
-        
-        <div className="relative flex items-center justify-center w-full space-x-3">
-          {visibleAchievements.map((ach, index) => {
-            const isUnlocked = unlockedAchievements.has(ach.code);
-            const Icon = icons[ach.icon_name] || Award;
-            const isLastVisible = index === visibleAchievements.length - 1;
-            const nextAchievement = visibleAchievements[index + 1];
-            const isNextUnlocked = nextAchievement ? unlockedAchievements.has(nextAchievement.code) : false;
+      <div className="relative p-4 bg-gradient-to-b from-sky-100 to-blue-200 dark:from-sky-900 dark:to-blue-950 rounded-xl border border-primary/10 overflow-hidden">
+        <div className="relative w-full h-64">
+          <svg width="100%" height="100%" viewBox="0 0 400 150" preserveAspectRatio="none" className="absolute inset-0">
+            <path 
+              d="M 40 120 C 100 100, 150 50, 200 50 C 250 50, 300 100, 360 80"
+              stroke="rgba(255, 255, 255, 0.5)" 
+              strokeWidth="3" 
+              fill="none" 
+              strokeDasharray="5,5"
+              className="stroke-muted-foreground/30"
+            />
+          </svg>
 
-            return (
-              <div key={ach.code} className="flex items-center">
-                <Tooltip>
+          <div className="relative w-full h-full">
+            {visibleAchievements.map((ach, index) => {
+              const isUnlocked = unlockedAchievements.has(ach.code);
+              const Icon = icons[ach.icon_name] || Award;
+              const pos = achievementPositions[index % achievementPositions.length];
+
+              return (
+                <Tooltip key={ach.code}>
                   <TooltipTrigger asChild>
-                    <div className={cn(
-                      "flex flex-col items-center gap-3 text-center transition-all duration-300 cursor-pointer group",
-                      isUnlocked && "animate-pulse-slow"
-                    )}>
+                    <div 
+                      className="absolute transform -translate-x-1/2 -translate-y-1/2"
+                      style={{ left: pos.cx, top: pos.cy }}
+                    >
                       <div className={cn(
-                        'w-20 h-20 rounded-full flex items-center justify-center transition-all duration-500 transform group-hover:scale-110 relative',
-                        isUnlocked 
-                          ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 shadow-2xl shadow-amber-500/50 animate-scale-in' 
-                          : 'bg-gradient-to-br from-muted to-muted-foreground/20 grayscale opacity-40'
+                        "flex flex-col items-center gap-2 text-center transition-all duration-300 cursor-pointer group",
+                        isUnlocked && "animate-pulse-slow"
                       )}>
-                        {isUnlocked && (
-                          <>
-                            {/* Sparkle effects */}
-                            <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full animate-ping opacity-75" />
-                            <div className="absolute -bottom-1 -left-1 w-4 h-4 bg-emerald-400 rounded-full animate-pulse" />
-                          </>
-                        )}
-                        <Icon className={cn(
-                          'w-10 h-10 transition-all duration-300',
-                          isUnlocked ? 'text-white drop-shadow-lg' : 'text-muted-foreground'
-                        )} />
-                      </div>
-                      
-                      <div className="space-y-1">
+                        <div className={cn(
+                          'w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500 transform group-hover:scale-125 relative shadow-lg',
+                          isUnlocked 
+                            ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 shadow-amber-500/30' 
+                            : 'bg-slate-300 dark:bg-slate-700 grayscale opacity-60'
+                        )}>
+                          {isUnlocked && (
+                            <div className="absolute inset-0 rounded-full bg-yellow-400/30 animate-ping opacity-75" />
+                          )}
+                          <Icon className={cn(
+                            'w-8 h-8 transition-all duration-300',
+                            isUnlocked ? 'text-white drop-shadow-md' : 'text-slate-500 dark:text-slate-400'
+                          )} />
+                        </div>
+                        
                         <span className={cn(
-                          'text-xs font-semibold w-24 block text-center leading-tight',
-                          isUnlocked ? 'text-foreground' : 'text-muted-foreground'
+                          'text-xs font-semibold w-20 block text-center leading-tight px-1 py-0.5 rounded-full',
+                          isUnlocked ? 'text-foreground bg-background/50' : 'text-muted-foreground bg-background/30'
                         )}>
                           {ach.name}
                         </span>
-                        
-                        {isUnlocked && (
-                          <div className="flex items-center justify-center gap-1">
-                            <Star className="w-3 h-3 text-yellow-500 fill-current" />
-                            <span className="text-xs text-yellow-600 dark:text-yellow-400 font-medium">
-                              Desbloqueada!
-                            </span>
-                          </div>
-                        )}
                       </div>
                     </div>
                   </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
+                  <TooltipContent className="max-w-xs bg-background/80 backdrop-blur-sm">
                     <div className="space-y-2">
                       <p className="font-bold text-primary">{ach.name}</p>
                       <p className="text-sm">{ach.description}</p>
                       {!isUnlocked && (
                         <div className="flex items-center gap-1 text-xs text-muted-foreground italic">
                           <Target className="w-3 h-3" />
-                          Continue estudando para desbloquear!
+                          <span>Continue estudando para desbloquear!</span>
                         </div>
                       )}
                       {isUnlocked && (
                         <div className="flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400">
                           <Trophy className="w-3 h-3" />
-                          Conquista desbloqueada! +50 XP
+                          <span>Conquista desbloqueada! +50 XP</span>
                         </div>
                       )}
                     </div>
                   </TooltipContent>
                 </Tooltip>
-
-                {!isLastVisible && (
-                  <div className="flex flex-col items-center mx-4">
-                    <div className={cn(
-                      "h-2 w-20 rounded-full transition-all duration-700 relative overflow-hidden",
-                      isNextUnlocked 
-                        ? "bg-gradient-to-r from-emerald-400 via-blue-500 to-purple-600 shadow-lg" 
-                        : "bg-muted"
-                    )}>
-                      {isNextUnlocked && (
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-slide-in-right" />
-                      )}
-                    </div>
-                    
-                    {isNextUnlocked && (
-                      <div className="mt-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium animate-fade-in">
-                        Conectado!
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </TooltipProvider>
   );
 };
+

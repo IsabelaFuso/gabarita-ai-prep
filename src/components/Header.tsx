@@ -32,7 +32,7 @@ export const Header = ({ currentView = 'dashboard', onNavigate }: HeaderProps) =
 
   const handleLogout = async () => {
     await signOut();
-    navigate('/auth');
+    navigate('/');
   };
 
   const navigationItems = [
