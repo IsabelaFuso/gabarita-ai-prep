@@ -13,6 +13,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 
 import { AchievementTrail } from "./AchievementTrail";
+import { EnhancedRankingView } from "./EnhancedRankingView";
 import { SimuladoType } from "@/hooks/useQuestionManager";
 
 interface VestibularDashboardProps {
@@ -347,27 +348,35 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
         </Card>
       </div>
 
-      {/* Achievements */}
-      <Card className="shadow-soft">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Award className="w-5 h-5 text-amber-500" />
-            Sua Trilha de Conquistas
-          </CardTitle>
-          <CardDescription>
-            Seu progresso e suas próximas metas. Passe o mouse para ver os detalhes.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {loading ? (
-            <div className="flex items-center justify-center h-24">
-              <Skeleton className="h-16 w-full" />
-            </div>
-          ) : (
-            <AchievementTrail allAchievements={allAchievements} unlockedAchievements={unlockedAchievements} />
-          )}
-        </CardContent>
-      </Card>
+      {/* Achievements and Ranking */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <Card className="shadow-soft">
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Award className="w-5 h-5 text-amber-500" />
+                Sua Trilha de Conquistas
+              </CardTitle>
+              <CardDescription>
+                Seu progresso e suas próximas metas. Passe o mouse para ver os detalhes.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="flex items-center justify-center h-24">
+                  <Skeleton className="h-16 w-full" />
+                </div>
+              ) : (
+                <AchievementTrail allAchievements={allAchievements} unlockedAchievements={unlockedAchievements} />
+              )}
+            </CardContent>
+          </Card>
+        </div>
+        
+        <div className="lg:col-span-1">
+          <EnhancedRankingView />
+        </div>
+      </div>
 
       {/* Performance by Subject */}
       <Card className="shadow-soft">

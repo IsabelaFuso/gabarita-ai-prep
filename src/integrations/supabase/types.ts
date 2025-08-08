@@ -152,18 +152,33 @@ export type Database = {
       }
       ranks: {
         Row: {
+          background_color: string | null
+          icon_url: string | null
           id: number
           name: string
+          rank_type: string | null
+          special_trigger_condition: string | null
+          text_color: string | null
           xp_threshold: number
         }
         Insert: {
+          background_color?: string | null
+          icon_url?: string | null
           id?: number
           name: string
+          rank_type?: string | null
+          special_trigger_condition?: string | null
+          text_color?: string | null
           xp_threshold: number
         }
         Update: {
+          background_color?: string | null
+          icon_url?: string | null
           id?: number
           name?: string
+          rank_type?: string | null
+          special_trigger_condition?: string | null
+          text_color?: string | null
           xp_threshold?: number
         }
         Relationships: []
@@ -402,12 +417,14 @@ export type Database = {
           created_at: string | null
           current_rank_id: number | null
           current_streak: number
+          display_name: string | null
           first_choice_course: string | null
           full_name: string | null
           id: string
           last_activity_date: string | null
           preferences: Json | null
           second_choice_course: string | null
+          special_ranks_unlocked: number[] | null
           study_hours_per_week: number | null
           study_level: Database["public"]["Enums"]["difficulty_level"] | null
           target_date: string | null
@@ -426,12 +443,14 @@ export type Database = {
           created_at?: string | null
           current_rank_id?: number | null
           current_streak?: number
+          display_name?: string | null
           first_choice_course?: string | null
           full_name?: string | null
           id?: string
           last_activity_date?: string | null
           preferences?: Json | null
           second_choice_course?: string | null
+          special_ranks_unlocked?: number[] | null
           study_hours_per_week?: number | null
           study_level?: Database["public"]["Enums"]["difficulty_level"] | null
           target_date?: string | null
@@ -450,12 +469,14 @@ export type Database = {
           created_at?: string | null
           current_rank_id?: number | null
           current_streak?: number
+          display_name?: string | null
           first_choice_course?: string | null
           full_name?: string | null
           id?: string
           last_activity_date?: string | null
           preferences?: Json | null
           second_choice_course?: string | null
+          special_ranks_unlocked?: number[] | null
           study_hours_per_week?: number | null
           study_level?: Database["public"]["Enums"]["difficulty_level"] | null
           target_date?: string | null

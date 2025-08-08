@@ -26,6 +26,8 @@ interface RankingUser {
   target_course: string;
   latest_achievement_name?: string;
   latest_achievement_icon?: string;
+  chosen_rank_name?: string;
+  chosen_rank_icon?: string;
 }
 
 const mockedUsers: RankingUser[] = mockData.map(user => ({
@@ -114,7 +116,7 @@ export function RankingView() {
                   <div className="flex items-center space-x-2 mt-1">
                     <Badge variant="secondary" className="flex items-center gap-1">
                       <Icon className={cn("w-3.5 h-3.5", color)} />
-                      {user.rank_name}
+                      {user.chosen_rank_name || user.rank_name}
                     </Badge>
                     <span className="text-sm font-bold text-primary">{user.xp} XP</span>
                   </div>

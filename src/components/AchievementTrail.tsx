@@ -21,13 +21,24 @@ interface AchievementTrailProps {
 }
 
 const achievementOrder: string[] = [
-  'FIRST_SIMULADO', 'QUESTIONS_100', 'STREAK_3', 'XP_1000', 'QUESTIONS_250', 'ACCURACY_90', 'STREAK_7',
-  'QUESTIONS_500', 'XP_5000', 'STREAK_14', 'ACCURACY_95', 'QUESTIONS_1000', 'STREAK_30', 'XP_10000',
+  // Fase 1: Início da Jornada
+  'PRIMEIROS_PASSOS', 'EXPLORADOR_PLATAFORMA', 'PRIMEIRA_VITORIA', 'REDATOR_INICIANTE',
+  // Fase 2: Construindo a Base  
+  'RITMO_CONSTANTE', 'DESAFIO_SUPERADO', 'MESTRE_FUNDAMENTOS', 'ORGANIZADOR_NATO',
+  // Fase 3: Aprofundamento e Estratégia
+  'ESPECIALISTA_MATERIA', 'GABARITO_PARCIAL', 'SUPERACAO_DIFICULDADES', 'ESCRITOR_PERSPICAZ',
+  // Fase 4: Reta Final e Simulação
+  'MARATONISTA_ESTUDO', 'SIMULADOR_PRO', 'REVISOR_MESTRE', 'PRONTO_BATALHA',
+  // Fase 5: Conquista Final
+  'APROVADO'
 ];
 
 const achievementPositions = [
-  { cx: "10%", cy: "80%" }, { cx: "25%", cy: "65%" }, { cx: "40%", cy: "50%" },
-  { cx: "55%", cy: "35%" }, { cx: "70%", cy: "20%" }, { cx: "85%", cy: "10%" }
+  { cx: "8%", cy: "85%" }, { cx: "20%", cy: "70%" }, { cx: "35%", cy: "55%" }, { cx: "50%", cy: "40%" },
+  { cx: "65%", cy: "25%" }, { cx: "78%", cy: "15%" }, { cx: "90%", cy: "30%" }, { cx: "85%", cy: "50%" },
+  { cx: "70%", cy: "65%" }, { cx: "55%", cy: "80%" }, { cx: "40%", cy: "90%" }, { cx: "25%", cy: "85%" },
+  { cx: "15%", cy: "60%" }, { cx: "30%", cy: "35%" }, { cx: "60%", cy: "10%" }, { cx: "75%", cy: "40%" },
+  { cx: "50%", cy: "95%" }
 ];
 
 export const AchievementTrail = ({ allAchievements, unlockedAchievements }: AchievementTrailProps) => {
@@ -50,16 +61,32 @@ export const AchievementTrail = ({ allAchievements, unlockedAchievements }: Achi
 
   return (
     <TooltipProvider>
-      <div className="relative p-4 bg-gradient-to-b from-sky-100 to-blue-200 dark:from-sky-900 dark:to-blue-950 rounded-xl border border-primary/10 overflow-hidden">
-        <div className="relative w-full h-64">
-          <svg width="100%" height="100%" viewBox="0 0 400 150" preserveAspectRatio="none" className="absolute inset-0">
+      <div className="relative p-6 bg-gradient-to-br from-academic-blue via-academic-purple to-academic-green rounded-xl border border-primary/10 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer"></div>
+        <div className="relative w-full h-80">
+          <svg width="100%" height="100%" viewBox="0 0 400 200" preserveAspectRatio="none" className="absolute inset-0">
+            <defs>
+              <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgba(59, 130, 246, 0.6)" />
+                <stop offset="50%" stopColor="rgba(147, 51, 234, 0.6)" />
+                <stop offset="100%" stopColor="rgba(34, 197, 94, 0.6)" />
+              </linearGradient>
+            </defs>
             <path 
-              d="M 40 120 C 100 100, 150 50, 200 50 C 250 50, 300 100, 360 80"
-              stroke="rgba(255, 255, 255, 0.5)" 
-              strokeWidth="3" 
+              d="M 30 170 Q 80 150, 120 140 T 200 80 Q 250 60, 300 90 T 370 60"
+              stroke="url(#pathGradient)" 
+              strokeWidth="4" 
               fill="none" 
-              strokeDasharray="5,5"
-              className="stroke-muted-foreground/30"
+              strokeDasharray="8,4"
+              className="animate-pulse-slow"
+            />
+            <path 
+              d="M 30 170 Q 80 150, 120 140 T 200 80 Q 250 60, 300 90 T 370 60"
+              stroke="rgba(255, 255, 255, 0.3)" 
+              strokeWidth="2" 
+              fill="none" 
+              strokeDasharray="4,8"
+              className="animate-flow"
             />
           </svg>
 
@@ -81,23 +108,28 @@ export const AchievementTrail = ({ allAchievements, unlockedAchievements }: Achi
                         isUnlocked && "animate-pulse-slow"
                       )}>
                         <div className={cn(
-                          'w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500 transform group-hover:scale-125 relative shadow-lg',
+                          'w-20 h-20 rounded-full flex items-center justify-center transition-all duration-500 transform group-hover:scale-125 relative shadow-xl',
                           isUnlocked 
-                            ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 shadow-amber-500/30' 
-                            : 'bg-slate-300 dark:bg-slate-700 grayscale opacity-60'
+                            ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 shadow-amber-500/50 border-2 border-white/30' 
+                            : 'bg-gradient-to-br from-slate-300 to-slate-400 dark:from-slate-700 dark:to-slate-800 grayscale opacity-60'
                         )}>
                           {isUnlocked && (
-                            <div className="absolute inset-0 rounded-full bg-yellow-400/30 animate-ping opacity-75" />
+                            <>
+                              <div className="absolute inset-0 rounded-full bg-yellow-400/40 animate-ping opacity-75" />
+                              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-rotate-slow" />
+                            </>
                           )}
                           <Icon className={cn(
-                            'w-8 h-8 transition-all duration-300',
+                            'w-10 h-10 transition-all duration-300 relative z-10',
                             isUnlocked ? 'text-white drop-shadow-md' : 'text-slate-500 dark:text-slate-400'
                           )} />
                         </div>
                         
                         <span className={cn(
-                          'text-xs font-semibold w-20 block text-center leading-tight px-1 py-0.5 rounded-full',
-                          isUnlocked ? 'text-foreground bg-background/50' : 'text-muted-foreground bg-background/30'
+                          'text-xs font-semibold w-24 block text-center leading-tight px-2 py-1 rounded-full border backdrop-blur-sm',
+                          isUnlocked 
+                            ? 'text-foreground bg-background/70 border-primary/30 shadow-sm' 
+                            : 'text-muted-foreground bg-background/40 border-muted/30'
                         )}>
                           {ach.name}
                         </span>

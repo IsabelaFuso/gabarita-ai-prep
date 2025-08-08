@@ -43,4 +43,32 @@ export interface RankingUser {
   target_course: string;
   latest_achievement_name?: string;
   latest_achievement_icon?: string;
+  chosen_rank_name?: string;
+  chosen_rank_icon?: string;
+}
+
+export interface Rank {
+  id: number;
+  name: string;
+  xp_threshold: number;
+  rank_type: 'general' | 'special_humorous';
+  special_trigger_condition?: string;
+  icon_url?: string;
+  background_color?: string;
+  text_color?: string;
+}
+
+export interface UserProfile {
+  user_id: string;
+  full_name: string;
+  display_name?: string;
+  avatar_url?: string;
+  xp: number;
+  current_streak: number;
+  current_rank_id: number;
+  chosen_rank_id?: number;
+  special_ranks_unlocked: number[];
+  target_institution_id?: string;
+  first_choice_course?: string;
+  second_choice_course?: string;
 }
