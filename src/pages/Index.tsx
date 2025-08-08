@@ -17,8 +17,9 @@ import { Button } from "@/components/ui/button";
 import { Loader2, AlertTriangle } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { RankingView } from "@/components/RankingView";
-import { PerfilView } from "@/components/PerfilView";
 import { useCallback } from "react";
+import { SimuladoDetailView } from "@/components/SimuladoDetailView";
+import { AccountView } from "@/components/AccountView";
 
 const Index = () => {
   const { user } = useAuth();
@@ -28,11 +29,13 @@ const Index = () => {
     selectedConfig,
     currentView,
     simuladoResults,
+    selectedSimuladoId,
     handleSelectionChange,
     goHome,
     startRedacao,
     setCurrentView,
-    setSimuladoResults
+    setSimuladoResults,
+    viewSimuladoDetails,
   } = useAppState();
 
   // This is still needed for the full simulado feature
@@ -92,8 +95,8 @@ const Index = () => {
       case 'tutor':
         setCurrentView('tutor');
         break;
-      case 'perfil':
-        setCurrentView('perfil');
+      case 'account':
+        setCurrentView('account');
         break;
       default:
         goHome();
@@ -148,6 +151,23 @@ const Index = () => {
         onHome={goHome}
         selectedConfig={selectedConfig}
       />
+    );
+  }
+
+  if (currentView === 'simulado_details' && selectedSimuladoId) {
+    return (
+      <MainLayout 
+        onStartQuiz={() => handleNavigation('questoes')} 
+        onStartSimulado={() => startSimulado('completo')}
+        currentView={currentView}
+        onNavigate={handleNavigation}
+        showHero={false}
+      >
+        <SimuladoDetailView 
+          simuladoId={selectedSimuladoId} 
+          onBack={() => setCurrentView('account')} 
+        />
+      </MainLayout>
     );
   }
 
@@ -211,8 +231,8 @@ const Index = () => {
         );
       case 'questoes':
         return renderPracticeQuiz();
-      case 'perfil':
-        return <PerfilView />;
+      case 'account':
+        return <AccountView onViewSimuladoDetails={viewSimuladoDetails} />;
       default:
         return (
           <div className="flex flex-col lg:flex-row gap-8 items-stretch">
@@ -225,6 +245,8 @@ const Index = () => {
               <UniversitySelector onSelectionChange={handleSelectionChange} />
               <VestibularDashboard 
                 selectedConfig={selectedConfig} 
+                currentView={currentView}
+                onNavigate={handleNavigation}
                 onStartSimulado={(type) => {
                   if (type === 'por_materia' || type === 'minhas_dificuldades' || type === 'questoes_comentadas') {
                     setCurrentView('banco-questoes');

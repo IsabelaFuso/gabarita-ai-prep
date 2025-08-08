@@ -14,6 +14,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 import { AchievementTrail } from "./AchievementTrail";
 import { SimuladoType } from "@/hooks/useQuestionManager";
+import { AccountView } from "./AccountView";
 
 interface VestibularDashboardProps {
   selectedConfig: {
@@ -25,6 +26,8 @@ interface VestibularDashboardProps {
   onStartRedacao?: () => void;
   usedQuestionIds: string[];
   onResetUsedQuestions: () => void;
+  currentView: string;
+  onNavigate: (view: string) => void;
 }
 
 interface PerformanceData {
@@ -39,7 +42,15 @@ interface Achievement {
   icon_name: string;
 }
 
-export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRedacao, usedQuestionIds, onResetUsedQuestions }: VestibularDashboardProps) => {
+export const VestibularDashboard = ({ 
+  selectedConfig, 
+  onStartSimulado, 
+  onStartRedacao, 
+  usedQuestionIds, 
+  onResetUsedQuestions,
+  currentView,
+  onNavigate
+}: VestibularDashboardProps) => {
   const { user } = useAuth();
   const [summary, setSummary] = useState<PerformanceData | null>(null);
   const [questionsToday, setQuestionsToday] = useState(0);
@@ -157,6 +168,10 @@ export const VestibularDashboard = ({ selectedConfig, onStartSimulado, onStartRe
   };
 
   const hasSelection = selectedConfig.university && selectedConfig.firstChoice;
+
+  if (currentView === 'account') {
+    return <AccountView onViewSimuladoDetails={onNavigate} />;
+  }
 
   if (!hasSelection) {
     return (

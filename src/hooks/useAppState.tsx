@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "./useAuth";
 import { supabase } from "@/integrations/supabase/client";
 
-export type AppView = 'dashboard' | 'simulado' | 'resultado' | 'redacao' | 'simulados' | 'questoes' | 'desempenho' | 'tutor' | 'banco-questoes' | 'perfil';
+export type AppView = 'dashboard' | 'simulado' | 'resultado' | 'redacao' | 'simulados' | 'questoes' | 'desempenho' | 'tutor' | 'banco-questoes' | 'account' | 'simulado_details';
 
 export interface SelectedConfig {
   university: string;
@@ -26,6 +26,7 @@ export const useAppState = () => {
     score: number;
   } | null>(null);
 
+  const [selectedSimuladoId, setSelectedSimuladoId] = useState<string | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
   const [achievements, setAchievements] = useState<any[]>([]);
   const [showAchievementNotification, setShowAchievementNotification] = useState(false);
@@ -62,16 +63,14 @@ export const useAppState = () => {
 
     if (!user) return;
 
-    // Get the institution ID from its name
     const { data: institution } = await supabase
       .from('institutions')
       .select('id')
-      .eq('name', config.university.toUpperCase()) // Ensure uppercase
+      .eq('name', config.university.toUpperCase())
       .single();
 
     if (!institution) return;
 
-    // Save the updated config to the user's profile
     await supabase
       .from('user_profiles')
       .upsert({
@@ -86,6 +85,12 @@ export const useAppState = () => {
   const goHome = () => {
     setCurrentView('dashboard');
     setSimuladoResults(null);
+    setSelectedSimuladoId(null);
+  };
+
+  const viewSimuladoDetails = (simuladoId: string) => {
+    setSelectedSimuladoId(simuladoId);
+    setCurrentView('simulado_details');
   };
 
   const startRedacao = () => {
@@ -94,7 +99,7 @@ export const useAppState = () => {
 
   const triggerConfetti = () => {
     setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 5000); // Confetti runs for 5 seconds
+    setTimeout(() => setShowConfetti(false), 5000);
   };
 
   const triggerAchievementNotification = (newAchievements: any[]) => {
@@ -107,31 +112,11 @@ export const useAppState = () => {
     setAchievements([]);
   };
 
-  const updateUserStats = async (stats: { xp?: number; essays_written?: number }) => {
-    if (!user) return;
-
-    try {
-      // Temporarily disabled - need to fix database function
-      // const { error } = await supabase.rpc('update_user_stats', {
-      //   p_user_id: user.id,
-      //   p_xp_increment: stats.xp || 0,
-      //   p_essays_increment: stats.essays_written || 0,
-      //   p_questions_increment: 0,
-      //   p_simulados_increment: 0,
-      // });
-
-      // if (error) {
-      //   throw error;
-      // }
-    } catch (error) {
-      console.error("Error updating user stats:", error);
-    }
-  };
-
   return {
     selectedConfig,
     currentView,
     simuladoResults,
+    selectedSimuladoId,
     showConfetti,
     achievements,
     showAchievementNotification,
@@ -143,6 +128,6 @@ export const useAppState = () => {
     triggerConfetti,
     triggerAchievementNotification,
     closeAchievementNotification,
-    updateUserStats,
+    viewSimuladoDetails,
   };
 };

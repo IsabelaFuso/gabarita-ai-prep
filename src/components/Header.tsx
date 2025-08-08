@@ -238,15 +238,15 @@ export const Header = ({ currentView = 'dashboard', onNavigate }: HeaderProps) =
               <DropdownMenuContent align="end" className="w-56 glass-strong">
                 <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => onNavigate?.('perfil')}>
+                <DropdownMenuItem onSelect={() => onNavigate?.('account')} className="cursor-pointer">
                   <User className="mr-2 h-4 w-4" />
                   Perfil
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => onNavigate?.('account')} className="cursor-pointer">
                   <BarChart3 className="mr-2 h-4 w-4" />
                   Histórico
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => onNavigate?.('account')} className="cursor-pointer">
                   <Settings className="mr-2 h-4 w-4" />
                   Configurações
                 </DropdownMenuItem>

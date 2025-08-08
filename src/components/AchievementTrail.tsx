@@ -3,9 +3,12 @@ import {
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from '@/lib/utils';
+import celebrationPattern from '@/assets/celebration-pattern.png';
 
 const icons: Record<string, LucideIcon> = {
-  Footprints, Award, Flame, Crown, Target, ShieldCheck, Trophy, BookUser, BrainCircuit, Gem, HelpCircle, Library, Eye, Zap, Star
+  Footprints, Award, Flame, Crown, Target, ShieldCheck, Trophy, BookUser, BrainCircuit, Gem, HelpCircle, Library, Eye, Zap, Star,
+  // Add a default icon
+  default: Award,
 };
 
 interface Achievement {
@@ -61,39 +64,25 @@ export const AchievementTrail = ({ allAchievements, unlockedAchievements }: Achi
 
   return (
     <TooltipProvider>
-      <div className="relative p-6 bg-gradient-to-br from-academic-blue via-academic-purple to-academic-green rounded-xl border border-primary/10 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer"></div>
-        <div className="relative w-full h-80">
-          <svg width="100%" height="100%" viewBox="0 0 400 200" preserveAspectRatio="none" className="absolute inset-0">
-            <defs>
-              <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgba(59, 130, 246, 0.6)" />
-                <stop offset="50%" stopColor="rgba(147, 51, 234, 0.6)" />
-                <stop offset="100%" stopColor="rgba(34, 197, 94, 0.6)" />
-              </linearGradient>
-            </defs>
+      <div 
+        className="relative p-4 bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden"
+        style={{ backgroundImage: `url(${celebrationPattern})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-100/80 to-slate-200/90 dark:from-slate-800/80 dark:to-slate-900/90 backdrop-blur-sm" />
+        <div className="relative w-full h-64">
+          <svg width="100%" height="100%" viewBox="0 0 400 150" preserveAspectRatio="none" className="absolute inset-0">
             <path 
-              d="M 30 170 Q 80 150, 120 140 T 200 80 Q 250 60, 300 90 T 370 60"
-              stroke="url(#pathGradient)" 
+              d="M 40 120 C 100 100, 150 50, 200 50 C 250 50, 300 100, 360 80"
               strokeWidth="4" 
               fill="none" 
-              strokeDasharray="8,4"
-              className="animate-pulse-slow"
-            />
-            <path 
-              d="M 30 170 Q 80 150, 120 140 T 200 80 Q 250 60, 300 90 T 370 60"
-              stroke="rgba(255, 255, 255, 0.3)" 
-              strokeWidth="2" 
-              fill="none" 
-              strokeDasharray="4,8"
-              className="animate-flow"
+              className="stroke-slate-300/70 dark:stroke-slate-700/70"
             />
           </svg>
 
           <div className="relative w-full h-full">
             {visibleAchievements.map((ach, index) => {
               const isUnlocked = unlockedAchievements.has(ach.code);
-              const Icon = icons[ach.icon_name] || Award;
+              const Icon = icons[ach.icon_name] || icons.default;
               const pos = achievementPositions[index % achievementPositions.length];
 
               return (
@@ -103,53 +92,50 @@ export const AchievementTrail = ({ allAchievements, unlockedAchievements }: Achi
                       className="absolute transform -translate-x-1/2 -translate-y-1/2"
                       style={{ left: pos.cx, top: pos.cy }}
                     >
-                      <div className={cn(
-                        "flex flex-col items-center gap-2 text-center transition-all duration-300 cursor-pointer group",
-                        isUnlocked && "animate-pulse-slow"
-                      )}>
+                      <div className="flex flex-col items-center gap-2 text-center transition-all duration-300 cursor-pointer group">
                         <div className={cn(
-                          'w-20 h-20 rounded-full flex items-center justify-center transition-all duration-500 transform group-hover:scale-125 relative shadow-xl',
+                          'w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500 transform group-hover:scale-110 relative',
                           isUnlocked 
-                            ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 shadow-amber-500/50 border-2 border-white/30' 
-                            : 'bg-gradient-to-br from-slate-300 to-slate-400 dark:from-slate-700 dark:to-slate-800 grayscale opacity-60'
+                            ? 'bg-amber-400 ring-4 ring-white dark:ring-slate-900 shadow-xl shadow-amber-400/20' 
+                            : 'bg-white/50 dark:bg-slate-700/50 border-2 border-dashed border-slate-400 dark:border-slate-600'
                         )}>
                           {isUnlocked && (
-                            <>
-                              <div className="absolute inset-0 rounded-full bg-yellow-400/40 animate-ping opacity-75" />
-                              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-rotate-slow" />
-                            </>
+                            <div className="absolute inset-0 rounded-full bg-white/20 animate-pulse-slow" />
                           )}
                           <Icon className={cn(
-                            'w-10 h-10 transition-all duration-300 relative z-10',
-                            isUnlocked ? 'text-white drop-shadow-md' : 'text-slate-500 dark:text-slate-400'
+                            'w-8 h-8 transition-all duration-300',
+                            isUnlocked ? 'text-white' : 'text-slate-500 dark:text-slate-400'
                           )} />
                         </div>
                         
                         <span className={cn(
-                          'text-xs font-semibold w-24 block text-center leading-tight px-2 py-1 rounded-full border backdrop-blur-sm',
+                          'text-xs w-24 block text-center leading-tight px-1 py-0.5 rounded-full transition-opacity duration-300',
                           isUnlocked 
-                            ? 'text-foreground bg-background/70 border-primary/30 shadow-sm' 
-                            : 'text-muted-foreground bg-background/40 border-muted/30'
+                            ? 'font-bold text-slate-800 dark:text-slate-100' 
+                            : 'font-medium text-muted-foreground'
                         )}>
                           {ach.name}
                         </span>
                       </div>
                     </div>
                   </TooltipTrigger>
-                  <TooltipContent className="max-w-xs bg-background/80 backdrop-blur-sm">
-                    <div className="space-y-2">
-                      <p className="font-bold text-primary">{ach.name}</p>
-                      <p className="text-sm">{ach.description}</p>
-                      {!isUnlocked && (
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground italic">
+                  <TooltipContent className="max-w-xs bg-background/80 backdrop-blur-sm border-primary/20">
+                    <div className="space-y-1 p-1">
+                      <p className="font-bold text-primary flex items-center gap-2">
+                        <Icon className={cn("w-4 h-4", isUnlocked ? "text-amber-500" : "text-muted-foreground")} />
+                        {ach.name}
+                      </p>
+                      <p className="text-sm text-muted-foreground">{ach.description}</p>
+                      <hr className="border-border/50 my-2" />
+                      {!isUnlocked ? (
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground italic">
                           <Target className="w-3 h-3" />
                           <span>Continue estudando para desbloquear!</span>
                         </div>
-                      )}
-                      {isUnlocked && (
-                        <div className="flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400">
+                      ) : (
+                        <div className="flex items-center gap-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                           <Trophy className="w-3 h-3" />
-                          <span>Conquista desbloqueada! +50 XP</span>
+                          <span>Conquista desbloqueada! (+50 XP)</span>
                         </div>
                       )}
                     </div>

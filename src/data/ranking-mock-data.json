@@ -2,7 +2,7 @@
   {
     "id_usuario": "mock_user_1",
     "nome_usuario": "Juliana Santos",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_1",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Juliana%20Santos",
     "xp": 2500,
     "patente": "Oráculo do Vestibular",
     "instituicao_alvo": "USP",
@@ -12,7 +12,7 @@
   {
     "id_usuario": "mock_user_2",
     "nome_usuario": "Lucas Oliveira",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_2",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Lucas%20Oliveira",
     "xp": 1800,
     "patente": "Arquiteto do Saber",
     "instituicao_alvo": "Unicamp",
@@ -22,7 +22,7 @@
   {
     "id_usuario": "mock_user_3",
     "nome_usuario": "Beatriz Costa",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_3",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Beatriz%20Costa",
     "xp": 4200,
     "patente": "Titã do Gabarito",
     "instituicao_alvo": "ITA",
@@ -32,7 +32,7 @@
   {
     "id_usuario": "mock_user_4",
     "nome_usuario": "Gabriel Pereira",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_4",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Gabriel%20Pereira",
     "xp": 850,
     "patente": "Desbravador de Manuscritos",
     "instituicao_alvo": "UFRJ",
@@ -42,7 +42,7 @@
   {
     "id_usuario": "mock_user_5",
     "nome_usuario": "Mariana Almeida",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_5",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Mariana%20Almeida",
     "xp": 350,
     "patente": "Acadêmico Iniciante",
     "instituicao_alvo": "UFMG",
@@ -52,7 +52,7 @@
   {
     "id_usuario": "mock_user_6",
     "nome_usuario": "Rafael Ferreira",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_6",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Rafael%20Ferreira",
     "xp": 90,
     "patente": "Neófito Curioso",
     "instituicao_alvo": "UNESP",
@@ -62,7 +62,7 @@
   {
     "id_usuario": "mock_user_7",
     "nome_usuario": "Larissa Rodrigues",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_7",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Larissa%20Rodrigues",
     "xp": 1100,
     "patente": "Arquiteto do Saber",
     "instituicao_alvo": "PUC-Rio",
@@ -72,7 +72,7 @@
   {
     "id_usuario": "mock_user_8",
     "nome_usuario": "Felipe Martins",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_8",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Felipe%20Martins",
     "xp": 2900,
     "patente": "Oráculo do Vestibular",
     "instituicao_alvo": "UnB",
@@ -82,7 +82,7 @@
   {
     "id_usuario": "mock_user_9",
     "nome_usuario": "Camila Gonçalves",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_9",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Camila%20Gonçalves",
     "xp": 620,
     "patente": "Desbravador de Manuscritos",
     "instituicao_alvo": "UFSC",
@@ -92,7 +92,7 @@
   {
     "id_usuario": "mock_user_10",
     "nome_usuario": "Pedro Ribeiro",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_10",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Pedro%20Ribeiro",
     "xp": 4800,
     "patente": "Titã do Gabarito",
     "instituicao_alvo": "USP",
@@ -102,7 +102,7 @@
   {
     "id_usuario": "mock_user_11",
     "nome_usuario": "Sofia Lima",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_11",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Sofia%20Lima",
     "xp": 150,
     "patente": "Acadêmico Iniciante",
     "instituicao_alvo": "UFC",
@@ -112,7 +112,7 @@
   {
     "id_usuario": "mock_user_12",
     "nome_usuario": "Thiago Azevedo",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_12",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Thiago%20Azevedo",
     "xp": 1950,
     "patente": "Arquiteto do Saber",
     "instituicao_alvo": "UFBA",
@@ -122,7 +122,7 @@
   {
     "id_usuario": "mock_user_13",
     "nome_usuario": "Isabela Nogueira",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_13",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Isabela%20Nogueira",
     "xp": 780,
     "patente": "Desbravador de Manuscritos",
     "instituicao_alvo": "Mackenzie",
@@ -132,7 +132,7 @@
   {
     "id_usuario": "mock_user_14",
     "nome_usuario": "Gustavo Carvalho",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_14",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Gustavo%20Carvalho",
     "xp": 2200,
     "patente": "Oráculo do Vestibular",
     "instituicao_alvo": "FGV",
@@ -142,7 +142,7 @@
   {
     "id_usuario": "mock_user_15",
     "nome_usuario": "Laura Mendes",
-    "avatar_url": "https://i.pravatar.cc/150?u=mock_user_15",
+    "avatar_url": "https://api.dicebear.com/8.x/micah/svg?seed=Laura%20Mendes",
     "xp": 450,
     "patente": "Acadêmico Iniciante",
     "instituicao_alvo": "UERJ",
