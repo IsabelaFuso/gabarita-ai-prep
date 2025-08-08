@@ -238,7 +238,7 @@ export const Header = ({ currentView = 'dashboard', onNavigate }: HeaderProps) =
               <DropdownMenuContent align="end" className="w-56 glass-strong">
                 <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onNavigate?.('perfil')}>
                   <User className="mr-2 h-4 w-4" />
                   Perfil
                 </DropdownMenuItem>

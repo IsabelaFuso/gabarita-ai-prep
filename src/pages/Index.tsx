@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, AlertTriangle } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { RankingView } from "@/components/RankingView";
+import { PerfilView } from "@/components/PerfilView";
 import { useCallback } from "react";
 
 const Index = () => {
@@ -90,6 +91,9 @@ const Index = () => {
         break;
       case 'tutor':
         setCurrentView('tutor');
+        break;
+      case 'perfil':
+        setCurrentView('perfil');
         break;
       default:
         goHome();
@@ -207,6 +211,8 @@ const Index = () => {
         );
       case 'questoes':
         return renderPracticeQuiz();
+      case 'perfil':
+        return <PerfilView />;
       default:
         return (
           <div className="flex flex-col lg:flex-row gap-8 items-stretch">

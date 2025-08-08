@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "./useAuth";
 import { supabase } from "@/integrations/supabase/client";
 
-export type AppView = 'dashboard' | 'simulado' | 'resultado' | 'redacao' | 'simulados' | 'questoes' | 'desempenho' | 'tutor' | 'banco-questoes';
+export type AppView = 'dashboard' | 'simulado' | 'resultado' | 'redacao' | 'simulados' | 'questoes' | 'desempenho' | 'tutor' | 'banco-questoes' | 'perfil';
 
 export interface SelectedConfig {
   university: string;
