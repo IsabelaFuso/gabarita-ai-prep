@@ -13,9 +13,11 @@ import {
 } from "@/components/ui/collapsible";
 import { TutorView } from "./TutorView";
 import { SistemaPredicaoTemas } from "./SistemaPredicaoTemas";
+import { EssayHistory } from "./EssayHistory";
 import { useAppState } from "@/hooks/useAppState";
 import temasRedacao from "@/data/redacao-themes.json";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { supabase } from "@/integrations/supabase/client";
 
 interface RedacaoTema {
   id: number;
@@ -77,10 +79,11 @@ interface RedacaoAreaProps {
 }
 
 export const RedacaoArea = ({ onBack }: RedacaoAreaProps) => {
-  const { updateUserStats, triggerConfetti } = useAppState();
+  const { triggerConfetti, triggerAchievementNotification } = useAppState();
   const [todosOsTemas, setTodosOsTemas] = useState<RedacaoTema[]>(temasRedacao.map(tema => ({ ...tema, tipo: tema.tipo as 'regular' | 'preditivo' })));
   const [analisandoTemas, setAnalisandoTemas] = useState(false);
   const [temaTipo, setTemaTipo] = useState<'regular' | 'preditivo'>('regular');
+  const [currentView, setCurrentView] = useState<'selection' | 'writing' | 'result' | 'history'>('selection');
   const [temasFiltrados, setTemasFiltrados] = useState<RedacaoTema[]>([]);
   const [temaAtual, setTemaAtual] = useState<RedacaoTema | null>(null);
   const [textoRedacao, setTextoRedacao] = useState("");
@@ -154,8 +157,34 @@ export const RedacaoArea = ({ onBack }: RedacaoAreaProps) => {
     setNotaFinal(notaTotal);
     setRedacaoEnviada(true);
 
-    const xpGanho = 50 + Math.floor(notaTotal / 20);
-    await updateUserStats({ xp: xpGanho, essays_written: 1 });
+    // Save essay to database
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user && temaAtual) {
+        await supabase.from('essays').insert({
+          user_id: user.id,
+          theme_title: temaAtual.titulo,
+          theme_description: temaAtual.descricao,
+          content: textoRedacao,
+          score: notaTotal,
+          criteria_scores: JSON.parse(JSON.stringify(criterios)),
+          ai_feedback: "Feedback gerado automaticamente baseado nos critérios de avaliação."
+        });
+
+        // Update user stats with essay submission
+        const { data: newAchievements } = await supabase.rpc('handle_essay_submission', {
+          p_user_id: user.id,
+          p_score: notaTotal
+        });
+
+        if (newAchievements && newAchievements.length > 0) {
+          triggerAchievementNotification(newAchievements);
+        }
+      }
+    } catch (error) {
+      console.error('Error saving essay:', error);
+    }
+    
     triggerConfetti();
   };
 

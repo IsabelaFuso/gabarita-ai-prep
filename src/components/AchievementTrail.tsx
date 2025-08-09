@@ -4,6 +4,7 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from '@/lib/utils';
 import celebrationPattern from '@/assets/celebration-pattern.png';
+import { useAchievements } from '@/hooks/useAchievements';
 
 const icons: Record<string, LucideIcon> = {
   Footprints, Award, Flame, Crown, Target, ShieldCheck, Trophy, BookUser, BrainCircuit, Gem, HelpCircle, Library, Eye, Zap, Star,
@@ -18,10 +19,7 @@ interface Achievement {
   icon_name: string;
 }
 
-interface AchievementTrailProps {
-  allAchievements: Achievement[];
-  unlockedAchievements: Set<string>;
-}
+interface AchievementTrailProps {}
 
 const achievementOrder: string[] = [
   // Fase 1: Início da Jornada
@@ -44,7 +42,13 @@ const achievementPositions = [
   { cx: "50%", cy: "95%" }
 ];
 
-export const AchievementTrail = ({ allAchievements, unlockedAchievements }: AchievementTrailProps) => {
+export const AchievementTrail = ({}: AchievementTrailProps) => {
+  const { allAchievements, unlockedAchievements, loading } = useAchievements();
+
+  if (loading) {
+    return <div className="text-center text-muted-foreground">Carregando conquistas...</div>;
+  }
+
   if (allAchievements.length === 0) {
     return <div className="text-center text-muted-foreground">Nenhuma conquista disponível.</div>;
   }

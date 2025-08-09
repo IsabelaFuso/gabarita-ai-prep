@@ -379,7 +379,7 @@ export const VestibularDashboard = ({
               <Skeleton className="h-16 w-full" />
             </div>
           ) : (
-            <AchievementTrail allAchievements={allAchievements} unlockedAchievements={unlockedAchievements} />
+            <AchievementTrail />
           )}
         </CardContent>
       </Card>

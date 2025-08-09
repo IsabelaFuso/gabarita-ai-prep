@@ -108,7 +108,7 @@ export const HistoryView = ({ onViewDetails }: HistoryViewProps) => {
               <TableCell className="text-center">{format(new Date(simulado.finished_at), 'dd/MM/yyyy', { locale: ptBR })}</TableCell>
               <TableCell className="text-center hidden md:table-cell">{simulado.total_questions}</TableCell>
               <TableCell className="text-right">
-                <Badge variant={simulado.score >= 0.7 ? 'success' : simulado.score >= 0.5 ? 'warning' : 'destructive'}>
+                <Badge variant={simulado.score >= 0.7 ? 'default' : simulado.score >= 0.5 ? 'secondary' : 'destructive'}>
                   {Math.round(simulado.score * 100)}%
                 </Badge>
               </TableCell>

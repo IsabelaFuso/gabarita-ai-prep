@@ -35,6 +35,45 @@ export type Database = {
         }
         Relationships: []
       }
+      essays: {
+        Row: {
+          ai_feedback: string | null
+          content: string
+          created_at: string
+          criteria_scores: Json | null
+          id: string
+          score: number | null
+          theme_description: string
+          theme_title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_feedback?: string | null
+          content: string
+          created_at?: string
+          criteria_scores?: Json | null
+          id?: string
+          score?: number | null
+          theme_description: string
+          theme_title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_feedback?: string | null
+          content?: string
+          created_at?: string
+          criteria_scores?: Json | null
+          id?: string
+          score?: number | null
+          theme_description?: string
+          theme_title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       institutions: {
         Row: {
           code: string

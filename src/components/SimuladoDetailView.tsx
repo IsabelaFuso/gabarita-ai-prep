@@ -78,7 +78,7 @@ export const SimuladoDetailView = ({ simuladoId, onBack }: SimuladoDetailViewPro
           throw new Error("Não foi possível carregar os detalhes do simulado.");
         }
         
-        setDetails(data as SimuladoDetails);
+        setDetails(data as unknown as SimuladoDetails);
       } catch (err: any) {
         setError(err.message);
         console.error(err);
@@ -160,7 +160,7 @@ export const SimuladoDetailView = ({ simuladoId, onBack }: SimuladoDetailViewPro
           </div>
           <div className="text-right">
             <p className="text-sm text-muted-foreground">Nota Final</p>
-            <Badge variant={details.score >= 0.7 ? 'success' : details.score >= 0.5 ? 'warning' : 'destructive'} className="text-2xl">
+            <Badge variant={details.score >= 0.7 ? 'default' : details.score >= 0.5 ? 'secondary' : 'destructive'} className="text-2xl">
               {Math.round(details.score * 100)}%
             </Badge>
           </div>
