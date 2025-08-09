@@ -242,7 +242,7 @@ const Index = () => {
               </div>
             </aside>
             <main className="flex-1 space-y-8">
-              <UniversitySelector onSelectionChange={handleSelectionChange} />
+              <UniversitySelector selectedConfig={selectedConfig} onSelectionChange={handleSelectionChange} />
               <VestibularDashboard 
                 selectedConfig={selectedConfig} 
                 currentView={currentView}
