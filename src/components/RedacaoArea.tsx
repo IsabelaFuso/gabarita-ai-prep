@@ -78,6 +78,18 @@ interface RedacaoAreaProps {
   onBack: () => void;
 }
 
+interface Essay {
+  id: string;
+  theme_title: string;
+  theme_description: string;
+  content: string;
+  score: number;
+  criteria_scores: any;
+  ai_feedback: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export const RedacaoArea = ({ onBack }: RedacaoAreaProps) => {
   const { triggerConfetti, triggerAchievementNotification } = useAppState();
   const [todosOsTemas, setTodosOsTemas] = useState<RedacaoTema[]>(temasRedacao.map(tema => ({ ...tema, tipo: tema.tipo as 'regular' | 'preditivo' })));
@@ -95,6 +107,7 @@ export const RedacaoArea = ({ onBack }: RedacaoAreaProps) => {
   const [isTutorOpen, setIsTutorOpen] = useState(false);
   const [showPredicaoTemas, setShowPredicaoTemas] = useState(false);
   const [openCollapsible, setOpenCollapsible] = useState<number | null>(null);
+  const [editingEssay, setEditingEssay] = useState<Essay | null>(null);
 
   useEffect(() => {
     const filtered = todosOsTemas.filter(t => t.tipo === temaTipo);
@@ -157,28 +170,40 @@ export const RedacaoArea = ({ onBack }: RedacaoAreaProps) => {
     setNotaFinal(notaTotal);
     setRedacaoEnviada(true);
 
-    // Save essay to database
+    // Save or update essay to database
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (user && temaAtual) {
-        await supabase.from('essays').insert({
-          user_id: user.id,
-          theme_title: temaAtual.titulo,
-          theme_description: temaAtual.descricao,
-          content: textoRedacao,
-          score: notaTotal,
-          criteria_scores: JSON.parse(JSON.stringify(criterios)),
-          ai_feedback: "Feedback gerado automaticamente baseado nos critérios de avaliação."
-        });
+        if (editingEssay) {
+          // Update existing essay
+          await supabase.from('essays').update({
+            content: textoRedacao,
+            score: notaTotal,
+            criteria_scores: JSON.parse(JSON.stringify(criterios)),
+            ai_feedback: "Feedback gerado automaticamente baseado nos critérios de avaliação.",
+            updated_at: new Date().toISOString()
+          }).eq('id', editingEssay.id);
+        } else {
+          // Create new essay
+          await supabase.from('essays').insert({
+            user_id: user.id,
+            theme_title: temaAtual.titulo,
+            theme_description: temaAtual.descricao,
+            content: textoRedacao,
+            score: notaTotal,
+            criteria_scores: JSON.parse(JSON.stringify(criterios)),
+            ai_feedback: "Feedback gerado automaticamente baseado nos critérios de avaliação."
+          });
 
-        // Update user stats with essay submission
-        const { data: newAchievements } = await supabase.rpc('handle_essay_submission', {
-          p_user_id: user.id,
-          p_score: notaTotal
-        });
+          // Update user stats with essay submission (only for new essays)
+          const { data: newAchievements } = await supabase.rpc('handle_essay_submission', {
+            p_user_id: user.id,
+            p_score: notaTotal
+          });
 
-        if (newAchievements && newAchievements.length > 0) {
-          triggerAchievementNotification(newAchievements);
+          if (newAchievements && newAchievements.length > 0) {
+            triggerAchievementNotification(newAchievements);
+          }
         }
       }
     } catch (error) {
@@ -186,6 +211,25 @@ export const RedacaoArea = ({ onBack }: RedacaoAreaProps) => {
     }
     
     triggerConfetti();
+  };
+
+  const editEssay = (essay: Essay) => {
+    setEditingEssay(essay);
+    setTextoRedacao(essay.content);
+    setTemaAtual({
+      id: 0,
+      titulo: essay.theme_title,
+      descricao: essay.theme_description,
+      textoMotivador: "",
+      instrucao: "",
+      ano: 2025,
+      vestibular: "Histórico",
+      tipo: 'regular'
+    });
+    setCurrentView('writing');
+    setRedacaoEnviada(false);
+    setAvaliacao(null);
+    setNotaFinal(null);
   };
 
   const reiniciarRedacao = () => {
@@ -196,6 +240,8 @@ export const RedacaoArea = ({ onBack }: RedacaoAreaProps) => {
     setAvaliacao(null);
     setNotaFinal(null);
     setIsTutorOpen(false);
+    setEditingEssay(null);
+    setCurrentView('selection');
     const filtered = todosOsTemas.filter(t => t.tipo === temaTipo);
     setTemasFiltrados(filtered);
     if (filtered.length > 0) {
@@ -284,17 +330,43 @@ export const RedacaoArea = ({ onBack }: RedacaoAreaProps) => {
             </Button>
             <div className="text-center">
               <h1 className="text-2xl font-bold">Área de Redação</h1>
-              <p className="text-muted-foreground">Pratique com temas de vestibulares ou temas preditivos</p>
+              <p className="text-muted-foreground">
+                {currentView === 'history' ? 'Gerencie suas redações' : 'Pratique com temas de vestibulares ou temas preditivos'}
+              </p>
             </div>
             <div className="flex items-center gap-4">
-              <Button 
-                variant="outline" 
-                onClick={() => setShowPredicaoTemas(!showPredicaoTemas)}
-                className="flex items-center gap-2"
-              >
-                <BrainCircuit className="w-4 h-4" />
-                {showPredicaoTemas ? "Ocultar" : "Predição de"} Temas
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button 
+                  variant={currentView === 'selection' ? "default" : "outline"}
+                  onClick={() => {
+                    setCurrentView('selection');
+                    setEditingEssay(null);
+                    reiniciarRedacao();
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  Escrever
+                </Button>
+                <Button 
+                  variant={currentView === 'history' ? "default" : "outline"}
+                  onClick={() => setCurrentView('history')}
+                  className="flex items-center gap-2"
+                >
+                  <FileText className="w-4 h-4" />
+                  Minhas Redações
+                </Button>
+              </div>
+              {currentView === 'selection' && (
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowPredicaoTemas(!showPredicaoTemas)}
+                  className="flex items-center gap-2"
+                >
+                  <BrainCircuit className="w-4 h-4" />
+                  {showPredicaoTemas ? "Ocultar" : "Predição de"} Temas
+                </Button>
+              )}
               {iniciadoTempo && (
                 <div className={cn(
                   "flex items-center gap-2 font-mono text-lg",
@@ -307,223 +379,230 @@ export const RedacaoArea = ({ onBack }: RedacaoAreaProps) => {
             </div>
           </div>
 
-          {showPredicaoTemas && (
-            <div className="mb-8">
-              <SistemaPredicaoTemas />
-            </div>
-          )}
+          {currentView === 'history' ? (
+            <EssayHistory onEditEssay={editEssay} />
+          ) : (
+            <>
+              {showPredicaoTemas && (
+                <div className="mb-8">
+                  <SistemaPredicaoTemas />
+                </div>
+              )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-1 space-y-6">
-              <Card className="shadow-soft">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BookOpen className="w-5 h-5" />
-                    Escolha o Tema
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <ToggleGroup 
-                    type="single" 
-                    value={temaTipo}
-                    onValueChange={(value: 'regular' | 'preditivo') => { if(value) setTemaTipo(value) }} 
-                    className="w-full grid grid-cols-2"
-                  >
-                    <ToggleGroupItem value="regular">Temas Anteriores</ToggleGroupItem>
-                    <ToggleGroupItem value="preditivo">
-                      <Star className="w-4 h-4 mr-2 text-yellow-400" />
-                      Temas Preditivos
-                    </ToggleGroupItem>
-                  </ToggleGroup>
-
-                  {temaTipo === 'preditivo' && (
-                    <Card className="bg-accent border-primary/50">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div className="lg:col-span-1 space-y-6">
+                    <Card className="shadow-soft">
                       <CardHeader>
-                        <CardTitle className="text-lg">Sistema Preditivo de Temas</CardTitle>
-                        <CardDescription>Análise baseada em tendências atuais e padrões históricos.</CardDescription>
+                        <CardTitle className="flex items-center gap-2">
+                          <BookOpen className="w-5 h-5" />
+                          Escolha o Tema
+                        </CardTitle>
                       </CardHeader>
-                      <CardContent>
-                        <Button onClick={analisarNovosTemas} disabled={analisandoTemas || !novosTemasPreditivos.some(nt => !todosOsTemas.map(t => t.id).includes(nt.id))} className="w-full">
-                          {analisandoTemas ? (
-                            <>
-                              <RotateCcw className="w-4 h-4 mr-2 animate-spin" />
-                              Analisando...
-                            </>
-                          ) : (
-                            "Analisar Novos Temas"
+                      <CardContent className="space-y-4">
+                        <ToggleGroup 
+                          type="single" 
+                          value={temaTipo}
+                          onValueChange={(value: 'regular' | 'preditivo') => { if(value) setTemaTipo(value) }} 
+                          className="w-full grid grid-cols-2"
+                        >
+                          <ToggleGroupItem value="regular">Temas Anteriores</ToggleGroupItem>
+                          <ToggleGroupItem value="preditivo">
+                            <Star className="w-4 h-4 mr-2 text-yellow-400" />
+                            Temas Preditivos
+                          </ToggleGroupItem>
+                        </ToggleGroup>
+
+                        {temaTipo === 'preditivo' && (
+                          <Card className="bg-accent border-primary/50">
+                            <CardHeader>
+                              <CardTitle className="text-lg">Sistema Preditivo de Temas</CardTitle>
+                              <CardDescription>Análise baseada em tendências atuais e padrões históricos.</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                              <Button onClick={analisarNovosTemas} disabled={analisandoTemas || !novosTemasPreditivos.some(nt => !todosOsTemas.map(t => t.id).includes(nt.id))} className="w-full">
+                                {analisandoTemas ? (
+                                  <>
+                                    <RotateCcw className="w-4 h-4 mr-2 animate-spin" />
+                                    Analisando...
+                                  </>
+                                ) : (
+                                  "Analisar Novos Temas"
+                                )}
+                              </Button>
+                            </CardContent>
+                          </Card>
+                        )}
+
+                        <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+                          {temasFiltrados.map((tema) => (
+                            <Collapsible key={tema.id} open={openCollapsible === tema.id} onOpenChange={() => setOpenCollapsible(prev => prev === tema.id ? null : tema.id)}>
+                              <Card className={cn("transition-all", temaAtual?.id === tema.id && "border-primary")}>
+                                <CardHeader className="p-4 cursor-pointer" onClick={() => setTemaAtual(tema)}>
+                                  <div className="font-medium text-sm mb-1">{tema.titulo}</div>
+                                  <div className="text-xs text-muted-foreground">{tema.descricao}</div>
+                                </CardHeader>
+                                
+                                {tema.tipo === 'preditivo' && tema.probabilidade && (
+                                  <CardContent className="p-4 pt-0 space-y-3">
+                                    <div>
+                                      <div className="flex justify-between items-center mb-1">
+                                        <span className="text-xs font-medium">Probabilidade: {tema.probabilidade}%</span>
+                                        <Badge variant={tema.probabilidade > 85 ? "default" : "secondary"}>{tema.status}</Badge>
+                                      </div>
+                                      <Progress value={tema.probabilidade} className="h-2" />
+                                    </div>
+                                    <CollapsibleTrigger className="w-full text-sm flex items-center justify-center text-muted-foreground hover:text-primary">
+                                      Ver Análise <ChevronDown className="w-4 h-4 ml-1" />
+                                    </CollapsibleTrigger>
+                                  </CardContent>
+                                )}
+
+                                <CollapsibleContent className="p-4 pt-0 space-y-2">
+                                  <div className="border-t pt-3">
+                                    <h4 className="font-semibold text-sm flex items-center gap-2"><TrendingUp className="w-4 h-4 text-primary"/> Justificativa</h4>
+                                    <p className="text-xs text-muted-foreground mt-1">{tema.justificativa}</p>
+                                  </div>
+                                  <div className="border-t pt-3">
+                                    <h4 className="font-semibold text-sm flex items-center gap-2"><Info className="w-4 h-4 text-primary"/> Fontes</h4>
+                                    <p className="text-xs text-muted-foreground mt-1">{tema.fontes}</p>
+                                  </div>
+                                </CollapsibleContent>
+                              </Card>
+                            </Collapsible>
+                          ))}
+                          {temasFiltrados.length === 0 && (
+                            <div className="text-center text-muted-foreground py-4">
+                              <p>Nenhum tema {temaTipo === 'preditivo' ? 'preditivo' : 'anterior'} encontrado.</p>
+                              {temaTipo === 'preditivo' && <p className="text-sm">Clique em "Analisar Novos Temas" para buscar previsões.</p>}
+                            </div>
                           )}
-                        </Button>
+                        </div>
                       </CardContent>
                     </Card>
-                  )}
 
-                  <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
-                    {temasFiltrados.map((tema) => (
-                      <Collapsible key={tema.id} open={openCollapsible === tema.id} onOpenChange={() => setOpenCollapsible(prev => prev === tema.id ? null : tema.id)}>
-                        <Card className={cn("transition-all", temaAtual?.id === tema.id && "border-primary")}>
-                          <CardHeader className="p-4 cursor-pointer" onClick={() => setTemaAtual(tema)}>
-                            <div className="font-medium text-sm mb-1">{tema.titulo}</div>
-                            <div className="text-xs text-muted-foreground">{tema.descricao}</div>
-                          </CardHeader>
+                    {temaAtual && (
+                      <Card className="shadow-soft">
+                        <CardHeader>
+                          <CardTitle>Instruções</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div>
+                            <h4 className="font-medium mb-2">Texto Motivador:</h4>
+                            <p className="text-sm text-muted-foreground">{temaAtual.textoMotivador}</p>
+                          </div>
                           
-                          {tema.tipo === 'preditivo' && tema.probabilidade && (
-                            <CardContent className="p-4 pt-0 space-y-3">
-                              <div>
-                                <div className="flex justify-between items-center mb-1">
-                                  <span className="text-xs font-medium">Probabilidade: {tema.probabilidade}%</span>
-                                  <Badge variant={tema.probabilidade > 85 ? "default" : "secondary"}>{tema.status}</Badge>
-                                </div>
-                                <Progress value={tema.probabilidade} className="h-2" />
-                              </div>
-                              <CollapsibleTrigger className="w-full text-sm flex items-center justify-center text-muted-foreground hover:text-primary">
-                                Ver Análise <ChevronDown className="w-4 h-4 ml-1" />
-                              </CollapsibleTrigger>
-                            </CardContent>
-                          )}
+                          <div>
+                            <h4 className="font-medium mb-2">Proposta:</h4>
+                            <p className="text-sm text-muted-foreground">{temaAtual.instrucao}</p>
+                          </div>
 
-                          <CollapsibleContent className="p-4 pt-0 space-y-2">
-                            <div className="border-t pt-3">
-                              <h4 className="font-semibold text-sm flex items-center gap-2"><TrendingUp className="w-4 h-4 text-primary"/> Justificativa</h4>
-                              <p className="text-xs text-muted-foreground mt-1">{tema.justificativa}</p>
-                            </div>
-                            <div className="border-t pt-3">
-                              <h4 className="font-semibold text-sm flex items-center gap-2"><Info className="w-4 h-4 text-primary"/> Fontes</h4>
-                              <p className="text-xs text-muted-foreground mt-1">{tema.fontes}</p>
-                            </div>
-                          </CollapsibleContent>
-                        </Card>
-                      </Collapsible>
-                    ))}
-                    {temasFiltrados.length === 0 && (
-                      <div className="text-center text-muted-foreground py-4">
-                        <p>Nenhum tema {temaTipo === 'preditivo' ? 'preditivo' : 'anterior'} encontrado.</p>
-                        {temaTipo === 'preditivo' && <p className="text-sm">Clique em "Analisar Novos Temas" para buscar previsões.</p>}
-                      </div>
+                          <div className="border-t pt-4">
+                            <h4 className="font-medium mb-2">Critérios de Avaliação:</h4>
+                            <ul className="text-sm text-muted-foreground space-y-1">
+                              <li>• Domínio da norma culta</li>
+                              <li>• Compreensão do tema</li>
+                              <li>• Organização das ideias</li>
+                              <li>• Uso de conectivos</li>
+                              <li>• Proposta de intervenção</li>
+                            </ul>
+                          </div>
+                        </CardContent>
+                      </Card>
                     )}
                   </div>
-                </CardContent>
-              </Card>
 
-              {temaAtual && (
-                <Card className="shadow-soft">
-                  <CardHeader>
-                    <CardTitle>Instruções</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <h4 className="font-medium mb-2">Texto Motivador:</h4>
-                      <p className="text-sm text-muted-foreground">{temaAtual.textoMotivador}</p>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium mb-2">Proposta:</h4>
-                      <p className="text-sm text-muted-foreground">{temaAtual.instrucao}</p>
-                    </div>
+                  <div className="lg:col-span-2">
+                    {temaAtual ? (
+                      <Card className="shadow-elevated h-full flex flex-col">
+                        <CardHeader>
+                          <div className="flex items-center justify-between">
+                            <CardTitle className="flex items-center gap-2">
+                              <FileText className="w-5 h-5" />
+                              {temaAtual.titulo}
+                              {editingEssay && <Badge variant="secondary" className="ml-2">Editando</Badge>}
+                            </CardTitle>
+                            <div className="flex items-center gap-4">
+                              <span className="text-sm text-muted-foreground">
+                                {contadorPalavras} palavras
+                              </span>
+                              {!iniciadoTempo && !editingEssay && (
+                                <Button onClick={iniciarCronometro} size="sm">
+                                  Iniciar Cronômetro
+                                </Button>
+                              )}
+                            </div>
+                          </div>
+                          
+                          {contadorPalavras > 0 && (
+                            <div className="mt-2">
+                              <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                                <span>Progresso</span>
+                                <span>{Math.round(progressoPalavras)}%</span>
+                              </div>
+                              <Progress value={progressoPalavras} className="h-1" />
+                            </div>
+                          )}
+                        </CardHeader>
 
-                    <div className="border-t pt-4">
-                      <h4 className="font-medium mb-2">Critérios de Avaliação:</h4>
-                      <ul className="text-sm text-muted-foreground space-y-1">
-                        <li>• Domínio da norma culta</li>
-                        <li>• Compreensão do tema</li>
-                        <li>• Organização das ideias</li>
-                        <li>• Uso de conectivos</li>
-                        <li>• Proposta de intervenção</li>
-                      </ul>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-
-            <div className="lg:col-span-2">
-              {temaAtual ? (
-                <Card className="shadow-elevated h-full flex flex-col">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="flex items-center gap-2">
-                        <FileText className="w-5 h-5" />
-                        {temaAtual.titulo}
-                      </CardTitle>
-                      <div className="flex items-center gap-4">
-                        <span className="text-sm text-muted-foreground">
-                          {contadorPalavras} palavras
-                        </span>
-                        {!iniciadoTempo && (
-                          <Button onClick={iniciarCronometro} size="sm">
-                            Iniciar Cronômetro
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                    
-                    {contadorPalavras > 0 && (
-                      <div className="mt-2">
-                        <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                          <span>Progresso</span>
-                          <span>{Math.round(progressoPalavras)}%</span>
-                        </div>
-                        <Progress value={progressoPalavras} className="h-1" />
-                      </div>
+                        <CardContent className="flex-1 flex flex-col">
+                          <Textarea
+                            placeholder="Comece sua redação aqui..."
+                            value={textoRedacao}
+                            onChange={(e) => setTextoRedacao(e.target.value)}
+                            className="flex-1 resize-none text-base leading-6"
+                            disabled={redacaoEnviada}
+                          />
+                          
+                          <div className="flex justify-between items-center mt-4">
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <AlertCircle className="w-4 h-4" />
+                              Mínimo: 100 caracteres | Recomendado: 300+ palavras
+                            </div>
+                            
+                            <div className="flex gap-2">
+                              {textoRedacao && (
+                                <Button variant="outline" onClick={() => setTextoRedacao('')}>
+                                  <RotateCcw className="w-4 h-4 mr-2" />
+                                  Limpar
+                                </Button>
+                              )}
+                              <Button 
+                                onClick={enviarRedacao}
+                                disabled={textoRedacao.trim().length < 100}
+                                className="flex items-center gap-2"
+                              >
+                                <Send className="w-4 h-4" />
+                                {editingEssay ? "Reenviar Redação" : "Enviar Redação"}
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                        
+                        <Collapsible open={isTutorOpen} onOpenChange={setIsTutorOpen} className="m-6">
+                            <CollapsibleTrigger asChild>
+                                <Button variant="outline" className="w-full flex items-center gap-2">
+                                    <BrainCircuit className="w-4 h-4" />
+                                    {isTutorOpen ? "Fechar Tutor" : "Pedir ajuda à IA"}
+                                </Button>
+                            </CollapsibleTrigger>
+                            <CollapsibleContent className="mt-4">
+                                <TutorView context={tutorContext} />
+                            </CollapsibleContent>
+                        </Collapsible>
+                      </Card>
+                    ) : (
+                      <Card className="flex items-center justify-center h-full">
+                        <CardContent>
+                          <p className="text-muted-foreground">Selecione um tipo de tema para começar.</p>
+                        </CardContent>
+                      </Card>
                     )}
-                  </CardHeader>
-
-                  <CardContent className="flex-1 flex flex-col">
-                    <Textarea
-                      placeholder="Comece sua redação aqui..."
-                      value={textoRedacao}
-                      onChange={(e) => setTextoRedacao(e.target.value)}
-                      className="flex-1 resize-none text-base leading-6"
-                      disabled={redacaoEnviada}
-                    />
-                    
-                    <div className="flex justify-between items-center mt-4">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <AlertCircle className="w-4 h-4" />
-                        Mínimo: 100 caracteres | Recomendado: 300+ palavras
-                      </div>
-                      
-                      <div className="flex gap-2">
-                        {textoRedacao && (
-                          <Button variant="outline" onClick={() => setTextoRedacao('')}>
-                            <RotateCcw className="w-4 h-4 mr-2" />
-                            Limpar
-                          </Button>
-                        )}
-                        <Button 
-                          onClick={enviarRedacao}
-                          disabled={textoRedacao.trim().length < 100}
-                          className="flex items-center gap-2"
-                        >
-                          <Send className="w-4 h-4" />
-                          Enviar Redação
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                  
-                  <Collapsible open={isTutorOpen} onOpenChange={setIsTutorOpen} className="m-6">
-                      <CollapsibleTrigger asChild>
-                          <Button variant="outline" className="w-full flex items-center gap-2">
-                              <BrainCircuit className="w-4 h-4" />
-                              {isTutorOpen ? "Fechar Tutor" : "Pedir ajuda à IA"}
-                          </Button>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="mt-4">
-                          <TutorView context={tutorContext} />
-                      </CollapsibleContent>
-                  </Collapsible>
-                </Card>
-              ) : (
-                <Card className="flex items-center justify-center h-full">
-                  <CardContent>
-                    <p className="text-muted-foreground">Selecione um tipo de tema para começar.</p>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
