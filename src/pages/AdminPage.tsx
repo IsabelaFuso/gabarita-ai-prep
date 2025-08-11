@@ -9,7 +9,7 @@ const AdminPage = () => {
 
   if (!user) {
     return (
-        <MainLayout>
+        <MainLayout onStartQuiz={() => {}} onStartSimulado={() => {}}>
             <div className="container mx-auto p-4 text-center">
                 <h1 className="text-2xl font-bold">Carregando...</h1>
                 <p>Verificando suas credenciais de acesso.</p>
@@ -20,7 +20,7 @@ const AdminPage = () => {
 
   if (user.email !== 'prof.rafaelfuso@gmail.com') {
     return (
-        <MainLayout>
+        <MainLayout onStartQuiz={() => {}} onStartSimulado={() => {}}>
             <div className="container mx-auto p-4 text-center">
                 <h1 className="text-2xl font-bold text-red-600">Acesso Negado</h1>
                 <p>Você não tem permissão para acessar esta página.</p>

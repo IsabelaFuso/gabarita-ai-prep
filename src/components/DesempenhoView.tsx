@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   TrendingDown, 
   Target, 
@@ -11,15 +12,20 @@ import {
   RefreshCw,
   Loader2,
   AlertTriangle,
-  FileText // Ícone para Redação
+  FileText,
+  BarChart3,
+  Brain
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { PerformanceCharts } from "./PerformanceCharts";
+import { StudyRoutineGenerator } from "./StudyRoutineGenerator";
 
 interface PerformanceData {
   subject_name: string;
   accuracy: number;
   total_questions: number;
+  correct_answers: number;
 }
 
 interface EssayPerformanceData {
@@ -51,6 +57,7 @@ export const DesempenhoView = () => {
   const [overallScore, setOverallScore] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [userProfile, setUserProfile] = useState<any>(null);
 
   useEffect(() => {
     const fetchPerformanceData = async () => {
@@ -77,6 +84,7 @@ export const DesempenhoView = () => {
             subject_name: item.subject_name,
             accuracy: Math.round(item.accuracy * 100),
             total_questions: item.total_questions,
+            correct_answers: item.correct_answers || 0,
           }));
 
           setOverallScore(totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0);
@@ -87,6 +95,15 @@ export const DesempenhoView = () => {
           setTotalAttempts(0);
           setOverallScore(0);
         }
+
+        // Fetch user profile
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('target_exam, first_choice_course, target_subjects')
+          .eq('user_id', user.id)
+          .single();
+        
+        setUserProfile(profile);
 
         // Fetch essay performance - temporarily using mock data
         const essaysWritten = 0; // profile?.essays_written || 0;
@@ -182,65 +199,100 @@ export const DesempenhoView = () => {
         </Card>
       </div>
 
-      {/* Performance by Subject */}
-      <Card className="shadow-soft">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="text-lg">Desempenho por Área</CardTitle>
-              <CardDescription>
-                Acompanhe seu progresso nas principais matérias do vestibular e na redação.
-              </CardDescription>
-            </div>
-            <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Atualizar
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {essayPerformance && (
-            <div className="space-y-2 p-4 border rounded-lg bg-accent/50">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                  <FileText className={`w-5 h-5 ${getSubjectColor("Redação")}`} />
-                  <span className="font-medium">Redação</span>
-                  <Badge variant="outline">{essayPerformance.essays_written} redações</Badge>
-                </div>
-                {essayPerformance.essays_written > 0 ? (
-                  <div className="text-right">
-                    <span className={`font-bold text-lg ${getSubjectColor("Redação")}`}>{essayPerformance.average_score}</span>
-                    <span className="text-sm text-muted-foreground">/1000</span>
-                  </div>
-                ) : (
-                  <span className="text-sm text-muted-foreground">Comece a praticar!</span>
-                )}
-              </div>
-              <Progress value={essayPerformance.average_score / 10} className="h-3" />
-            </div>
-          )}
-          
-          {performanceData.map((item) => (
-            <div key={item.subject_name} className="space-y-2">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                  <span className="font-medium">{item.subject_name}</span>
-                  <Badge variant="outline">{item.total_questions} questões</Badge>
-                </div>
-                <span className={`font-bold text-lg ${getSubjectColor(item.subject_name)}`}>{item.accuracy}%</span>
-              </div>
-              <Progress value={item.accuracy} className="h-3" />
-            </div>
-          ))}
+      {/* Main Content Tabs */}
+      <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="overview" className="flex items-center gap-2">
+            <BarChart3 className="w-4 h-4" />
+            Visão Geral
+          </TabsTrigger>
+          <TabsTrigger value="charts" className="flex items-center gap-2">
+            <Target className="w-4 h-4" />
+            Análise Detalhada
+          </TabsTrigger>
+          <TabsTrigger value="routine" className="flex items-center gap-2">
+            <Brain className="w-4 h-4" />
+            Rotina de Estudos
+          </TabsTrigger>
+        </TabsList>
 
-          {noData && (
-            <div className="text-center py-8 text-muted-foreground">
-              <p>Nenhum dado de desempenho encontrado.</p>
-              <p className="text-sm">Comece a praticar para ver suas estatísticas aqui.</p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+        <TabsContent value="overview" className="space-y-6">
+          {/* Performance by Subject */}
+          <Card className="shadow-soft">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-lg">Desempenho por Área</CardTitle>
+                  <CardDescription>
+                    Acompanhe seu progresso nas principais matérias do vestibular e na redação.
+                  </CardDescription>
+                </div>
+                <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Atualizar
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {essayPerformance && (
+                <div className="space-y-2 p-4 border rounded-lg bg-accent/50">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <FileText className={`w-5 h-5 ${getSubjectColor("Redação")}`} />
+                      <span className="font-medium">Redação</span>
+                      <Badge variant="outline">{essayPerformance.essays_written} redações</Badge>
+                    </div>
+                    {essayPerformance.essays_written > 0 ? (
+                      <div className="text-right">
+                        <span className={`font-bold text-lg ${getSubjectColor("Redação")}`}>{essayPerformance.average_score}</span>
+                        <span className="text-sm text-muted-foreground">/1000</span>
+                      </div>
+                    ) : (
+                      <span className="text-sm text-muted-foreground">Comece a praticar!</span>
+                    )}
+                  </div>
+                  <Progress value={essayPerformance.average_score / 10} className="h-3" />
+                </div>
+              )}
+              
+              {performanceData.map((item) => (
+                <div key={item.subject_name} className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <span className="font-medium">{item.subject_name}</span>
+                      <Badge variant="outline">{item.total_questions} questões</Badge>
+                    </div>
+                    <span className={`font-bold text-lg ${getSubjectColor(item.subject_name)}`}>{item.accuracy}%</span>
+                  </div>
+                  <Progress value={item.accuracy} className="h-3" />
+                </div>
+              ))}
+
+              {noData && (
+                <div className="text-center py-8 text-muted-foreground">
+                  <p>Nenhum dado de desempenho encontrado.</p>
+                  <p className="text-sm">Comece a praticar para ver suas estatísticas aqui.</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="charts">
+          <PerformanceCharts 
+            data={performanceData}
+            overallScore={overallScore}
+            totalAttempts={totalAttempts}
+          />
+        </TabsContent>
+
+        <TabsContent value="routine">
+          <StudyRoutineGenerator 
+            performanceData={performanceData}
+            userProfile={userProfile}
+          />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
