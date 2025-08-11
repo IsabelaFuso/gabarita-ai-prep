@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import TutorPage from "./pages/TutorPage";
+import AdminPage from "./pages/AdminPage"; // Import the new AdminPage
 import { AuthProvider } from "./hooks/useAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -22,6 +23,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/tutor" element={<TutorPage />} />
+              <Route path="/admin" element={<AdminPage />} /> {/* Add the new admin route */}
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -1,4 +1,4 @@
-import { Brain, User, Settings, Bell, Menu, Home, BookOpen, PenTool, Trophy, BarChart3, HelpCircle, LogOut } from "lucide-react";
+import { Brain, User, Settings, Bell, Menu, Home, BookOpen, PenTool, Trophy, BarChart3, HelpCircle, LogOut, Database } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -33,6 +33,10 @@ export const Header = ({ currentView = 'dashboard', onNavigate }: HeaderProps) =
   const handleLogout = async () => {
     await signOut();
     navigate('/');
+  };
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
   };
 
   const navigationItems = [
@@ -250,6 +254,15 @@ export const Header = ({ currentView = 'dashboard', onNavigate }: HeaderProps) =
                   <Settings className="mr-2 h-4 w-4" />
                   Configurações
                 </DropdownMenuItem>
+                {user && user.email === 'prof.rafaelfuso@gmail.com' && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onSelect={() => handleNavigate('/admin')} className="cursor-pointer">
+                      <Database className="mr-2 h-4 w-4" />
+                      Admin
+                    </DropdownMenuItem>
+                  </>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <Button variant="premium" size="sm" className="w-full justify-start">

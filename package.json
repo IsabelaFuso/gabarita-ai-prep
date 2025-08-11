@@ -14,7 +14,8 @@
     "db:populate": "tsx scripts/populate-db.ts",
     "convert:uem": "tsx scripts/convert-uem-2023.ts",
     "add-missing-subjects": "tsx scripts/add-missing-subjects.ts",
-    "list-subjects": "tsx scripts/list-subjects.ts"
+    "list-subjects": "tsx scripts/list-subjects.ts",
+    "storage:setup": "tsx scripts/create-question-image-bucket.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
