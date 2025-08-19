@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { useAuth } from '@/hooks/useAuth';
+import { ForgotPassword } from './ForgotPassword';
 import { useNavigate } from 'react-router-dom';
 import { 
   GraduationCap, 
@@ -30,6 +31,7 @@ export const ConversionHeroSection = () => {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [isLogin, setIsLogin] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -67,6 +69,10 @@ export const ConversionHeroSection = () => {
 
   // Não renderiza nada se o usuário estiver logado
   if (user) return null;
+
+  if (showForgotPassword) {
+    return <ForgotPassword onBack={() => setShowForgotPassword(false)} />;
+  }
 
   const benefits = [
     {
@@ -299,6 +305,19 @@ export const ConversionHeroSection = () => {
                     ))}
                     <span className="text-2xs text-muted-foreground ml-2">4.9/5 ⭐</span>
                   </div>
+                    </div>
+                  )}
+
+                  {isLogin && (
+                    <div className="text-center mt-4">
+                      <Button
+                        type="button"
+                        variant="link"
+                        onClick={() => setShowForgotPassword(true)}
+                        className="text-sm text-primary hover:underline"
+                      >
+                        Esqueci minha senha
+                      </Button>
                     </div>
                   )}
                 </CardFooter>
