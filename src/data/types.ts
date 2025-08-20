@@ -1,14 +1,16 @@
 export interface Question {
   id: string;
-  institution?: string;
+  institution?: { name: string };
   year?: number;
-  subject: string;
-  topic: string;
+  subject: { name: string };
+  topic?: { name: string };
   statement: string;
-  image?: string; // URL or path for the question image
-  alternatives: string[];
-  correctAnswer: number;
-  explanation: string;
+  image_url?: string;
+  type: 'multipla_escolha' | 'summation';
+  options: { [key: string]: string } | { text: string; value: number }[];
+  correct_answers: { answer?: string; sum?: number };
+  correct_sum?: number;
+  explanation?: string;
 }
 
 export interface QuestionFilters {

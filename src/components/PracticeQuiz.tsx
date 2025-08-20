@@ -1,6 +1,5 @@
 import { QuestionCard } from "@/components/QuestionCard";
 import { type Question } from "@/data/types";
-import { TutorView } from '@/components/TutorView';
 import { Progress } from "./ui/progress";
 
 interface PracticeQuizProps {
@@ -8,7 +7,8 @@ interface PracticeQuizProps {
   showExplanation: boolean;
   score: { correct: number; total: number };
   practiceQuestions: Question[];
-  onAnswer: (selectedIndex: number, isCorrect: boolean) => void;
+  userAnswers: (string | number | null)[];
+  onAnswer: (answer: string | number, isCorrect: boolean) => void;
   onNext: () => void;
   onReset: () => void;
 }
@@ -18,23 +18,22 @@ export const PracticeQuiz = ({
   showExplanation,
   score,
   practiceQuestions,
+  userAnswers,
   onAnswer,
   onNext,
   onReset
 }: PracticeQuizProps) => {
   const currentQuestion = practiceQuestions[currentQuestionIndex];
+  const userAnswer = userAnswers[currentQuestionIndex];
 
-  // Contexto detalhado para o tutor de IA
-  const tutorContext = {
-    type: "question",
-    questionId: currentQuestion?.id,
-    questionText: currentQuestion?.statement,
-    options: currentQuestion?.alternatives,
-    subject: currentQuestion?.subject,
-    topic: currentQuestion?.topic,
-    explanation: currentQuestion?.explanation, // Adicionando a explicação
-    // Passamos o índice da resposta correta para o backend poder construir a explicação
-    correctAnswerIndex: currentQuestion?.correctAnswer,
+  const handleAnswer = (answer: string | number) => {
+    let isCorrect = false;
+    if (currentQuestion.type === 'summation') {
+      isCorrect = answer === currentQuestion.correct_sum;
+    } else {
+      isCorrect = answer === currentQuestion.correct_answers.answer;
+    }
+    onAnswer(answer, isCorrect);
   };
 
   return (
@@ -57,27 +56,18 @@ export const PracticeQuiz = ({
         )}
 
         {/* Card da Questão */}
-        {practiceQuestions.length > 0 && (
+        {practiceQuestions.length > 0 && currentQuestion && (
           <QuestionCard
             question={currentQuestion}
-            onAnswer={(selectedIndex) => {
-              const isCorrect = selectedIndex === currentQuestion.correctAnswer;
-              onAnswer(selectedIndex, isCorrect);
-            }}
+            onAnswer={handleAnswer}
             showExplanation={showExplanation}
             onNext={onNext}
             isLastQuestion={currentQuestionIndex === practiceQuestions.length - 1}
             onReset={onReset}
+            userAnswer={userAnswer}
           />
         )}
       </div>
-
-      {/* Coluna da Direita: Tutor de IA (Removido para otimização, agora está no QuestionCard) */}
-      {/* <div className="lg:sticky lg:top-24 h-fit">
-        {currentQuestion && (
-          <TutorView context={tutorContext} />
-        )}
-      </div> */}
     </div>
   );
 };
