@@ -206,14 +206,28 @@ const QuestionEditor = () => {
         return [];
       };
 
-      const questionPayload = {
-        ...formData,
-        image_url: imageUrl,
+      const questionPayload: Omit<Question, 'id'> & { id?: string } = {
+        institution_id: formData.institution_id,
+        subject_id: formData.subject_id,
+        topic_id: formData.topic_id,
         year: formData.year ? Number(formData.year) : null,
+        question_number: formData.question_number,
+        type: formData.type,
+        difficulty: formData.difficulty,
+        statement: formData.statement,
+        options: formData.options,
+        correct_answers: formData.correct_answers,
+        correct_sum: formData.correct_sum,
+        explanation: formData.explanation,
+        image_url: imageUrl,
         tags: toArray(formData.tags),
         competencies: toArray(formData.competencies),
         skills: toArray(formData.skills),
       };
+      
+      if (selectedQuestion?.id) {
+        questionPayload.id = selectedQuestion.id;
+      }
       
       if (questionPayload.type === 'summation') {
         const sum = questionPayload.correct_sum || 0;
