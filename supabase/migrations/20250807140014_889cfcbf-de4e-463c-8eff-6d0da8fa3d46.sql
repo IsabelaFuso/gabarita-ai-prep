@@ -1,18 +1,15 @@
 -- Atualizar sistema de gamificação e patentes expandido
 
 -- Primeiro, criar novos tipos para patentes especiais
-CREATE TYPE IF NOT EXISTS special_rank_type AS ENUM (
-  'general',
-  'special_humorous'
-);
-
--- Atualizar tabela de ranks para incluir patentes especiais
-ALTER TABLE public.ranks 
-ADD COLUMN IF NOT EXISTS rank_type special_rank_type DEFAULT 'general',
-ADD COLUMN IF NOT EXISTS special_trigger_condition TEXT,
-ADD COLUMN IF NOT EXISTS icon_url TEXT,
-ADD COLUMN IF NOT EXISTS background_color TEXT,
-ADD COLUMN IF NOT EXISTS text_color TEXT;
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'special_rank_type') THEN
+        CREATE TYPE special_rank_type AS ENUM (
+          'general',
+          'special_humorous'
+        );
+    END IF;
+END$$;
 
 -- Limpar dados existentes e inserir nova estrutura de patentes
 DELETE FROM public.ranks;
@@ -46,9 +43,9 @@ INSERT INTO public.ranks (name, xp_threshold, rank_type, special_trigger_conditi
 
 -- Atualizar user_profiles para incluir personalização
 ALTER TABLE public.user_profiles 
-ADD COLUMN IF NOT EXISTS display_name TEXT,
-ADD COLUMN IF NOT EXISTS chosen_rank_id INTEGER REFERENCES public.ranks(id),
-ADD COLUMN IF NOT EXISTS special_ranks_unlocked INTEGER[] DEFAULT '{}';
+ADD COLUMN display_name TEXT,
+ADD COLUMN chosen_rank_id INTEGER REFERENCES public.ranks(id),
+ADD COLUMN special_ranks_unlocked INTEGER[] DEFAULT '{}';
 
 -- Atualizar conquistas com nova estrutura de trilha
 DELETE FROM public.achievements;
@@ -164,6 +161,7 @@ END;
 $$;
 
 -- Função atualizada para buscar ranking com patentes escolhidas
+DROP FUNCTION IF EXISTS public.get_ranking();
 CREATE OR REPLACE FUNCTION public.get_ranking()
 RETURNS TABLE(user_id uuid, full_name text, avatar_url text, xp integer, rank_name text, target_institution text, target_course text, latest_achievement_name text, latest_achievement_icon text, chosen_rank_name text, chosen_rank_icon text)
 LANGUAGE plpgsql

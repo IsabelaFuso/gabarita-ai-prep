@@ -228,16 +228,6 @@ const QuestionEditor = () => {
       if (selectedQuestion?.id) {
         questionPayload.id = selectedQuestion.id;
       }
-      
-      if (questionPayload.type === 'summation') {
-        const sum = questionPayload.correct_sum || 0;
-        questionPayload.correct_answers = { sum };
-        questionPayload.correct_sum = sum;
-      } else {
-        questionPayload.correct_answers = { answer: questionPayload.correct_answers?.answer || 'A' };
-        questionPayload.correct_sum = null;
-      }
-
 
       const { error } = await supabase
         .from('questions')
@@ -251,7 +241,7 @@ const QuestionEditor = () => {
       fetchInitialData(); // Refresh the list
 
     } catch (error: unknown) {
-      console.error('Error saving question:', error);
+      console.error('Error saving question:', JSON.stringify(error, null, 2));
       const errorMessage = error instanceof Error ? error.message : String(error);
       toast({ title: "Erro ao salvar questão", description: errorMessage, variant: "destructive" });
     } finally {
@@ -274,8 +264,19 @@ const QuestionEditor = () => {
       normalizedCorrectAnswers = { sum };
       normalizedCorrectSum = sum;
     } else { // 'multipla_escolha'
-      const isOptionsObject = !Array.isArray(question.options) && typeof question.options === 'object' && question.options !== null;
-      normalizedOptions = isOptionsObject ? question.options : { A: '', B: '', C: '', D: '', E: '' };
+      let parsedOptions = { A: '', B: '', C: '', D: '', E: '' };
+      if (question.options) {
+        if (typeof question.options === 'string') {
+          try {
+            parsedOptions = JSON.parse(question.options);
+          } catch (e) {
+            console.error("Failed to parse options string:", e);
+          }
+        } else if (typeof question.options === 'object' && !Array.isArray(question.options)) {
+          parsedOptions = question.options as { [key: string]: string };
+        }
+      }
+      normalizedOptions = parsedOptions;
       normalizedCorrectAnswers = { answer: question.correct_answers?.answer || 'A' };
       normalizedCorrectSum = null;
     }
@@ -398,7 +399,7 @@ const QuestionEditor = () => {
               </div>
 
               {/* Alternatives / Summation Options */}
-              {formData.type === 'multipla_escolha' ? (
+              {formData.type === 'multipla_escolha' && (
                 <div>
                   <Label>Alternativas</Label>
                   {Object.keys(formData.options as { [key: string]: string }).map(key => (
@@ -415,7 +416,8 @@ const QuestionEditor = () => {
                     </SelectContent>
                   </Select>
                 </div>
-              ) : (
+              )}
+              {formData.type === 'summation' && (
                 <div>
                   <Label>Afirmativas da Somatória</Label>
                   {(formData.options as { text: string; value: number }[]).map((option, index) => (

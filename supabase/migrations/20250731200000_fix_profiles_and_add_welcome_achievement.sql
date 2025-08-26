@@ -78,4 +78,4 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 GRANT EXECUTE ON FUNCTION public.get_ranking() TO authenticated;
 
 COMMENT ON FUNCTION public.handle_new_user() IS 'Handles new user setup, creating a profile and granting a welcome achievement.';
-COMMENT ON TRIGGER on_auth_user_created ON auth.users IS 'When a user is created, this trigger populates their profile and grants a welcome achievement.';
+-- COMMENT ON TRIGGER on_auth_user_created ON auth.users IS 'When a user is created, this trigger populates their profile and grants a welcome achievement.';
