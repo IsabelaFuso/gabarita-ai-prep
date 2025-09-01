@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from "@/components/ui/use-toast";
-import { Upload, FileText, ImageIcon, Bot, Loader2, CheckCircle } from 'lucide-react';
+import { Upload, FileText, ImageIcon, Bot, Loader2, CheckCircle, Database } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 
 interface ExtractedQuestion {
@@ -20,6 +23,17 @@ interface ExtractedQuestion {
   year?: number;
 }
 
+interface PDFFile {
+  id: string;
+  file_name: string;
+  file_path: string;
+  upload_date: string;
+  processed: boolean;
+  questions_extracted: number;
+  institution_name?: string;
+  exam_year?: number;
+}
+
 export const QuestionAutoRegistration = () => {
   const { toast } = useToast();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -28,7 +42,153 @@ export const QuestionAutoRegistration = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingStep, setProcessingStep] = useState('');
   const [progress, setProgress] = useState(0);
+  
+  // PDF file bank state
+  const [storedPDFs, setStoredPDFs] = useState<PDFFile[]>([]);
+  const [selectedPDF, setSelectedPDF] = useState<string>('');
 
+  useEffect(() => {
+    fetchStoredPDFs();
+  }, []);
+
+  const fetchStoredPDFs = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('pdf_question_sources')
+        .select('*')
+        .order('upload_date', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching stored PDFs:', error);
+        return;
+      }
+
+      setStoredPDFs(data || []);
+    } catch (error) {
+      console.error('Error fetching stored PDFs:', error);
+    }
+  };
+
+  const handleProcessStoredPDF = async () => {
+    if (!selectedPDF) {
+      toast({
+        title: "PDF necessário",
+        description: "Selecione um PDF do banco de arquivos.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+    setProgress(0);
+    setExtractedQuestions([]);
+
+    try {
+      // Get PDF file from storage
+      const pdfFile = storedPDFs.find(pdf => pdf.id === selectedPDF);
+      if (!pdfFile) {
+        toast({
+          title: 'Erro',
+          description: 'Arquivo PDF não encontrado.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      setProcessingStep('Baixando PDF do banco...');
+      setProgress(10);
+
+      // Download the PDF file
+      const { data: fileData, error: downloadError } = await supabase.storage
+        .from('question-pdfs')
+        .download(pdfFile.file_path);
+
+      if (downloadError) {
+        console.error('Error downloading PDF:', downloadError);
+        toast({
+          title: 'Erro',
+          description: 'Erro ao baixar o arquivo PDF.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      setProcessingStep('Extraindo texto do PDF...');
+      setProgress(25);
+
+      // Extract text from PDF
+      const formData = new FormData();
+      formData.append('pdf', fileData, pdfFile.file_name);
+
+      const { data: extractData, error: extractError } = await supabase.functions.invoke('pdf-extract-text', {
+        body: formData,
+      });
+
+      if (extractError) {
+        console.error('Error extracting text:', extractError);
+        toast({
+          title: 'Erro',
+          description: 'Erro ao extrair texto do PDF.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      const contentToProcess = extractData.extractedText;
+
+      // Processar com IA
+      setProcessingStep('Analisando questões com IA...');
+      setProgress(50);
+
+      const aiResults = await processWithAI(contentToProcess, false);
+      
+      setProcessingStep('Estruturando dados das questões...');
+      setProgress(75);
+
+      // Mapear resultados da IA para estrutura esperada
+      const questions: ExtractedQuestion[] = aiResults.questions.map((q: any) => ({
+        statement: q.statement,
+        type: q.type === 'summation' ? 'multipla_escolha' : (q.type || 'multipla_escolha'),
+        alternatives: q.options || q.alternatives || {},
+        correct_answer: q.correct_answer || '',
+        difficulty: q.difficulty || 'medio',
+        institution_id: q.institution_id,
+        subject_id: q.subject_id,
+        year: q.year
+      }));
+
+      setExtractedQuestions(questions);
+      setProgress(100);
+      setProcessingStep('Processamento concluído!');
+
+      // Update PDF metadata to mark as processed
+      await supabase
+        .from('pdf_question_sources')
+        .update({ 
+          processed: true,
+          questions_extracted: questions.length 
+        })
+        .eq('id', selectedPDF);
+
+      toast({
+        title: "Sucesso!",
+        description: `${questions.length} questão(ões) extraída(s) do PDF com sucesso.`
+      });
+
+      // Refresh stored PDFs list
+      fetchStoredPDFs();
+
+    } catch (error) {
+      console.error('Erro no processamento do PDF:', error);
+      toast({
+        title: "Erro no processamento",
+        description: "Não foi possível processar o PDF. Tente novamente.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -260,76 +420,184 @@ export const QuestionAutoRegistration = () => {
         </p>
       </div>
 
-      {/* Upload Section */}
-      <Card className="shadow-soft">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Upload className="w-5 h-5" />
-            Upload de Arquivos
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <Label htmlFor="file-upload">Arquivo (Imagem, PDF ou Texto)</Label>
-            <Input
-              id="file-upload"
-              type="file"
-              onChange={handleFileChange}
-              accept=".jpg,.jpeg,.png,.pdf,.txt"
-              className="mt-1"
-            />
-            {selectedFile && (
-              <div className="flex items-center gap-2 mt-2 p-2 bg-muted rounded-md">
-                {selectedFile.type.startsWith('image/') ? (
-                  <ImageIcon className="w-4 h-4" />
-                ) : (
-                  <FileText className="w-4 h-4" />
+      {/* Upload and Processing Sections */}
+      <Tabs defaultValue="upload" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="upload">Upload de Arquivo</TabsTrigger>
+          <TabsTrigger value="stored">PDFs Armazenados</TabsTrigger>
+          <TabsTrigger value="text">Texto Manual</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="upload">
+          <Card className="shadow-soft">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Upload className="w-5 h-5" />
+                Upload de Arquivos
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label htmlFor="file-upload">Arquivo (Imagem, PDF ou Texto)</Label>
+                <Input
+                  id="file-upload"
+                  type="file"
+                  onChange={handleFileChange}
+                  accept=".jpg,.jpeg,.png,.pdf,.txt"
+                  className="mt-1"
+                />
+                {selectedFile && (
+                  <div className="flex items-center gap-2 mt-2 p-2 bg-muted rounded-md">
+                    {selectedFile.type.startsWith('image/') ? (
+                      <ImageIcon className="w-4 h-4" />
+                    ) : (
+                      <FileText className="w-4 h-4" />
+                    )}
+                    <span className="text-sm">{selectedFile.name}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setSelectedFile(null)}
+                    >
+                      ×
+                    </Button>
+                  </div>
                 )}
-                <span className="text-sm">{selectedFile.name}</span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setSelectedFile(null)}
-                >
-                  ×
-                </Button>
               </div>
-            )}
-          </div>
 
-          <div className="text-center text-muted-foreground">OU</div>
+              <Button
+                onClick={handleProcessFile}
+                disabled={isProcessing || !selectedFile}
+                className="w-full"
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Processando...
+                  </>
+                ) : (
+                  <>
+                    <Bot className="w-4 h-4 mr-2" />
+                    Processar Arquivo
+                  </>
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-          <div>
-            <Label htmlFor="text-input">Inserir Texto Diretamente</Label>
-            <Textarea
-              id="text-input"
-              value={textInput}
-              onChange={(e) => setTextInput(e.target.value)}
-              placeholder="Cole ou digite o texto das questões aqui..."
-              rows={6}
-              className="mt-1"
-            />
-          </div>
+        <TabsContent value="stored">
+          <Card className="shadow-soft">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Database className="w-5 h-5" />
+                PDFs do Banco de Arquivos
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label>Selecionar PDF</Label>
+                <Select value={selectedPDF} onValueChange={setSelectedPDF}>
+                  <SelectTrigger className="mt-1">
+                    <SelectValue placeholder="Escolha um PDF do banco..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {storedPDFs.map((pdf) => (
+                      <SelectItem key={pdf.id} value={pdf.id}>
+                        <div className="flex items-center justify-between w-full">
+                          <div className="flex flex-col">
+                            <span className="font-medium">{pdf.file_name}</span>
+                            {pdf.institution_name && (
+                              <span className="text-xs text-muted-foreground">
+                                {pdf.institution_name} {pdf.exam_year && `- ${pdf.exam_year}`}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex gap-1 ml-2">
+                            {pdf.processed && (
+                              <Badge variant="secondary" className="text-xs">
+                                Processado ({pdf.questions_extracted})
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-          <Button
-            onClick={handleProcessFile}
-            disabled={isProcessing || (!selectedFile && !textInput.trim())}
-            className="w-full"
-          >
-            {isProcessing ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Processando...
-              </>
-            ) : (
-              <>
-                <Bot className="w-4 h-4 mr-2" />
-                Processar com IA
-              </>
-            )}
-          </Button>
-        </CardContent>
-      </Card>
+              <Button
+                onClick={handleProcessStoredPDF}
+                disabled={isProcessing || !selectedPDF}
+                className="w-full"
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Processando...
+                  </>
+                ) : (
+                  <>
+                    <Bot className="w-4 h-4 mr-2" />
+                    Processar PDF Selecionado
+                  </>
+                )}
+              </Button>
+
+              {storedPDFs.length === 0 && (
+                <div className="text-center py-8 text-muted-foreground">
+                  <Database className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                  <p>Nenhum PDF no banco de arquivos.</p>
+                  <p className="text-sm">Acesse "Banco de PDFs" para fazer upload.</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="text">
+          <Card className="shadow-soft">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="w-5 h-5" />
+                Inserir Texto Diretamente
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label htmlFor="text-input">Inserir Texto Diretamente</Label>
+                <Textarea
+                  id="text-input"
+                  value={textInput}
+                  onChange={(e) => setTextInput(e.target.value)}
+                  placeholder="Cole ou digite o texto das questões aqui..."
+                  rows={8}
+                  className="mt-1"
+                />
+              </div>
+
+              <Button
+                onClick={handleProcessFile}
+                disabled={isProcessing || !textInput.trim()}
+                className="w-full"
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Processando...
+                  </>
+                ) : (
+                  <>
+                    <Bot className="w-4 h-4 mr-2" />
+                    Processar Texto
+                  </>
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
 
       {/* Processing Progress */}
       {isProcessing && (

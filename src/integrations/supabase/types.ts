@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -101,6 +101,48 @@ export type Database = {
           id?: string
           name?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      pdf_question_sources: {
+        Row: {
+          description: string | null
+          exam_year: number | null
+          file_name: string
+          file_path: string
+          file_size: number | null
+          id: string
+          institution_name: string | null
+          processed: boolean
+          questions_extracted: number | null
+          upload_date: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          description?: string | null
+          exam_year?: number | null
+          file_name: string
+          file_path: string
+          file_size?: number | null
+          id?: string
+          institution_name?: string | null
+          processed?: boolean
+          questions_extracted?: number | null
+          upload_date?: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          description?: string | null
+          exam_year?: number | null
+          file_name?: string
+          file_path?: string
+          file_size?: number | null
+          id?: string
+          institution_name?: string | null
+          processed?: boolean
+          questions_extracted?: number | null
+          upload_date?: string
+          uploaded_by?: string | null
         }
         Relationships: []
       }
@@ -572,15 +614,15 @@ export type Database = {
     Functions: {
       check_and_grant_achievements: {
         Args: {
-          p_user_id: string
           p_simulado_accuracy?: number
           p_simulado_question_count?: number
+          p_user_id: string
         }
         Returns: {
           code: string
-          name: string
           description: string
           icon_name: string
+          name: string
         }[]
       }
       exec: {
@@ -589,48 +631,48 @@ export type Database = {
       }
       get_custom_simulado_questions: {
         Args: {
-          p_user_id: string
-          p_university_name: string
-          p_question_count: number
-          p_subject_names?: string[]
           p_difficulty_levels?: Database["public"]["Enums"]["difficulty_level"][]
           p_exclude_ids?: string[]
           p_prioritize_weaknesses?: boolean
+          p_question_count: number
+          p_subject_names?: string[]
+          p_university_name: string
+          p_user_id: string
         }
         Returns: {
-          question_id: string
-          statement: string
-          image_url: string
           alternatives: Json
           correct_answer: string
-          explanation: string
           difficulty: Database["public"]["Enums"]["difficulty_level"]
+          explanation: string
+          image_url: string
+          institution_name: string
+          question_id: string
+          statement: string
           subject_name: string
           topic_name: string
-          institution_name: string
           year: number
         }[]
       }
       get_performance_summary: {
         Args: { p_user_id: string }
         Returns: {
-          subject_name: string
-          correct_answers: number
-          total_questions: number
           accuracy: number
+          correct_answers: number
+          subject_name: string
+          total_questions: number
         }[]
       }
       get_personalized_questions: {
-        Args: { p_user_id: string; p_count?: number; p_institution_id?: string }
+        Args: { p_count?: number; p_institution_id?: string; p_user_id: string }
         Returns: {
-          question_id: string
-          statement: string
           alternatives: Json
           correct_answer: string
           difficulty: Database["public"]["Enums"]["difficulty_level"]
+          institution_name: string
+          question_id: string
+          statement: string
           subject_name: string
           topic_name: string
-          institution_name: string
           year: number
         }[]
       }
@@ -641,50 +683,50 @@ export type Database = {
       get_ranking: {
         Args: Record<PropertyKey, never>
         Returns: {
-          user_id: string
-          full_name: string
           avatar_url: string
-          xp: number
-          rank_name: string
-          target_institution: string
-          target_course: string
-          latest_achievement_name: string
+          full_name: string
           latest_achievement_icon: string
+          latest_achievement_name: string
+          rank_name: string
+          target_course: string
+          target_institution: string
+          user_id: string
+          xp: number
         }[]
       }
       get_user_performance_summary: {
         Args: { p_user_id: string }
         Returns: {
+          accuracy: number
+          correct_attempts: number
           subject_id: string
           subject_name: string
           topic_id: string
           topic_name: string
           total_attempts: number
-          correct_attempts: number
-          accuracy: number
         }[]
       }
       handle_essay_submission: {
-        Args: { p_user_id: string; p_score: number }
+        Args: { p_score: number; p_user_id: string }
         Returns: {
           code: string
-          name: string
           description: string
           icon_name: string
+          name: string
         }[]
       }
       update_user_stats: {
         Args:
           | {
+              p_correct_answers_change: number
               p_user_id: string
-              p_time_increase: number
-              p_xp_increase: number
+              p_wrong_answers_change: number
+              p_xp_change: number
             }
           | {
+              p_time_increase: number
               p_user_id: string
-              p_xp_change: number
-              p_correct_answers_change: number
-              p_wrong_answers_change: number
+              p_xp_increase: number
             }
         Returns: undefined
       }
