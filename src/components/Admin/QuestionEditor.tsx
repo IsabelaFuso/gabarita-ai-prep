@@ -6,62 +6,49 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from "@/components/ui/use-toast"
-import { PlusCircle, Trash2 } from 'lucide-react';
+import { useToast } from "@/components/ui/use-toast";
+import { type Question } from '@/data/types';
 
-// Based on the updated database schema
-type Question = {
-  id?: string;
-  institution_id: string | null;
-  subject_id: string | null;
-  topic_id: string | null;
-  year: number | null;
-  question_number: string | null;
-  type: 'multipla_escolha' | 'discursiva' | 'verdadeiro_falso' | 'summation';
-  difficulty: 'facil' | 'medio' | 'dificil';
+interface DbQuestion {
+  id: string;
   statement: string;
-  options: { [key: string]: string } | { text: string; value: number }[];
-  correct_answers: { answer?: string; sum?: number };
-  correct_sum?: number | null;
-  explanation: string | null;
-  image_url: string | null;
-  tags: string[] | null;
-  competencies: string[] | null;
-  skills: string[] | null;
-};
-
-const initialSummationOptions = [
-  { text: '', value: 1 },
-  { text: '', value: 2 },
-  { text: '', value: 4 },
-  { text: '', value: 8 },
-  { text: '', value: 16 },
-];
-
-const initialQuestionState: Question = {
-  institution_id: null,
-  subject_id: null,
-  topic_id: null,
-  year: new Date().getFullYear(),
-  question_number: '',
-  type: 'multipla_escolha',
-  difficulty: 'medio',
-  statement: '',
-  options: { A: '', B: '', C: '', D: '', E: '' },
-  correct_answers: { answer: 'A' },
-  correct_sum: null,
-  explanation: '',
-  image_url: '',
-  tags: [],
-  competencies: [],
-  skills: [],
-};
+  type: 'multipla_escolha' | 'discursiva' | 'verdadeiro_falso';
+  alternatives?: any;
+  correct_answer: string;
+  explanation?: string;
+  difficulty?: 'facil' | 'medio' | 'dificil';
+  institution_id?: string;
+  subject_id?: string;
+  topic_id?: string;
+  year?: number;
+  competencies?: string[];
+  skills?: string[];
+  tags?: string[];
+  image_url?: string;
+  institution?: { name: string };
+  subject?: { name: string };
+  topic?: { name: string };
+}
 
 const QuestionEditor = () => {
   const { toast } = useToast();
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [selectedQuestion, setSelectedQuestion] = useState<Question | null>(null);
-  const [formData, setFormData] = useState<Question>(initialQuestionState);
+  const [questions, setQuestions] = useState<DbQuestion[]>([]);
+  const [selectedQuestion, setSelectedQuestion] = useState<DbQuestion | null>(null);
+  const [formData, setFormData] = useState<Partial<DbQuestion>>({
+    statement: '',
+    type: 'multipla_escolha',
+    alternatives: { A: '', B: '', C: '', D: '', E: '' },
+    correct_answer: 'A',
+    explanation: '',
+    difficulty: 'medio',
+    institution_id: '',
+    subject_id: '',
+    topic_id: '',
+    year: new Date().getFullYear(),
+    competencies: [],
+    skills: [],
+    tags: []
+  });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -79,13 +66,14 @@ const QuestionEditor = () => {
         { data: topicsData, error: topicsError },
         { data: questionsData, error: questError }
       ] = await Promise.all([
-        supabase.from('institutions').select('id, name'),
-        supabase.from('subjects').select('id, name'),
-        supabase.from('topics').select('id, name, subject_id'),
+        supabase.from('institutions').select('id, name').order('name'),
+        supabase.from('subjects').select('id, name').order('name'),
+        supabase.from('topics').select('id, name, subject_id').order('name'),
         supabase.from('questions').select(`
           *,
-          institution:institution_id(name),
-          subject:subject_id(name)
+          institution:institutions(name),
+          subject:subjects(name),
+          topic:topics(name)
         `).order('created_at', { ascending: false })
       ]);
 
@@ -117,61 +105,15 @@ const QuestionEditor = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSelectChange = (name: keyof Question, value: string | 'multipla_escolha' | 'summation' | 'discursiva' | 'verdadeiro_falso' | 'facil' | 'medio' | 'dificil') => {
+  const handleSelectChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
-  };
-  
-  const handleQuestionTypeChange = (value: 'multipla_escolha' | 'summation') => {
-    if (value === 'summation') {
-      setFormData(prev => ({
-        ...prev,
-        type: 'summation',
-        options: initialSummationOptions,
-        correct_answers: { sum: 0 },
-        correct_sum: 0,
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        type: 'multipla_escolha',
-        options: { A: '', B: '', C: '', D: '', E: '' },
-        correct_answers: { answer: 'A' },
-        correct_sum: null,
-      }));
-    }
   };
 
   const handleAlternativeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      options: { ...(prev.options as object), [name]: value },
-    }));
-  };
-
-  const handleSummationOptionChange = (index: number, field: 'text' | 'value', value: string) => {
-    const newOptions = [...(formData.options as { text: string; value: number }[])];
-    newOptions[index] = { ...newOptions[index], [field]: field === 'value' ? parseInt(value, 10) || 0 : value };
-    setFormData(prev => ({ ...prev, options: newOptions }));
-  };
-  
-  const addSummationOption = () => {
-    const newOptions = [...(formData.options as { text: string; value: number }[]), { text: '', value: 0 }];
-    setFormData(prev => ({ ...prev, options: newOptions }));
-  };
-
-  const removeSummationOption = (index: number) => {
-    const newOptions = [...(formData.options as { text: string; value: number }[])];
-    newOptions.splice(index, 1);
-    setFormData(prev => ({ ...prev, options: newOptions }));
-  };
-
-  const handleCorrectSumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const sum = parseInt(e.target.value, 10) || 0;
-    setFormData(prev => ({
-      ...prev,
-      correct_answers: { sum },
-      correct_sum: sum,
+      alternatives: { ...(prev.alternatives as any), [name]: value },
     }));
   };
 
@@ -206,42 +148,36 @@ const QuestionEditor = () => {
         return [];
       };
 
-      const questionPayload: Omit<Question, 'id'> & { id?: string } = {
-        institution_id: formData.institution_id,
-        subject_id: formData.subject_id,
-        topic_id: formData.topic_id,
-        year: formData.year ? Number(formData.year) : null,
-        question_number: formData.question_number,
-        type: formData.type,
-        difficulty: formData.difficulty,
-        statement: formData.statement,
-        options: formData.options,
-        correct_answers: formData.correct_answers,
-        correct_sum: formData.correct_sum,
+      const questionPayload = {
+        statement: formData.statement || '',
+        type: formData.type || 'multipla_escolha',
+        alternatives: formData.alternatives,
+        correct_answer: formData.correct_answer || 'A',
         explanation: formData.explanation,
+        difficulty: formData.difficulty || 'medio',
+        institution_id: formData.institution_id || null,
+        subject_id: formData.subject_id || null,
+        topic_id: formData.topic_id || null,
+        year: formData.year ? Number(formData.year) : null,
         image_url: imageUrl,
         tags: toArray(formData.tags),
         competencies: toArray(formData.competencies),
         skills: toArray(formData.skills),
+        ...(selectedQuestion?.id && { id: selectedQuestion.id })
       };
-      
-      if (selectedQuestion?.id) {
-        questionPayload.id = selectedQuestion.id;
-      }
 
       const { error } = await supabase
         .from('questions')
-        .upsert(questionPayload)
-        .select();
+        .upsert(questionPayload);
 
       if (error) throw error;
 
       toast({ title: "Sucesso!", description: `Questão ${selectedQuestion ? 'atualizada' : 'criada'} com sucesso.` });
       clearForm();
-      fetchInitialData(); // Refresh the list
+      fetchInitialData();
 
     } catch (error: unknown) {
-      console.error('Error saving question:', JSON.stringify(error, null, 2));
+      console.error('Error saving question:', error);
       const errorMessage = error instanceof Error ? error.message : String(error);
       toast({ title: "Erro ao salvar questão", description: errorMessage, variant: "destructive" });
     } finally {
@@ -249,58 +185,37 @@ const QuestionEditor = () => {
     }
   };
 
-  const handleSelectQuestion = (question: Question) => {
+  const handleSelectQuestion = (question: DbQuestion) => {
     setSelectedQuestion(question);
-
-    const type = question.type || 'multipla_escolha';
-
-    let normalizedOptions: { [key: string]: string } | { text: string; value: number }[];
-    let normalizedCorrectAnswers: { answer?: string; sum?: number };
-    let normalizedCorrectSum: number | null;
-
-    if (type === 'summation') {
-      normalizedOptions = Array.isArray(question.options) && question.options.length > 0 ? question.options : initialSummationOptions;
-      const sum = question.correct_sum ?? (question.correct_answers?.sum ?? 0);
-      normalizedCorrectAnswers = { sum };
-      normalizedCorrectSum = sum;
-    } else { // 'multipla_escolha'
-      let parsedOptions = { A: '', B: '', C: '', D: '', E: '' };
-      if (question.options) {
-        if (typeof question.options === 'string') {
-          try {
-            parsedOptions = JSON.parse(question.options);
-          } catch (e) {
-            console.error("Failed to parse options string:", e);
-          }
-        } else if (typeof question.options === 'object' && !Array.isArray(question.options)) {
-          parsedOptions = question.options as { [key: string]: string };
-        }
-      }
-      normalizedOptions = parsedOptions;
-      normalizedCorrectAnswers = { answer: question.correct_answers?.answer || 'A' };
-      normalizedCorrectSum = null;
-    }
-
     setFormData({
-      ...initialQuestionState,
       ...question,
-      type,
-      options: normalizedOptions,
-      correct_answers: normalizedCorrectAnswers,
-      correct_sum: normalizedCorrectSum,
+      alternatives: question.alternatives || { A: '', B: '', C: '', D: '', E: '' }
     });
-
     setImageFile(null);
   };
 
   const clearForm = () => {
     setSelectedQuestion(null);
-    setFormData(initialQuestionState);
+    setFormData({
+      statement: '',
+      type: 'multipla_escolha',
+      alternatives: { A: '', B: '', C: '', D: '', E: '' },
+      correct_answer: 'A',
+      explanation: '',
+      difficulty: 'medio',
+      institution_id: '',
+      subject_id: '',
+      topic_id: '',
+      year: new Date().getFullYear(),
+      competencies: [],
+      skills: [],
+      tags: []
+    });
     setImageFile(null);
   };
 
   const filteredQuestions = useMemo(() => {
-    return questions.filter(q => 
+    return questions.filter(q =>
       q.statement.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (q.subject?.name && q.subject.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (q.institution?.name && q.institution.name.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -361,7 +276,7 @@ const QuestionEditor = () => {
                     {topics.filter(t => t.subject_id === formData.subject_id).map(topic => <SelectItem key={topic.id} value={topic.id}>{topic.name}</SelectItem>)}
                   </SelectContent>
                 </Select>
-                <Select onValueChange={(value) => handleSelectChange('difficulty', value)} value={formData.difficulty}>
+                <Select onValueChange={(value) => handleSelectChange('difficulty', value)} value={formData.difficulty || 'medio'}>
                   <SelectTrigger><SelectValue placeholder="Dificuldade" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="facil">Fácil</SelectItem>
@@ -369,17 +284,12 @@ const QuestionEditor = () => {
                     <SelectItem value="dificil">Difícil</SelectItem>
                   </SelectContent>
                 </Select>
-                <Input name="question_number" placeholder="Número da Questão" value={formData.question_number || ''} onChange={handleInputChange} />
-              </div>
-
-              {/* Question Type */}
-              <div>
-                <Label>Tipo de Questão</Label>
-                <Select onValueChange={(value: 'multipla_escolha' | 'summation') => handleQuestionTypeChange(value)} value={formData.type}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
+                <Select onValueChange={(value) => handleSelectChange('type', value)} value={formData.type || 'multipla_escolha'}>
+                  <SelectTrigger><SelectValue placeholder="Tipo" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="multipla_escolha">Múltipla Escolha</SelectItem>
-                    <SelectItem value="summation">Somatória</SelectItem>
+                    <SelectItem value="discursiva">Discursiva</SelectItem>
+                    <SelectItem value="verdadeiro_falso">Verdadeiro/Falso</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -387,7 +297,7 @@ const QuestionEditor = () => {
               {/* Statement */}
               <div>
                 <Label>Enunciado</Label>
-                <Textarea name="statement" value={formData.statement} onChange={handleInputChange} rows={5} />
+                <Textarea name="statement" value={formData.statement || ''} onChange={handleInputChange} rows={5} />
               </div>
 
               {/* Image Upload */}
@@ -398,53 +308,23 @@ const QuestionEditor = () => {
                 {imageFile && <img src={URL.createObjectURL(imageFile)} alt="Preview" className="mt-2 max-h-40" />}
               </div>
 
-              {/* Alternatives / Summation Options */}
+              {/* Alternatives */}
               {formData.type === 'multipla_escolha' && (
                 <div>
                   <Label>Alternativas</Label>
-                  {Object.keys(formData.options as { [key: string]: string }).map(key => (
+                  {Object.keys(formData.alternatives as { [key: string]: string } || {}).map(key => (
                     <div key={key} className="flex items-center gap-2 mb-2">
                       <Label className="w-8">{key}:</Label>
-                      <Input name={key} value={(formData.options as { [key: string]: string })[key]} onChange={handleAlternativeChange} />
+                      <Input name={key} value={(formData.alternatives as { [key: string]: string })?.[key] || ''} onChange={handleAlternativeChange} />
                     </div>
                   ))}
                   <Label>Resposta Correta</Label>
-                  <Select onValueChange={(value) => setFormData(p => ({...p, correct_answers: { answer: value }}))} value={formData.correct_answers?.answer}>
+                  <Select onValueChange={(value) => handleSelectChange('correct_answer', value)} value={formData.correct_answer}>
                     <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {Object.keys(formData.options as { [key: string]: string }).map(key => <SelectItem key={key} value={key}>{key}</SelectItem>)}
+                      {Object.keys(formData.alternatives as { [key: string]: string } || {}).map(key => <SelectItem key={key} value={key}>{key}</SelectItem>)}
                     </SelectContent>
                   </Select>
-                </div>
-              )}
-              {formData.type === 'summation' && (
-                <div>
-                  <Label>Afirmativas da Somatória</Label>
-                  {(formData.options as { text: string; value: number }[]).map((option, index) => (
-                    <div key={index} className="flex items-center gap-2 mb-2">
-                      <Input 
-                        type="number" 
-                        value={option.value} 
-                        onChange={(e) => handleSummationOptionChange(index, 'value', e.target.value)}
-                        className="w-20"
-                      />
-                      <Textarea 
-                        value={option.text} 
-                        onChange={(e) => handleSummationOptionChange(index, 'text', e.target.value)}
-                        rows={1}
-                      />
-                      <Button type="button" variant="ghost" size="icon" onClick={() => removeSummationOption(index)}>
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                   <Button type="button" variant="outline" size="sm" onClick={addSummationOption} className="mt-2">
-                      <PlusCircle className="h-4 w-4 mr-2" /> Adicionar Afirmativa
-                    </Button>
-                  <div className="mt-4">
-                    <Label>Soma das Respostas Corretas</Label>
-                    <Input type="number" value={formData.correct_sum || ''} onChange={handleCorrectSumChange} className="w-40" />
-                  </div>
                 </div>
               )}
 
@@ -460,7 +340,6 @@ const QuestionEditor = () => {
                 <Input name="competencies" placeholder="Competências (ex: C1, C2)" value={Array.isArray(formData.competencies) ? formData.competencies.join(', ') : formData.competencies || ''} onChange={handleInputChange} />
                 <Input name="skills" placeholder="Habilidades (ex: H1, H2)" value={Array.isArray(formData.skills) ? formData.skills.join(', ') : formData.skills || ''} onChange={handleInputChange} />
               </div>
-
 
               <div className="flex justify-end gap-2">
                 <Button type="button" variant="outline" onClick={clearForm} disabled={loading}>Cancelar</Button>

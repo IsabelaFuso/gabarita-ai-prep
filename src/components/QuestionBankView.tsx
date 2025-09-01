@@ -40,13 +40,6 @@ export const QuestionBankView = ({ onBack }: { onBack: () => void }) => {
   const [score, setScore] = useState({ correct: 0, total: 0 });
   const [weakSubjects, setWeakSubjects] = useState<WeakSubject[]>([]);
 
-  useEffect(() => {
-    fetchSubjects();
-    if (user) {
-      fetchWeakSubjects();
-    }
-  }, [user, fetchSubjects, fetchWeakSubjects]);
-
   const fetchSubjects = useCallback(async () => {
     const { data, error } = await supabase
       .from('subjects')
@@ -55,10 +48,11 @@ export const QuestionBankView = ({ onBack }: { onBack: () => void }) => {
     
     if (error) {
       console.error('Error fetching subjects:', error);
-      return;
+      return { data: [], error };
     }
     
     setSubjects(data || []);
+    return { data: data || [], error };
   }, []);
 
   const fetchWeakSubjects = useCallback(async () => {
@@ -79,6 +73,13 @@ export const QuestionBankView = ({ onBack }: { onBack: () => void }) => {
     
     setWeakSubjects(weak);
   }, [user]);
+
+  useEffect(() => {
+    fetchSubjects();
+    if (user) {
+      fetchWeakSubjects();
+    }
+  }, [user, fetchSubjects, fetchWeakSubjects]);
   
   const mapDataToQuestions = (data: any[]): Question[] => {
     return data.map((q: any) => ({
@@ -94,6 +95,7 @@ export const QuestionBankView = ({ onBack }: { onBack: () => void }) => {
       correct_answers: q.correct_answers,
       correct_sum: q.correct_sum,
       explanation: q.explanation,
+      correct_answer: q.correct_answer
     }));
   };
 
@@ -174,11 +176,7 @@ export const QuestionBankView = ({ onBack }: { onBack: () => void }) => {
   const handleAnswer = async (answer: string | number) => {
     const question = currentQuestions[currentQuestionIndex];
     let isCorrect = false;
-    if (question.type === 'summation') {
-      isCorrect = answer === question.correct_sum;
-    } else {
-      isCorrect = answer === question.correct_answers.answer;
-    }
+    isCorrect = answer === question.correct_answers?.answer || answer === question.correct_answer;
 
     const newAnswers = [...userAnswers];
     newAnswers[currentQuestionIndex] = answer;
@@ -334,7 +332,7 @@ export const QuestionBankView = ({ onBack }: { onBack: () => void }) => {
       </Card>
       {currentQuestion && (
         <QuestionCard
-          question={currentQuestion}
+          question={currentQuestion as any}
           onAnswer={handleAnswer}
           showExplanation={showExplanation}
           onNext={handleNext}

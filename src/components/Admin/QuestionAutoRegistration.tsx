@@ -11,8 +11,8 @@ import { Progress } from '@/components/ui/progress';
 
 interface ExtractedQuestion {
   statement: string;
-  type: 'multipla_escolha' | 'summation' | 'discursiva' | 'verdadeiro_falso';
-  options: { [key: string]: string } | { text: string; value: number }[];
+  type: 'multipla_escolha' | 'discursiva' | 'verdadeiro_falso';
+  alternatives: { [key: string]: string } | { text: string; value: number }[];
   correct_answer: string;
   difficulty: 'facil' | 'medio' | 'dificil';
   institution_id?: string;
@@ -145,8 +145,8 @@ export const QuestionAutoRegistration = () => {
       // Mapear resultados da IA para estrutura esperada
       const questions: ExtractedQuestion[] = aiResults.questions.map((q: any) => ({
         statement: q.statement,
-        type: q.type || 'multipla_escolha',
-        options: q.options || {},
+        type: q.type === 'summation' ? 'multipla_escolha' : (q.type || 'multipla_escolha'),
+        alternatives: q.options || q.alternatives || {},
         correct_answer: q.correct_answer || '',
         difficulty: q.difficulty || 'medio',
         institution_id: q.institution_id,
@@ -200,15 +200,12 @@ export const QuestionAutoRegistration = () => {
           statement: question.statement,
           type: question.type,
           difficulty: question.difficulty,
-          options: question.options,
-          correct_answers: { answer: question.correct_answer },
+          alternatives: question.alternatives,
+          correct_answer: question.correct_answer,
           explanation: null,
           institution_id: question.institution_id,
           subject_id: question.subject_id,
-          year: question.year,
-          alternatives: question.type === 'multipla_escolha' ? 
-            Object.values(question.options as { [key: string]: string }) : null,
-          correct_answer: question.correct_answer
+          year: question.year
         };
 
         const { error } = await supabase
@@ -370,7 +367,6 @@ export const QuestionAutoRegistration = () => {
                       className="px-2 py-1 border rounded text-sm"
                     >
                       <option value="multipla_escolha">Múltipla Escolha</option>
-                      <option value="summation">Somatória</option>
                       <option value="discursiva">Discursiva</option>
                       <option value="verdadeiro_falso">Verdadeiro/Falso</option>
                     </select>
@@ -400,15 +396,15 @@ export const QuestionAutoRegistration = () => {
                   <div>
                     <Label>Alternativas</Label>
                     <div className="space-y-2 mt-1">
-                      {Object.entries(question.options as { [key: string]: string }).map(([key, value]) => (
+                      {Object.entries(question.alternatives as { [key: string]: string }).map(([key, value]) => (
                         <div key={key} className="flex gap-2">
                           <Label className="w-8 pt-2">{key}:</Label>
                           <Input
                             value={value}
                             onChange={(e) => {
-                              const newOptions = { ...question.options as { [key: string]: string } };
-                              newOptions[key] = e.target.value;
-                              handleEditQuestion(index, 'options', newOptions);
+                              const newAlternatives = { ...question.alternatives as { [key: string]: string } };
+                              newAlternatives[key] = e.target.value;
+                              handleEditQuestion(index, 'alternatives', newAlternatives);
                             }}
                           />
                         </div>
@@ -421,7 +417,7 @@ export const QuestionAutoRegistration = () => {
                         onChange={(e) => handleEditQuestion(index, 'correct_answer', e.target.value)}
                         className="ml-2 px-2 py-1 border rounded"
                       >
-                        {Object.keys(question.options as { [key: string]: string }).map(key => (
+                        {Object.keys(question.alternatives as { [key: string]: string }).map(key => (
                           <option key={key} value={key}>{key}</option>
                         ))}
                       </select>

@@ -199,6 +199,7 @@ const Index = () => {
           showExplanation={showExplanation}
           score={score}
           practiceQuestions={practiceQuestions}
+          userAnswers={[]}
           onAnswer={handleAnswer}
           onNext={nextQuestion}
           onReset={resetQuiz}

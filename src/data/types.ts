@@ -1,19 +1,31 @@
 export interface Question {
   id: string;
-  institution?: string | { name: string };
+  institution_id?: string;
   year?: number;
-  subject: string | { name: string };
-  topic?: string | { name: string };
+  subject_id?: string;
+  topic_id?: string;
   statement: string;
-  image?: string;
   image_url?: string;
-  type?: 'multipla_escolha' | 'summation' | 'discursiva' | 'verdadeiro_falso';
-  alternatives?: string[];
+  type?: 'multipla_escolha' | 'discursiva' | 'verdadeiro_falso';
+  alternatives?: any; // Json type from Supabase
+  correct_answer?: string; // Made optional for backward compatibility
+  explanation?: string;
+  difficulty?: 'facil' | 'medio' | 'dificil';
+  competencies?: string[];
+  skills?: string[];
+  tags?: string[];
+  question_number?: string;
+  created_at?: string;
+  updated_at?: string;
+  
+  // For backward compatibility and UI display
+  institution?: string | { name: string };
+  subject?: string | { name: string };
+  topic?: string | { name: string };
   options?: { [key: string]: string } | { text: string; value: number }[];
   correctAnswer?: number;
   correct_answers?: { answer?: string; sum?: number };
   correct_sum?: number;
-  explanation?: string;
 }
 
 export interface QuestionFilters {

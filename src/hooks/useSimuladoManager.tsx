@@ -79,11 +79,14 @@ export const useSimuladoManager = (
         await supabase.from('user_attempts').insert(attemptsToInsert);
       }
 
-      const institutionName = currentQuestions[0].institution;
+      const institutionName = typeof currentQuestions[0].institution === 'string'
+        ? currentQuestions[0].institution
+        : currentQuestions[0].institution?.name || '';
+        
       const { data: institution } = await supabase
         .from('institutions')
         .select('id')
-        .eq('name', institutionName || '')
+        .eq('name', institutionName)
         .single();
 
       await supabase.from('simulados').insert({

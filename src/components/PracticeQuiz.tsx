@@ -26,15 +26,11 @@ export const PracticeQuiz = ({
   const currentQuestion = practiceQuestions[currentQuestionIndex];
   const userAnswer = userAnswers[currentQuestionIndex];
 
-  const handleAnswer = (answer: string | number) => {
-    let isCorrect = false;
-    if (currentQuestion.type === 'summation') {
-      isCorrect = answer === currentQuestion.correct_sum;
-    } else {
-      isCorrect = answer === currentQuestion.correct_answers.answer;
-    }
-    onAnswer(answer, isCorrect);
-  };
+    const handleAnswer = (answer: string | number) => {
+      let isCorrect = false;
+      isCorrect = answer === currentQuestion.correct_answers?.answer || answer === currentQuestion.correct_answer;
+      onAnswer(answer, isCorrect);
+    };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-8 space-y-6 lg:space-y-0">
@@ -58,7 +54,7 @@ export const PracticeQuiz = ({
         {/* Card da Questão */}
         {practiceQuestions.length > 0 && currentQuestion && (
           <QuestionCard
-            question={currentQuestion}
+            question={currentQuestion as any}
             onAnswer={handleAnswer}
             showExplanation={showExplanation}
             onNext={onNext}

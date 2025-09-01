@@ -227,10 +227,20 @@ export const SimuladoCompleto = ({
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2 flex-wrap">
                     <Badge variant="outline">
-                      {currentQuestion.institution} {currentQuestion.year}
+                      {typeof currentQuestion.institution === 'string'
+                        ? `${currentQuestion.institution} ${currentQuestion.year}`
+                        : `${currentQuestion.institution?.name || 'N/A'} ${currentQuestion.year}`}
                     </Badge>
-                    <Badge variant="secondary">{currentQuestion.subject}</Badge>
-                    <Badge variant="secondary">{currentQuestion.topic}</Badge>
+                    <Badge variant="secondary">
+                      {typeof currentQuestion.subject === 'string'
+                        ? currentQuestion.subject
+                        : currentQuestion.subject?.name || 'N/A'}
+                    </Badge>
+                    <Badge variant="secondary">
+                      {typeof currentQuestion.topic === 'string'
+                        ? currentQuestion.topic
+                        : currentQuestion.topic?.name || 'N/A'}
+                    </Badge>
                   </div>
                   {answers[currentQuestionIndex] !== null && (
                     <CheckCircle className="w-5 h-5 text-success" />

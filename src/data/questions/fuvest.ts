@@ -357,7 +357,7 @@ export const fuvestQuestions: Question[] = [
     subject: "Física",
     topic: "Óptica Geométrica",
     statement: "A figura mostra um objeto (O) e sua imagem (I) conjugada por uma lente esférica delgada. Com base na figura, qual é o tipo de lente e a natureza da imagem?",
-    image: "/placeholder.svg",
+    image_url: "/placeholder.svg",
     alternatives: [
       "Lente convergente, imagem real",
       "Lente convergente, imagem virtual",
