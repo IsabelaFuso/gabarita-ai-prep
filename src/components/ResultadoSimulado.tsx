@@ -69,14 +69,14 @@ export const ResultadoSimulado = ({
 
   // Análise por matéria
   const subjectAnalysis = questions.reduce((acc, question, index) => {
-    const subject = question.subject;
+    const subject = typeof question.subject === 'string' ? question.subject : question.subject.name;
     if (!acc[subject]) {
       acc[subject] = { total: 0, correct: 0, answered: 0 };
     }
     acc[subject].total++;
     if (answers[index] !== null) {
       acc[subject].answered++;
-      if (answers[index] === question.correctAnswer) {
+      if (answers[index] === (question.correctAnswer ?? question.correct_answers?.answer)) {
         acc[subject].correct++;
       }
     }
@@ -85,9 +85,9 @@ export const ResultadoSimulado = ({
 
   const quizResultsForAI = questions.map((q, index) => ({
     questionText: q.statement,
-    userAnswer: answers[index] !== null ? q.alternatives[answers[index]!] : 'Não respondida',
-    correctAnswer: q.alternatives[q.correctAnswer],
-    isCorrect: answers[index] === q.correctAnswer,
+    userAnswer: answers[index] !== null ? (q.alternatives?.[answers[index]!] || 'Resposta não encontrada') : 'Não respondida',
+    correctAnswer: q.alternatives?.[q.correctAnswer ?? 0] || 'Resposta não encontrada',
+    isCorrect: answers[index] === (q.correctAnswer ?? 0),
   }));
 
   const tutorContext = {

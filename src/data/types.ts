@@ -1,14 +1,17 @@
 export interface Question {
   id: string;
-  institution?: { name: string };
+  institution?: string | { name: string };
   year?: number;
-  subject: { name: string };
-  topic?: { name: string };
+  subject: string | { name: string };
+  topic?: string | { name: string };
   statement: string;
+  image?: string;
   image_url?: string;
-  type: 'multipla_escolha' | 'summation';
-  options: { [key: string]: string } | { text: string; value: number }[];
-  correct_answers: { answer?: string; sum?: number };
+  type?: 'multipla_escolha' | 'summation' | 'discursiva' | 'verdadeiro_falso';
+  alternatives?: string[];
+  options?: { [key: string]: string } | { text: string; value: number }[];
+  correctAnswer?: number;
+  correct_answers?: { answer?: string; sum?: number };
   correct_sum?: number;
   explanation?: string;
 }

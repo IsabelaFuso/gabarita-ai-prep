@@ -123,16 +123,17 @@ export const QuestionBankView = ({ onBack }: { onBack: () => void }) => {
       return;
     }
     setMode('by-subject');
-    await startQuestionSession(() => 
-      supabase.rpc('get_custom_simulado_questions', {
+    await startQuestionSession(async () => {
+      const { data, error } = await supabase.rpc('get_custom_simulado_questions', {
         p_user_id: user?.id || '',
         p_university_name: 'ENEM',
         p_question_count: 20,
         p_subject_names: selectedSubjects,
         p_exclude_ids: null,
         p_prioritize_weaknesses: false
-      })
-    );
+      });
+      return { data: data || [], error };
+    });
   };
 
   const startWeaknessQuestions = async () => {
@@ -142,30 +143,32 @@ export const QuestionBankView = ({ onBack }: { onBack: () => void }) => {
     }
     const weakSubjectNames = weakSubjects.map(s => s.subject_name);
     setMode('weaknesses');
-    await startQuestionSession(() =>
-      supabase.rpc('get_custom_simulado_questions', {
+    await startQuestionSession(async () => {
+      const { data, error } = await supabase.rpc('get_custom_simulado_questions', {
         p_user_id: user?.id || '',
         p_university_name: 'ENEM',
         p_question_count: 15,
         p_subject_names: weakSubjectNames,
         p_exclude_ids: null,
         p_prioritize_weaknesses: true
-      })
-    );
+      });
+      return { data: data || [], error };
+    });
   };
 
   const startCommentedQuestions = async () => {
     setMode('commented');
-    await startQuestionSession(() =>
-      supabase.rpc('get_custom_simulado_questions', {
+    await startQuestionSession(async () => {
+      const { data, error } = await supabase.rpc('get_custom_simulado_questions', {
         p_user_id: user?.id || '',
         p_university_name: 'ENEM',
         p_question_count: 10,
         p_subject_names: null,
         p_exclude_ids: null,
         p_prioritize_weaknesses: false
-      })
-    );
+      });
+      return { data: data || [], error };
+    });
   };
 
   const handleAnswer = async (answer: string | number) => {
