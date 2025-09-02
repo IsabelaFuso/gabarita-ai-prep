@@ -84,6 +84,27 @@ const PDFFileBank = () => {
       return;
     }
 
+    // Validar tamanho (máximo 50MB)
+    if (uploadFile.size > 50 * 1024 * 1024) {
+      toast({
+        title: "Arquivo muito grande",
+        description: "O arquivo deve ter no máximo 50MB.",
+        variant: "destructive"
+      });
+      setUploading(false);
+      return;
+    }
+
+    // Validar tamanho (máximo 50MB)
+    if (uploadFile.size > 50 * 1024 * 1024) {
+      toast({
+        title: "Arquivo muito grande",
+        description: "O arquivo deve ter no máximo 50MB.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setUploading(true);
 
     try {

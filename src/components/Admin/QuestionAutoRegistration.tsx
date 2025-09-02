@@ -204,11 +204,11 @@ export const QuestionAutoRegistration = () => {
         return;
       }
       
-      // Validar tamanho (máximo 10MB)
-      if (file.size > 10 * 1024 * 1024) {
+      // Validar tamanho (máximo 100MB)
+      if (file.size > 100 * 1024 * 1024) {
         toast({
           title: "Arquivo muito grande",
-          description: "O arquivo deve ter no máximo 10MB.",
+          description: "O arquivo deve ter no máximo 100MB.",
           variant: "destructive"
         });
         return;
