@@ -12,81 +12,91 @@ serve(async (req) => {
   }
 
   try {
+    console.log('PDF extraction function started');
+    
     const formData = await req.formData();
     const pdfFile = formData.get('pdf') as File;
 
     if (!pdfFile) {
+      console.error('No PDF file provided');
       throw new Error('No PDF file provided');
     }
+
+    console.log('PDF file size:', pdfFile.size);
 
     const arrayBuffer = await pdfFile.arrayBuffer();
     const buffer = new Uint8Array(arrayBuffer);
     
-    // Try multiple approaches to extract text from PDF
+    console.log('Buffer created, size:', buffer.length);
+    
+    // Simple but effective text extraction
     let extractedText = '';
     
     try {
-      // Method 1: Use UTF-8 decoder first
-      const decoder = new TextDecoder('utf-8', { fatal: false });
-      let pdfString = decoder.decode(buffer);
+      // Use Latin1 decoder which works well with PDF files
+      const decoder = new TextDecoder('latin1');
+      const pdfString = decoder.decode(buffer);
       
-      // If too much binary data, try latin1
-      const binaryRatio = (pdfString.match(/[\x00-\x08\x0E-\x1F\x7F]/g) || []).length / pdfString.length;
-      if (binaryRatio > 0.3) {
-        const latin1Decoder = new TextDecoder('latin1');
-        pdfString = latin1Decoder.decode(buffer);
+      console.log('PDF decoded, length:', pdfString.length);
+      
+      // Extract text in parentheses (most common PDF text format)
+      const textMatches = pdfString.match(/\(([^)]{2,})\)/g);
+      
+      if (textMatches && textMatches.length > 0) {
+        console.log('Found text matches:', textMatches.length);
+        
+        const textParts = textMatches
+          .map(match => match.slice(1, -1)) // Remove parentheses
+          .filter(text => {
+            // Filter for readable text
+            return text.length > 1 && 
+                   /[a-zA-ZÀ-ÿ0-9]/.test(text) && 
+                   !/^[\x00-\x1F\x7F-\x9F]+$/.test(text); // Exclude control characters
+          })
+          .map(text => text.replace(/\\[nrt]/g, ' ')); // Clean escape sequences
+        
+        extractedText = textParts.join(' ');
+        console.log('Extracted text parts:', textParts.length);
       }
       
-      // Extract text using multiple patterns
-      const textPatterns = [
-        // Standard text objects between BT and ET
-        /BT\s*.*?Tj\s*.*?ET/gs,
-        // Direct text strings in parentheses
-        /\(([^)]{3,})\)/g,
-        // Text with positioning commands
-        /\[(.*?)\]\s*TJ/g,
-        // Show text operators
-        /Tj\s*\(([^)]+)\)/g
-      ];
-      
-      for (const pattern of textPatterns) {
-        const matches = pdfString.match(pattern);
-        if (matches) {
-          matches.forEach(match => {
-            // Clean and extract readable text
-            let cleanText = match
-              .replace(/BT|ET|Tj|TJ|\[|\]/g, '')
-              .replace(/\/\w+\s+\d+\s+Tf/g, '')
-              .replace(/\d+\s+\d+\s+Td/g, ' ')
-              .replace(/\d+\s+TL/g, ' ')
-              .replace(/[()]/g, '')
-              .replace(/\\[nrt]/g, ' ')
-              .trim();
-            
-            // Only add if it looks like readable text
-            if (cleanText.length > 2 && /[a-zA-ZÀ-ÿ]/.test(cleanText)) {
-              extractedText += cleanText + ' ';
+      // If no text found with parentheses method, try BT/ET blocks
+      if (!extractedText.trim()) {
+        console.log('Trying BT/ET extraction');
+        const btBlocks = pdfString.match(/BT\s.*?ET/gs);
+        if (btBlocks) {
+          btBlocks.forEach(block => {
+            const strings = block.match(/\(([^)]+)\)/g);
+            if (strings) {
+              strings.forEach(str => {
+                const clean = str.slice(1, -1);
+                if (clean.length > 1 && /[a-zA-ZÀ-ÿ]/.test(clean)) {
+                  extractedText += clean + ' ';
+                }
+              });
             }
           });
         }
       }
       
-      // Final cleanup
+      // Clean up the final text
       extractedText = extractedText
         .replace(/\s+/g, ' ')
-        .replace(/[^\w\sÀ-ÿ.,;:!?()\-]/g, ' ')
         .trim();
+        
+      console.log('Final extracted text length:', extractedText.length);
       
     } catch (error) {
-      console.error('Error in text extraction:', error);
+      console.error('Error in text extraction logic:', error);
       extractedText = '';
     }
 
-    if (!extractedText || extractedText.trim().length === 0) {
-      // This case might happen with image-only PDFs or if parsing fails silently
-      throw new Error("Could not extract any text from the PDF. It might be an image-based PDF or corrupted.");
+    if (!extractedText || extractedText.trim().length < 10) {
+      console.warn('No meaningful text extracted');
+      throw new Error("Could not extract readable text from the PDF. This might be an image-based PDF that requires OCR processing.");
     }
 
+    console.log('PDF extraction successful');
+    
     return new Response(JSON.stringify({ extractedText }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
