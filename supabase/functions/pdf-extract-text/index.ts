@@ -1,5 +1,5 @@
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { extract } from 'npm:pdf-parse/lib/pdf.js';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -22,9 +22,44 @@ serve(async (req) => {
     const arrayBuffer = await pdfFile.arrayBuffer();
     const buffer = new Uint8Array(arrayBuffer);
     
-    // Use a robust PDF parsing library
-    const pdfData = await extract(buffer);
-    const extractedText = pdfData.text;
+    // Simple PDF text extraction for Deno
+    // This works for basic PDFs with text streams
+    const decoder = new TextDecoder('latin1');
+    const pdfString = decoder.decode(buffer);
+    
+    // Extract text content using regex patterns
+    let extractedText = '';
+    
+    // Method 1: Extract text between BT and ET operators
+    const textBlocks = pdfString.match(/BT\s*(.*?)\s*ET/gs);
+    if (textBlocks) {
+      textBlocks.forEach(block => {
+        // Remove PDF operators and extract strings
+        const strings = block.match(/\(([^)]*)\)/g);
+        if (strings) {
+          strings.forEach(str => {
+            const cleanStr = str.slice(1, -1).replace(/\\[nrt]/g, ' ');
+            extractedText += cleanStr + ' ';
+          });
+        }
+      });
+    }
+    
+    // Method 2: Extract parenthesized strings if Method 1 didn't work
+    if (!extractedText.trim()) {
+      const strings = pdfString.match(/\(([^)]{2,})\)/g);
+      if (strings) {
+        extractedText = strings
+          .map(str => str.slice(1, -1))
+          .filter(str => str.length > 2)
+          .join(' ');
+      }
+    }
+    
+    // Clean up the extracted text
+    extractedText = extractedText
+      .replace(/\s+/g, ' ')
+      .trim();
 
     if (!extractedText || extractedText.trim().length === 0) {
       // This case might happen with image-only PDFs or if parsing fails silently
