@@ -22,44 +22,65 @@ serve(async (req) => {
     const arrayBuffer = await pdfFile.arrayBuffer();
     const buffer = new Uint8Array(arrayBuffer);
     
-    // Simple PDF text extraction for Deno
-    // This works for basic PDFs with text streams
-    const decoder = new TextDecoder('latin1');
-    const pdfString = decoder.decode(buffer);
-    
-    // Extract text content using regex patterns
+    // Try multiple approaches to extract text from PDF
     let extractedText = '';
     
-    // Method 1: Extract text between BT and ET operators
-    const textBlocks = pdfString.match(/BT\s*(.*?)\s*ET/gs);
-    if (textBlocks) {
-      textBlocks.forEach(block => {
-        // Remove PDF operators and extract strings
-        const strings = block.match(/\(([^)]*)\)/g);
-        if (strings) {
-          strings.forEach(str => {
-            const cleanStr = str.slice(1, -1).replace(/\\[nrt]/g, ' ');
-            extractedText += cleanStr + ' ';
+    try {
+      // Method 1: Use UTF-8 decoder first
+      const decoder = new TextDecoder('utf-8', { fatal: false });
+      let pdfString = decoder.decode(buffer);
+      
+      // If too much binary data, try latin1
+      const binaryRatio = (pdfString.match(/[\x00-\x08\x0E-\x1F\x7F]/g) || []).length / pdfString.length;
+      if (binaryRatio > 0.3) {
+        const latin1Decoder = new TextDecoder('latin1');
+        pdfString = latin1Decoder.decode(buffer);
+      }
+      
+      // Extract text using multiple patterns
+      const textPatterns = [
+        // Standard text objects between BT and ET
+        /BT\s*.*?Tj\s*.*?ET/gs,
+        // Direct text strings in parentheses
+        /\(([^)]{3,})\)/g,
+        // Text with positioning commands
+        /\[(.*?)\]\s*TJ/g,
+        // Show text operators
+        /Tj\s*\(([^)]+)\)/g
+      ];
+      
+      for (const pattern of textPatterns) {
+        const matches = pdfString.match(pattern);
+        if (matches) {
+          matches.forEach(match => {
+            // Clean and extract readable text
+            let cleanText = match
+              .replace(/BT|ET|Tj|TJ|\[|\]/g, '')
+              .replace(/\/\w+\s+\d+\s+Tf/g, '')
+              .replace(/\d+\s+\d+\s+Td/g, ' ')
+              .replace(/\d+\s+TL/g, ' ')
+              .replace(/[()]/g, '')
+              .replace(/\\[nrt]/g, ' ')
+              .trim();
+            
+            // Only add if it looks like readable text
+            if (cleanText.length > 2 && /[a-zA-ZÀ-ÿ]/.test(cleanText)) {
+              extractedText += cleanText + ' ';
+            }
           });
         }
-      });
-    }
-    
-    // Method 2: Extract parenthesized strings if Method 1 didn't work
-    if (!extractedText.trim()) {
-      const strings = pdfString.match(/\(([^)]{2,})\)/g);
-      if (strings) {
-        extractedText = strings
-          .map(str => str.slice(1, -1))
-          .filter(str => str.length > 2)
-          .join(' ');
       }
+      
+      // Final cleanup
+      extractedText = extractedText
+        .replace(/\s+/g, ' ')
+        .replace(/[^\w\sÀ-ÿ.,;:!?()\-]/g, ' ')
+        .trim();
+      
+    } catch (error) {
+      console.error('Error in text extraction:', error);
+      extractedText = '';
     }
-    
-    // Clean up the extracted text
-    extractedText = extractedText
-      .replace(/\s+/g, ' ')
-      .trim();
 
     if (!extractedText || extractedText.trim().length === 0) {
       // This case might happen with image-only PDFs or if parsing fails silently

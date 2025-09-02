@@ -21,6 +21,18 @@ serve(async (req) => {
       throw new Error('Content is required');
     }
 
+    // Validate content quality - reject if mostly binary/garbled
+    const readableRatio = (content.match(/[a-zA-ZÀ-ÿ\s]/g) || []).length / content.length;
+    if (readableRatio < 0.3) {
+      throw new Error('Content appears to be corrupted or contains mostly binary data. Please use OCR for image-based PDFs.');
+    }
+
+    // Truncate very long content to avoid token limits
+    const maxLength = 15000;
+    const processedContent = content.length > maxLength 
+      ? content.substring(0, maxLength) + '...'
+      : content;
+
     const systemPrompt = `Você é um assistente especializado em extrair e estruturar questões de vestibular e concursos. 
 
 Sua tarefa é analisar o texto fornecido e identificar questões, estruturando-as no seguinte formato JSON:
@@ -68,7 +80,7 @@ Retorne APENAS o JSON válido, sem texto adicional.`;
         model: 'gpt-4o-mini',
         messages: [
           { role: 'system', content: systemPrompt },
-          { role: 'user', content: `Analise o seguinte ${isImage ? 'texto extraído de imagem' : 'texto'} e extraia as questões:\n\n${content}` }
+          { role: 'user', content: `Analise o seguinte ${isImage ? 'texto extraído de imagem' : 'texto'} e extraia as questões:\n\n${processedContent}` }
         ],
         max_tokens: 4000,
         temperature: 0.1,
