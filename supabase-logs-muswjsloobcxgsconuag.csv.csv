@@ -1,0 +1,152 @@
+event_message,event_type,function_id,id,level,timestamp
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,bd6c1696-e224-4190-9733-45595b276107,log,1756826384681000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,c9fe8781-e245-46cb-ad95-9f89fa5763a3,log,1756826316473000
+Memory limit exceeded,Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,640ebf6c-37f7-4ac0-beb1-fbbf5749b81f,error,1756826316473000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,6d1a4a73-d02b-4f24-a8f8-e5076d3ad6a3,info,1756826315420000
+booted (time: 32ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,ec4aa8ac-31e3-494a-9495-a774f5394834,log,1756826315419000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,4fbed329-5a6a-4d83-a5a7-6a3d2af499d4,info,1756826309664000
+booted (time: 30ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,1506804f-de85-4280-8007-9db42cafda67,log,1756826309661000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,b59c5381-77d6-48ed-a13e-6ae16424e9a1,log,1756826062456000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,df314120-3dcb-4e9c-8406-6996556e74c0,log,1756825996959000
+Memory limit exceeded,Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,65ede075-d449-49e4-8492-59d685c6bf5f,error,1756825996959000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,7ac646ac-201e-4b73-81e2-d53963f1f51a,info,1756825995909000
+booted (time: 33ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,a5fd4375-54ac-42be-893a-4d6d55d60fb4,log,1756825995908000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,3becf716-c911-40b0-bf06-80376a0151a2,info,1756825987442000
+booted (time: 35ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,fbf94ea1-b8e5-4206-9b11-b96c57bb41a7,log,1756825987439000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,3f6a3f99-8f83-4b1a-b346-5495a4430c18,log,1756825681288000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,b1eb9a91-d001-4838-a856-25323924a5f2,log,1756825612962000
+Memory limit exceeded,Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,e8bc9db4-34cf-4bf6-9fa4-7cd0c12ced83,error,1756825612962000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,ef4bf1c3-2832-4826-9806-ea54d6b934e9,info,1756825611783000
+booted (time: 30ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,2b492e5d-9c07-4f61-a342-be7aae625757,log,1756825611781000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,dc4f98b9-cff8-4475-9fc6-51b44fd32d4a,info,1756825606273000
+booted (time: 23ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,fe4b3501-2d65-4df3-bc4e-2aab646508f4,log,1756825606272000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,112bb24e-82fc-4c95-bc63-8eab80c60883,log,1756825501615000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,1fd3b4f2-fd3e-4688-bc73-ecc7640ebb00,log,1756825432552000
+Memory limit exceeded,Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,1b000781-59d4-4158-b73c-5225de083ea5,error,1756825432552000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,d25f51fc-7d44-4b3d-aac3-4cec73a48d6d,info,1756825431272000
+booted (time: 33ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,9ce7dd81-8a49-4797-8a8a-0e31f6bfaaaa,log,1756825431270000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,ca781d46-b8e5-43a8-90d6-a90e9eef9043,info,1756825426599000
+booted (time: 23ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,e7825616-d2db-4b98-a2cc-5c1371098948,log,1756825426598000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,f11924cc-f99b-4a48-b34a-2fc2764826cb,log,1756824932014000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,42c3d8e4-7f7f-4305-8a61-325e4a239056,log,1756824863347000
+Memory limit exceeded,Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,2bb62e5e-0456-48b6-b9d4-eef79b5eae2c,error,1756824863347000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,ae7890d3-00ee-4cd2-86e6-6e2bdde2c258,info,1756824862520000
+booted (time: 27ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,66e2bfc6-f3f5-4036-9c59-21797165c36d,log,1756824862519000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,dffbcda8-8c60-400e-83be-3577412a528d,info,1756824856999000
+booted (time: 23ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,1cb1b47f-5d75-4143-aebf-f37e8a7e2240,log,1756824856998000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,bbe8963e-f05a-4f19-8b04-b905617991d2,log,1756824822195000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,dea4f4e2-24ea-4be3-8a5f-fe647e36be0a,log,1756824797289000
+Memory limit exceeded,Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,95d379e0-4c92-463c-9549-1dd18dc730df,error,1756824754587000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,b4948973-8bf0-4ce6-bacf-25e4352d6cea,log,1756824754587000
+"PDF extraction successful
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,86e83b1c-1fdf-48a4-8c23-92f9cecbef50,info,1756824753885000
+"Final extracted text length: 14818727
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,99bc55a9-60a1-4377-9eb9-009ed8138196,info,1756824753885000
+"Extracted text parts: 55261
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,7f42563c-bb10-4c7c-b1c2-11bcf61c13f0,info,1756824753489000
+"Found text matches: 55402
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,40323713-214b-43ee-9dc7-c0fd12a5f718,info,1756824753428000
+"PDF decoded, length: 28490131
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,42ac666b-a1a0-4c47-9318-da7aa0ed45bf,info,1756824753403000
+"Buffer created, size: 28490131
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,a7583475-f62f-42a7-91c3-3475f5f9e011,info,1756824753208000
+"PDF file size: 28490131
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,14133de9-24cb-4ff5-b60c-40fa0d270a0b,info,1756824753190000
+"PDF extraction function started
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,9a43970c-3dae-4b2d-909b-980cec45659b,info,1756824752875000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,18646a99-da1b-416f-b3cb-c3b8f43138a4,info,1756824752872000
+booted (time: 27ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,3e033903-19a0-4f77-abca-b3d59c923e4f,log,1756824752866000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,5fb89efc-e888-4f2b-b1b9-3d6fac08cc46,info,1756824747162000
+booted (time: 28ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,c4314cfb-54aa-4d0d-99df-ec205dbbfaf4,log,1756824747156000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,872e6bad-9ee8-48aa-b923-53dc57dc704c,log,1756824731540000
+Memory limit exceeded,Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,668e5b65-98e1-4d88-b0f7-c4fa15c1700e,error,1756824731540000
+"Final extracted text length: 14818727
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,90adccaa-f9a7-4bb5-8b97-e20071b22d95,info,1756824730662000
+"PDF extraction successful
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,05048e2d-e235-4892-89c4-6016c50cd44f,info,1756824730662000
+"Extracted text parts: 55261
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,eae2f641-9e70-406e-b15b-b67135701b9d,info,1756824730016000
+"Found text matches: 55402
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,87b9d0ff-64e6-4d30-9868-20117194fb54,info,1756824729949000
+"PDF decoded, length: 28490131
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,d033f0a2-4b24-49cd-b377-6249830e9ec6,info,1756824729899000
+"Buffer created, size: 28490131
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,867843fc-4732-4071-839d-eb6ffb8234cc,info,1756824729680000
+"PDF file size: 28490131
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,61b9bc90-faa3-442b-bf42-5585149bedd9,info,1756824729659000
+"PDF extraction function started
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,3a3cfe8d-3675-44b1-94d5-2abd1cf7b40e,info,1756824729072000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,862c6c94-4838-4fee-9844-d5038fbe5515,info,1756824729069000
+booted (time: 36ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,27ad8b06-6dd4-4430-8fc6-defb1842ca81,log,1756824729060000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,b909fb91-fe52-443f-958a-f135ce2bedf5,info,1756824722268000
+booted (time: 28ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,0f4dca8a-56bc-465f-8272-5dab3e0c9361,log,1756824722262000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,efba0b70-086f-48c9-a2ef-9c66a3e20f1f,log,1756824679146000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,4cacae2e-4ba3-486d-a29f-9b1599a8870c,log,1756824631496000
+Memory limit exceeded,Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,28bb0a6a-b237-4e70-9b47-0f6c4a6e17c1,error,1756824631496000
+"PDF extraction successful
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,1fd2f124-ef79-4c6c-a44b-9cb6648edf36,info,1756824630564000
+"Final extracted text length: 14818727
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,030785bb-f000-43ee-b73e-71dd02c74d43,info,1756824630564000
+"Extracted text parts: 55261
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,8ffc22ec-b8be-4aee-8545-fddae5f66596,info,1756824629772000
+"Found text matches: 55402
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,80344306-19b3-4667-bf3c-2da033caae13,info,1756824629696000
+"PDF decoded, length: 28490131
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,65e86b1f-57b1-4df4-9e3d-10faa3244bc0,info,1756824629650000
+"Buffer created, size: 28490131
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,4e902a93-b1db-4e05-b23f-859f23f9bc45,info,1756824629419000
+"PDF file size: 28490131
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,c0c3e0a1-f563-49d3-9248-722778cfe0e3,info,1756824629396000
+"PDF extraction function started
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,4cfcc34b-f427-41b5-aa28-d15f6165b35b,info,1756824628771000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,74e8c4e9-5e5e-4e0b-ad3e-de958f3106a5,info,1756824628767000
+booted (time: 34ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,5ff21b58-d527-48bf-86d8-b9360a06badd,log,1756824628759000
+Memory limit exceeded,Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,e6084f6c-ed7e-41f7-91c6-af0fa404858d,error,1756824611376000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,564d7780-f015-4a14-bdf5-0047b334f7b7,log,1756824611376000
+"Final extracted text length: 14818727
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,264b3831-3b6d-4811-8bbb-3d4d7348e7e2,info,1756824610721000
+"PDF extraction successful
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,c9044870-979f-4ea2-93b8-a8f4a73a9b3f,info,1756824610721000
+"Extracted text parts: 55261
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,886b5b6d-5009-41fc-a1e6-7dc875b4c32d,info,1756824610370000
+"Found text matches: 55402
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,0640f4e3-de4c-4937-bcfd-71bba3f5b767,info,1756824610320000
+"PDF decoded, length: 28490131
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,209c5eed-1f94-4ed7-a24a-87b1085d4521,info,1756824610291000
+"Buffer created, size: 28490131
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,eb329ad1-d660-4a31-807c-b27865192810,info,1756824610099000
+"PDF file size: 28490131
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,33000a36-62fc-469c-9b0f-c884f25a7957,info,1756824610084000
+"PDF extraction function started
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,b5e8e6bd-7c3b-4e51-8a76-b787a2bef1b6,info,1756824609627000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,34d8219e-ee59-4eaa-bcec-5cc7be30ac2c,info,1756824609624000
+booted (time: 28ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,910ff09b-65ed-4a9e-98b9-822f34dd01bb,log,1756824609618000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,bd5630ef-343b-40ae-aa42-5a5536eed880,info,1756824604123000
+booted (time: 36ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,bc8e84e8-f245-402c-9061-c24507e56c16,log,1756824604115000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,b398c3a6-1fbc-4eb4-bb45-32463e0be166,log,1756824496675000
+shutdown,Shutdown,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,e954a9a9-c82e-4776-9528-baa4f5d6a6d6,log,1756824429023000
+Memory limit exceeded,Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,895070a6-4bca-457c-a307-a9f8b46bcbca,error,1756824429023000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,fd5832ce-e4f4-4581-b1a2-3dc6db15f602,info,1756824425552000
+booted (time: 35ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,e76c34bb-1c4f-4849-bd59-0c9cd502933b,log,1756824425542000
+"Listening on http://localhost:9999/
+",Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,492e6c6a-8ea1-43d8-b2d6-7aacda629b3a,info,1756824421657000
+booted (time: 32ms),Boot,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,514d279f-0770-41d0-969f-ef6a110e8fa6,log,1756824421652000
+Memory limit exceeded,Log,97cba6d4-fbdb-4ec3-99f2-f964d0a65dd6,b32e0af8-d8b4-419b-aeed-9726d49965f8,error,1756824412845000
