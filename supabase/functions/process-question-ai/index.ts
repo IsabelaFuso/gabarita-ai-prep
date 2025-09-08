@@ -1,7 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+const geminiApiKey = Deno.env.get('GEMINI_API_KEY');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -70,29 +70,32 @@ REGRAS:
 
 Retorne APENAS o JSON válido, sem texto adicional.`;
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: `Analise o seguinte ${isImage ? 'texto extraído de imagem' : 'texto'} e extraia as questões:\n\n${processedContent}` }
-        ],
-        max_tokens: 4000,
-        temperature: 0.1,
+        contents: [{
+          parts: [{
+            text: `${systemPrompt}\n\nAnalise o seguinte ${isImage ? 'texto extraído de imagem' : 'texto'} e extraia as questões:\n\n${processedContent}`
+          }]
+        }],
+        generationConfig: {
+          maxOutputTokens: 4000,
+          temperature: 0.1,
+        },
       }),
     });
 
     if (!response.ok) {
-      throw new Error(`OpenAI API error: ${response.status}`);
+      const errorData = await response.text();
+      console.error('Gemini API error:', errorData);
+      throw new Error(`Gemini API error: ${response.status}`);
     }
 
     const data = await response.json();
-    const aiResponse = data.choices[0].message.content;
+    const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
     let parsedResponse;
     try {
