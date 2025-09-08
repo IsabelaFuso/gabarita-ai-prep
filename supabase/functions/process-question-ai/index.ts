@@ -23,7 +23,10 @@ serve(async (req) => {
 
     // Validate content quality - reject if mostly binary/garbled
     const readableRatio = (content.match(/[a-zA-ZÀ-ÿ\s]/g) || []).length / content.length;
+    console.log(`Content length: ${content.length}, Readable ratio: ${readableRatio}`);
+    
     if (readableRatio < 0.3) {
+      console.log('Content rejected due to low readability');
       throw new Error('Content appears to be corrupted or contains mostly binary data. Please use OCR for image-based PDFs.');
     }
 
@@ -96,13 +99,38 @@ Retorne APENAS o JSON válido, sem texto adicional.`;
 
     const data = await response.json();
     const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    
+    console.log('Gemini API response:', JSON.stringify(data, null, 2));
+
+    if (!aiResponse) {
+      console.error('No response from Gemini API');
+      throw new Error('No response from Gemini API');
+    }
 
     let parsedResponse;
     try {
-      parsedResponse = JSON.parse(aiResponse);
+      // Clean the response text before parsing
+      const cleanedResponse = aiResponse.trim();
+      console.log('AI Response to parse:', cleanedResponse);
+      
+      parsedResponse = JSON.parse(cleanedResponse);
     } catch (parseError) {
       console.error('Error parsing AI response:', aiResponse);
-      throw new Error('Invalid JSON response from AI');
+      console.error('Parse error:', parseError);
+      
+      // Try to extract JSON from the response if it's wrapped in other text
+      const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        try {
+          parsedResponse = JSON.parse(jsonMatch[0]);
+          console.log('Successfully extracted JSON from response');
+        } catch (secondParseError) {
+          console.error('Failed to parse extracted JSON:', secondParseError);
+          throw new Error('Invalid JSON response from AI');
+        }
+      } else {
+        throw new Error('No valid JSON found in AI response');
+      }
     }
 
     return new Response(JSON.stringify(parsedResponse), {
