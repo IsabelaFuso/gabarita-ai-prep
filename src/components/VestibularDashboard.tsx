@@ -140,7 +140,7 @@ export const VestibularDashboard = ({
           .eq('user_id', user.id)
           .eq('title', 'Simulado diagnóstico')
           .eq('status', 'finalizado')
-          .single();
+          .maybeSingle();
         
         setHasCompletedDiagnostic(!!diagnosticData);
 

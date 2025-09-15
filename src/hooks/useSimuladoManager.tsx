@@ -87,7 +87,7 @@ export const useSimuladoManager = (
         .from('institutions')
         .select('id')
         .eq('name', institutionName)
-        .single();
+        .maybeSingle();
 
       await supabase.from('simulados').insert({
         user_id: user.id,
