@@ -10,7 +10,12 @@ import {
   ResponsiveContainer,
   PieChart,
   Pie,
-  Cell
+  Cell,
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis
 } from 'recharts';
 import { TrendingUp, TrendingDown, Target, BookOpen, BarChart3 } from "lucide-react";
 
@@ -65,6 +70,15 @@ export const PerformanceCharts = ({ data, overallScore, totalAttempts }: Perform
     );
   }
 
+  // Prepare radar chart data
+  const radarData = data.map(item => ({
+    subject: item.subject_name.length > 10 ? 
+      item.subject_name.substring(0, 10) + '...' : 
+      item.subject_name,
+    accuracy: item.accuracy,
+    fullName: item.subject_name
+  }));
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Overall Performance Display */}
@@ -113,33 +127,42 @@ export const PerformanceCharts = ({ data, overallScore, totalAttempts }: Perform
         </CardContent>
       </Card>
 
-      {/* Subject Performance Bar Chart */}
+      {/* Subject Performance Radar Chart */}
       <Card className="shadow-soft">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="w-5 h-5" />
-            Desempenho por Matéria
+            <Target className="w-5 h-5" />
+            Mapa de Performance
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted))" />
-                <XAxis 
-                  dataKey="subject_name" 
-                  tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-                  angle={-45}
-                  textAnchor="end"
-                  height={80}
+              <RadarChart data={radarData} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>
+                <PolarGrid stroke="hsl(var(--muted))" />
+                <PolarAngleAxis 
+                  dataKey="subject" 
+                  tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
                 />
-                <YAxis 
-                  tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
+                <PolarRadiusAxis
                   domain={[0, 100]}
+                  tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
+                  angle={90}
+                />
+                <Radar
+                  name="Performance"
+                  dataKey="accuracy"
+                  stroke="hsl(var(--primary))"
+                  fill="hsl(var(--primary) / 0.2)"
+                  strokeWidth={2}
+                  dot={{ fill: 'hsl(var(--primary))', strokeWidth: 2, r: 4 }}
                 />
                 <Tooltip 
                   formatter={(value: any) => [`${value}%`, 'Acertos']}
-                  labelFormatter={(label: any) => `Matéria: ${label}`}
+                  labelFormatter={(label: any) => {
+                    const item = radarData.find(d => d.subject === label);
+                    return `Matéria: ${item?.fullName || label}`;
+                  }}
                   contentStyle={{
                     backgroundColor: 'hsl(var(--background))',
                     border: '1px solid hsl(var(--border))',
@@ -147,8 +170,7 @@ export const PerformanceCharts = ({ data, overallScore, totalAttempts }: Perform
                     fontSize: '12px'
                   }}
                 />
-                <Bar dataKey="accuracy" radius={[4, 4, 0, 0]} />
-              </BarChart>
+              </RadarChart>
             </ResponsiveContainer>
           </div>
         </CardContent>

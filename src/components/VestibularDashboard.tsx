@@ -15,6 +15,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { AchievementTrail } from "./AchievementTrail";
 import { SimuladoType } from "@/hooks/useQuestionManager";
 import { AccountView } from "./AccountView";
+import { DiagnosticSimuladoCard } from "./DiagnosticSimuladoCard";
 
 interface VestibularDashboardProps {
   selectedConfig: {
@@ -62,6 +63,7 @@ export const VestibularDashboard = ({
   const [allAchievements, setAllAchievements] = useState<Achievement[]>([]);
   const [unlockedAchievements, setUnlockedAchievements] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const [hasCompletedDiagnostic, setHasCompletedDiagnostic] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -130,6 +132,17 @@ export const VestibularDashboard = ({
 
         if (activityError) throw activityError;
         setRecentActivities(activityData || []);
+
+        // Check if user has completed diagnostic simulado
+        const { data: diagnosticData } = await supabase
+          .from('simulados')
+          .select('id')
+          .eq('user_id', user.id)
+          .eq('title', 'Simulado diagnóstico')
+          .eq('status', 'finalizado')
+          .single();
+        
+        setHasCompletedDiagnostic(!!diagnosticData);
 
         // Fetch achievements
         const { data: allAchievementsData, error: allAchievementsError } = await supabase
@@ -291,6 +304,14 @@ export const VestibularDashboard = ({
             </div>
           </CardContent>
         </Card>
+      )}
+
+      {/* Diagnostic Simulado - Lead Capture */}
+      {!hasCompletedDiagnostic && (
+        <DiagnosticSimuladoCard 
+          onStartSimulado={onStartSimulado}
+          hasCompletedDiagnostic={hasCompletedDiagnostic}
+        />
       )}
 
       {/* Study Actions */}

@@ -30,7 +30,7 @@ export const useSimuladoManager = (
     try {
       const options: GenerateQuestionsOptions = {
         type: type,
-        count: type === 'rapido' ? 10 : 50,
+        count: type === 'diagnóstico' ? 15 : type === 'rapido' ? 10 : 50,
       };
       const questions = await generateQuestions(options);
       setCurrentQuestions(questions);
@@ -97,6 +97,14 @@ export const useSimuladoManager = (
         status: 'finalizado',
         score: accuracy,
       });
+
+      // Special handling for diagnostic simulado
+      if (currentSimuladoType === 'diagnóstico') {
+        toast.success("Diagnóstico concluído!", {
+          description: "Seus dados estão sendo processados para personalizar sua experiência.",
+          duration: 5000,
+        });
+      }
 
       const { data: newAchievements, error: achievementsError } = await supabase
         .rpc('check_and_grant_achievements', {

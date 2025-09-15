@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Question } from "@/data/types";
 import { SelectedConfig } from "./useAppState";
 
-export type SimuladoType = 'completo' | 'rapido' | 'foco_curso' | 'por_materia' | 'minhas_dificuldades' | 'questoes_comentadas';
+export type SimuladoType = 'diagnóstico' | 'completo' | 'rapido' | 'foco_curso' | 'por_materia' | 'minhas_dificuldades' | 'questoes_comentadas';
 
 export interface GenerateQuestionsOptions {
   type: SimuladoType;
