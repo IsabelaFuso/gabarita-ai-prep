@@ -3,7 +3,7 @@ import {
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from '@/lib/utils';
-import celebrationPattern from '@/assets/celebration-pattern.png';
+import colorfulCelebrationPattern from '@/assets/colorful-celebration-pattern.png';
 import { useAchievements } from '@/hooks/useAchievements';
 
 const icons: Record<string, LucideIcon> = {
@@ -69,17 +69,26 @@ export const AchievementTrail = ({}: AchievementTrailProps) => {
   return (
     <TooltipProvider>
       <div 
-        className="relative p-4 bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden"
-        style={{ backgroundImage: `url(${celebrationPattern})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+        className="relative p-4 bg-gradient-to-br from-purple-100 via-blue-50 to-pink-100 dark:from-purple-900/20 dark:via-blue-900/20 dark:to-pink-900/20 rounded-xl border border-purple-200 dark:border-purple-700 overflow-hidden shadow-lg"
+        style={{ backgroundImage: `url(${colorfulCelebrationPattern})`, backgroundSize: '200px 200px', backgroundRepeat: 'repeat' }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-100/80 to-slate-200/90 dark:from-slate-800/80 dark:to-slate-900/90 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-transparent to-white/40 dark:from-slate-900/60 dark:via-transparent dark:to-slate-900/40 backdrop-blur-[1px]" />
         <div className="relative w-full h-64">
           <svg width="100%" height="100%" viewBox="0 0 400 150" preserveAspectRatio="none" className="absolute inset-0">
+            <defs>
+              <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.8"/>
+                <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.8"/>
+                <stop offset="100%" stopColor="#ec4899" stopOpacity="0.8"/>
+              </linearGradient>
+            </defs>
             <path 
               d="M 40 120 C 100 100, 150 50, 200 50 C 250 50, 300 100, 360 80"
-              strokeWidth="4" 
+              strokeWidth="5" 
               fill="none" 
-              className="stroke-slate-300/70 dark:stroke-slate-700/70"
+              stroke="url(#pathGradient)"
+              strokeDasharray="10,5"
+              className="animate-pulse"
             />
           </svg>
 
@@ -98,13 +107,13 @@ export const AchievementTrail = ({}: AchievementTrailProps) => {
                     >
                       <div className="flex flex-col items-center gap-2 text-center transition-all duration-300 cursor-pointer group">
                         <div className={cn(
-                          'w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500 transform group-hover:scale-110 relative',
+                          'w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500 transform group-hover:scale-110 relative shadow-lg',
                           isUnlocked 
-                            ? 'bg-amber-400 ring-4 ring-white dark:ring-slate-900 shadow-xl shadow-amber-400/20' 
-                            : 'bg-white/50 dark:bg-slate-700/50 border-2 border-dashed border-slate-400 dark:border-slate-600'
+                            ? 'bg-gradient-to-br from-yellow-400 via-orange-400 to-pink-500 ring-4 ring-white dark:ring-slate-900 shadow-xl shadow-orange-400/30' 
+                            : 'bg-gradient-to-br from-gray-200 to-gray-300 dark:from-slate-600 dark:to-slate-700 border-2 border-dashed border-purple-400/50 dark:border-purple-500/50'
                         )}>
                           {isUnlocked && (
-                            <div className="absolute inset-0 rounded-full bg-white/20 animate-pulse-slow" />
+                            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 to-yellow-200/20 animate-pulse" />
                           )}
                           <Icon className={cn(
                             'w-8 h-8 transition-all duration-300',
@@ -113,10 +122,10 @@ export const AchievementTrail = ({}: AchievementTrailProps) => {
                         </div>
                         
                         <span className={cn(
-                          'text-xs w-24 block text-center leading-tight px-1 py-0.5 rounded-full transition-opacity duration-300',
+                          'text-xs w-24 block text-center leading-tight px-2 py-1 rounded-full transition-all duration-300 shadow-sm',
                           isUnlocked 
-                            ? 'font-bold text-slate-800 dark:text-slate-100' 
-                            : 'font-medium text-muted-foreground'
+                            ? 'font-bold text-white bg-gradient-to-r from-purple-600 to-pink-600 shadow-purple-400/20' 
+                            : 'font-medium text-slate-600 dark:text-slate-400 bg-white/60 dark:bg-slate-700/60'
                         )}>
                           {ach.name}
                         </span>
