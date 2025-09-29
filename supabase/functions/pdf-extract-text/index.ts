@@ -140,7 +140,7 @@ serve(async (req) => {
     console.error('PDF extraction error:', error);
     return new Response(JSON.stringify({ 
       error: 'Error processing PDF',
-      details: error.message 
+      details: error instanceof Error ? error.message : String(error)
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
