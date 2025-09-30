@@ -3,7 +3,6 @@ import {
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from '@/lib/utils';
-import colorfulCelebrationPattern from '@/assets/colorful-celebration-pattern.png';
 import { useAchievements } from '@/hooks/useAchievements';
 
 const icons: Record<string, LucideIcon> = {
@@ -69,25 +68,41 @@ export const AchievementTrail = ({}: AchievementTrailProps) => {
   return (
     <TooltipProvider>
       <div 
-        className="relative p-4 bg-gradient-to-br from-purple-100 via-blue-50 to-pink-100 dark:from-purple-900/20 dark:via-blue-900/20 dark:to-pink-900/20 rounded-xl border border-purple-200 dark:border-purple-700 overflow-hidden shadow-lg"
-        style={{ backgroundImage: `url(${colorfulCelebrationPattern})`, backgroundSize: '200px 200px', backgroundRepeat: 'repeat' }}
+        className="relative p-8 bg-gradient-to-br from-sky-100 via-blue-50 to-cyan-50 dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 rounded-xl border-2 border-sky-200 dark:border-sky-700 overflow-hidden shadow-lg"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-white/60 via-transparent to-white/40 dark:from-slate-900/60 dark:via-transparent dark:to-slate-900/40 backdrop-blur-[1px]" />
         <div className="relative w-full h-64">
           <svg width="100%" height="100%" viewBox="0 0 400 150" preserveAspectRatio="none" className="absolute inset-0">
             <defs>
               <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.8"/>
-                <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.8"/>
-                <stop offset="100%" stopColor="#ec4899" stopOpacity="0.8"/>
+                <stop offset="0%" stopColor="#0ea5e9" stopOpacity="1"/>
+                <stop offset="50%" stopColor="#06b6d4" stopOpacity="1"/>
+                <stop offset="100%" stopColor="#14b8a6" stopOpacity="1"/>
               </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
             </defs>
             <path 
-              d="M 40 120 C 100 100, 150 50, 200 50 C 250 50, 300 100, 360 80"
-              strokeWidth="5" 
+              d="M 40 120 Q 120 100, 200 50 T 360 80"
+              strokeWidth="8" 
               fill="none" 
               stroke="url(#pathGradient)"
-              strokeDasharray="10,5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              filter="url(#glow)"
+            />
+            <path 
+              d="M 40 120 Q 120 100, 200 50 T 360 80"
+              strokeWidth="12" 
+              fill="none" 
+              stroke="white"
+              strokeOpacity="0.3"
+              strokeLinecap="round"
+              strokeDasharray="8,8"
               className="animate-pulse"
             />
           </svg>
@@ -107,25 +122,30 @@ export const AchievementTrail = ({}: AchievementTrailProps) => {
                     >
                       <div className="flex flex-col items-center gap-2 text-center transition-all duration-300 cursor-pointer group">
                         <div className={cn(
-                          'w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500 transform group-hover:scale-110 relative shadow-lg',
+                          'w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-500 transform group-hover:scale-110 group-hover:rotate-3 relative',
                           isUnlocked 
-                            ? 'bg-gradient-to-br from-yellow-400 via-orange-400 to-pink-500 ring-4 ring-white dark:ring-slate-900 shadow-xl shadow-orange-400/30' 
-                            : 'bg-gradient-to-br from-gray-200 to-gray-300 dark:from-slate-600 dark:to-slate-700 border-2 border-dashed border-purple-400/50 dark:border-purple-500/50'
+                            ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 shadow-2xl shadow-orange-500/40 border-4 border-yellow-300 dark:border-yellow-400' 
+                            : 'bg-gradient-to-br from-slate-300 to-slate-400 dark:from-slate-700 dark:to-slate-800 border-4 border-slate-400 dark:border-slate-600 opacity-60'
                         )}>
                           {isUnlocked && (
-                            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 to-yellow-200/20 animate-pulse" />
+                            <>
+                              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/40 via-yellow-200/30 to-transparent animate-pulse" />
+                              <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-300 rounded-full flex items-center justify-center shadow-lg">
+                                <Star className="w-4 h-4 text-amber-600 fill-amber-600" />
+                              </div>
+                            </>
                           )}
                           <Icon className={cn(
-                            'w-8 h-8 transition-all duration-300',
-                            isUnlocked ? 'text-white' : 'text-slate-500 dark:text-slate-400'
+                            'w-10 h-10 transition-all duration-300 relative z-10',
+                            isUnlocked ? 'text-white drop-shadow-lg' : 'text-slate-500 dark:text-slate-400'
                           )} />
                         </div>
                         
                         <span className={cn(
-                          'text-xs w-24 block text-center leading-tight px-2 py-1 rounded-full transition-all duration-300 shadow-sm',
+                          'text-xs w-24 block text-center leading-tight px-3 py-1.5 rounded-lg transition-all duration-300 font-bold shadow-md',
                           isUnlocked 
-                            ? 'font-bold text-white bg-gradient-to-r from-purple-600 to-pink-600 shadow-purple-400/20' 
-                            : 'font-medium text-slate-600 dark:text-slate-400 bg-white/60 dark:bg-slate-700/60'
+                            ? 'text-slate-800 dark:text-white bg-gradient-to-br from-yellow-200 via-amber-200 to-orange-200 dark:from-amber-500 dark:via-orange-500 dark:to-rose-500 border-2 border-yellow-400 dark:border-yellow-300' 
+                            : 'text-slate-500 dark:text-slate-400 bg-slate-200 dark:bg-slate-700 border-2 border-slate-300 dark:border-slate-600'
                         )}>
                           {ach.name}
                         </span>
