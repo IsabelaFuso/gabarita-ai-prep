@@ -2,8 +2,12 @@ import {
   Award, BookUser, BrainCircuit, Crown, Eye, Flame, Footprints, Gem, HelpCircle, Library, ShieldCheck, Star, Target, Trophy, Zap, type LucideIcon
 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from '@/lib/utils';
 import { useAchievements } from '@/hooks/useAchievements';
+import { useAuth } from '@/hooks/useAuth';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 const icons: Record<string, LucideIcon> = {
   Footprints, Award, Flame, Crown, Target, ShieldCheck, Trophy, BookUser, BrainCircuit, Gem, HelpCircle, Library, Eye, Zap, Star,
@@ -43,6 +47,26 @@ const achievementPositions = [
 
 export const AchievementTrail = ({}: AchievementTrailProps) => {
   const { allAchievements, unlockedAchievements, loading } = useAchievements();
+  const { user } = useAuth();
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAvatar = async () => {
+      if (!user) return;
+      
+      const { data } = await supabase
+        .from('user_profiles')
+        .select('avatar_url')
+        .eq('user_id', user.id)
+        .single();
+      
+      if (data?.avatar_url) {
+        setAvatarUrl(data.avatar_url);
+      }
+    };
+
+    fetchAvatar();
+  }, [user]);
 
   if (loading) {
     return <div className="text-center text-muted-foreground">Carregando conquistas...</div>;
@@ -68,43 +92,71 @@ export const AchievementTrail = ({}: AchievementTrailProps) => {
   return (
     <TooltipProvider>
       <div 
-        className="relative p-8 bg-gradient-to-br from-sky-100 via-blue-50 to-cyan-50 dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 rounded-xl border-2 border-sky-200 dark:border-sky-700 overflow-hidden shadow-lg"
+        className="relative p-8 rounded-xl overflow-hidden shadow-2xl"
+        style={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%)',
+        }}
       >
+        {/* Nuvens decorativas */}
+        <div className="absolute top-4 left-8 w-16 h-8 bg-white/20 rounded-full blur-sm" />
+        <div className="absolute top-8 left-20 w-20 h-10 bg-white/15 rounded-full blur-sm" />
+        <div className="absolute top-6 right-12 w-24 h-12 bg-white/20 rounded-full blur-sm" />
+        <div className="absolute bottom-10 right-20 w-16 h-8 bg-white/15 rounded-full blur-sm" />
+        
         <div className="relative w-full h-64">
           <svg width="100%" height="100%" viewBox="0 0 400 150" preserveAspectRatio="none" className="absolute inset-0">
             <defs>
               <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#0ea5e9" stopOpacity="1"/>
-                <stop offset="50%" stopColor="#06b6d4" stopOpacity="1"/>
-                <stop offset="100%" stopColor="#14b8a6" stopOpacity="1"/>
+                <stop offset="0%" stopColor="#fbbf24" stopOpacity="1"/>
+                <stop offset="50%" stopColor="#f59e0b" stopOpacity="1"/>
+                <stop offset="100%" stopColor="#ef4444" stopOpacity="1"/>
               </linearGradient>
               <filter id="glow">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
                 <feMerge>
                   <feMergeNode in="coloredBlur"/>
                   <feMergeNode in="SourceGraphic"/>
                 </feMerge>
               </filter>
             </defs>
+            
+            {/* Trilha principal */}
             <path 
               d="M 40 120 Q 120 100, 200 50 T 360 80"
-              strokeWidth="8" 
+              strokeWidth="12" 
               fill="none" 
               stroke="url(#pathGradient)"
               strokeLinecap="round"
               strokeLinejoin="round"
               filter="url(#glow)"
             />
+            
+            {/* Borda branca da trilha */}
             <path 
               d="M 40 120 Q 120 100, 200 50 T 360 80"
-              strokeWidth="12" 
+              strokeWidth="16" 
               fill="none" 
               stroke="white"
-              strokeOpacity="0.3"
+              strokeOpacity="0.5"
               strokeLinecap="round"
-              strokeDasharray="8,8"
-              className="animate-pulse"
             />
+            
+            {/* Círculos decorativos ao longo da trilha */}
+            {[40, 80, 120, 160, 200, 240, 280, 320, 360].map((x, i) => {
+              const y = i % 2 === 0 ? 120 - (i * 8) : 100 - (i * 5);
+              return (
+                <circle
+                  key={i}
+                  cx={x}
+                  cy={y}
+                  r="4"
+                  fill="white"
+                  opacity="0.6"
+                  className="animate-pulse"
+                  style={{ animationDelay: `${i * 0.2}s` }}
+                />
+              );
+            })}
           </svg>
 
           <div className="relative w-full h-full">
@@ -112,6 +164,7 @@ export const AchievementTrail = ({}: AchievementTrailProps) => {
               const isUnlocked = unlockedAchievements.has(ach.code);
               const Icon = icons[ach.icon_name] || icons.default;
               const pos = achievementPositions[index % achievementPositions.length];
+              const isLastUnlocked = lastUnlockedIndex >= 0 && index === lastUnlockedIndex - startIndex;
 
               return (
                 <Tooltip key={ach.code}>
@@ -124,8 +177,8 @@ export const AchievementTrail = ({}: AchievementTrailProps) => {
                         <div className={cn(
                           'w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-500 transform group-hover:scale-110 group-hover:rotate-3 relative',
                           isUnlocked 
-                            ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 shadow-2xl shadow-orange-500/40 border-4 border-yellow-300 dark:border-yellow-400' 
-                            : 'bg-gradient-to-br from-slate-300 to-slate-400 dark:from-slate-700 dark:to-slate-800 border-4 border-slate-400 dark:border-slate-600 opacity-60'
+                            ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 shadow-2xl shadow-orange-500/40 border-4 border-yellow-300' 
+                            : 'bg-gradient-to-br from-slate-300 to-slate-400 border-4 border-slate-400 opacity-60'
                         )}>
                           {isUnlocked && (
                             <>
@@ -135,17 +188,28 @@ export const AchievementTrail = ({}: AchievementTrailProps) => {
                               </div>
                             </>
                           )}
-                          <Icon className={cn(
-                            'w-10 h-10 transition-all duration-300 relative z-10',
-                            isUnlocked ? 'text-white drop-shadow-lg' : 'text-slate-500 dark:text-slate-400'
-                          )} />
+                          
+                          {/* Avatar do usuário na última conquista desbloqueada */}
+                          {isLastUnlocked && avatarUrl ? (
+                            <Avatar className="w-16 h-16 border-2 border-white shadow-lg">
+                              <AvatarImage src={avatarUrl} alt="Seu avatar" />
+                              <AvatarFallback>
+                                <Icon className="w-10 h-10 text-white drop-shadow-lg" />
+                              </AvatarFallback>
+                            </Avatar>
+                          ) : (
+                            <Icon className={cn(
+                              'w-10 h-10 transition-all duration-300 relative z-10',
+                              isUnlocked ? 'text-white drop-shadow-lg' : 'text-slate-500'
+                            )} />
+                          )}
                         </div>
                         
                         <span className={cn(
                           'text-xs w-24 block text-center leading-tight px-3 py-1.5 rounded-lg transition-all duration-300 font-bold shadow-md',
                           isUnlocked 
-                            ? 'text-slate-800 dark:text-white bg-gradient-to-br from-yellow-200 via-amber-200 to-orange-200 dark:from-amber-500 dark:via-orange-500 dark:to-rose-500 border-2 border-yellow-400 dark:border-yellow-300' 
-                            : 'text-slate-500 dark:text-slate-400 bg-slate-200 dark:bg-slate-700 border-2 border-slate-300 dark:border-slate-600'
+                            ? 'text-white bg-gradient-to-br from-amber-500 via-orange-500 to-rose-500 border-2 border-yellow-300' 
+                            : 'text-slate-600 bg-slate-200 border-2 border-slate-300'
                         )}>
                           {ach.name}
                         </span>
