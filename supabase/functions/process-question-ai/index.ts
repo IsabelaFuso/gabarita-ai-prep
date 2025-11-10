@@ -1,7 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const openaiApiKey = Deno.env.get('OPENAI_API_KEY');
+const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -100,14 +100,14 @@ IMPORTANTE:
 
 Retorne APENAS o JSON válido, sem texto adicional.`;
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openaiApiKey}`,
+        'Authorization': `Bearer ${lovableApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'google/gemini-2.5-flash',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: `Texto para análise (${isImage ? 'extraído de imagem' : 'texto direto'}):\n\n"${processedContent}"\n\nPor favor, analise cuidadosamente este texto e extraia TODAS as questões que conseguir identificar. Se o texto contém questões de vestibular, elas devem ser encontradas.` }
@@ -119,8 +119,8 @@ Retorne APENAS o JSON válido, sem texto adicional.`;
 
     if (!response.ok) {
       const errorData = await response.text();
-      console.error('OpenAI API error:', errorData);
-      throw new Error(`OpenAI API error: ${response.status}`);
+      console.error('Lovable AI API error:', errorData);
+      throw new Error(`Lovable AI API error: ${response.status}`);
     }
 
     const data = await response.json();
@@ -129,8 +129,8 @@ Retorne APENAS o JSON válido, sem texto adicional.`;
     console.log('OpenAI API response:', JSON.stringify(data, null, 2));
 
     if (!aiResponse) {
-      console.error('No response from OpenAI API - full response:', data);
-      throw new Error('No response from OpenAI API');
+      console.error('No response from Lovable AI API - full response:', data);
+      throw new Error('No response from Lovable AI API');
     }
 
     console.log('Raw AI Response:', aiResponse);

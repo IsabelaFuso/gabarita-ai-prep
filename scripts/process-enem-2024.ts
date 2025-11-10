@@ -125,7 +125,7 @@ async function extractTextFromPDF(pdfId: string): Promise<string> {
 }
 
 async function processQuestionsWithAI(text: string): Promise<any> {
-  console.log('Processando questões com IA...');
+  console.log('Processando questões com Lovable AI...');
   
   const { data, error } = await supabase.functions.invoke('process-question-ai', {
     body: {
@@ -139,7 +139,7 @@ async function processQuestionsWithAI(text: string): Promise<any> {
     throw new Error(`Erro ao processar com IA: ${error.message}`);
   }
   
-  console.log(`✓ ${data.questions.length} questões extraídas pela IA`);
+  console.log(`✓ ${data.questions.length} questões extraídas pela Lovable AI`);
   return data;
 }
 
